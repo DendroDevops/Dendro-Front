@@ -3,7 +3,7 @@
 FROM node:12.18.3-alpine3.9 as build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install -g @angular/cli@8.3.8
+RUN npm install -g @angular/cli@8.3.8 --omit=dev
 COPY . .
 RUN ng build --prod
 # # Stage 2: Running artifact
