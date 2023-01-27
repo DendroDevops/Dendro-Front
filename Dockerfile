@@ -5,6 +5,7 @@ WORKDIR /app
 COPY . .
 #COPY package.json package-lock.json ./
 RUN npm install -g @angular/cli@8.3.8 --omit=dev
+RUN npm install --force
 RUN npm run  build --prod
 # # Stage 2: Running artifact
 FROM ubuntu:18.04
