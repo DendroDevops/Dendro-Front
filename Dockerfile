@@ -2,10 +2,10 @@
 # Stage 1: Building artifact
 FROM node:12.18.3-alpine3.9 as build
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install -g @angular/cli@8.3.8 --omit=dev
 COPY . .
-RUN ng build --prod
+#COPY package.json package-lock.json ./
+RUN npm install -g @angular/cli@8.3.8 --omit=dev
+RUN npm run  build --prod
 # # Stage 2: Running artifact
 FROM ubuntu:18.04
 RUN apt update -y \
