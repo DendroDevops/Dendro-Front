@@ -1,5 +1,6 @@
 FROM node:12
 RUN npm install -g @angular/cli@8.3.8
+RUN npm install --force
 USER node
 WORKDIR /app
 COPY . .
