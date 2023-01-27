@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-sm text-sm-left text-center pt-3">
+  <span class="text-muted" *ngIf="this.dataList.total">Page {{ this.dataList.currentPage }}
+    of {{ this.dataList.total }}</span>
+  </div>
+
+  <div class="col-sm pt-3">
+    <ngb-pagination [collectionSize]="this.dataList.total" [maxSize]="7" [pageSize]="this.dataList.perPage"
+                    [(page)]="this.dataList.currentPage"
+                    (pageChange)="changePage($event)" size="sm"
+                    class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+  </div>
+</div>

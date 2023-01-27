@@ -1,0 +1,33 @@
+// .custom-control-label::before {
+//     background-color: green;
+// }
+.page-item.active .page-link, .page-item.active .page-link:hover, .page-item.active .page-link:focus, .pagination li.active > a:not(.page-link), .pagination li.active > a:not(.page-link):hover, .pagination li.active > a:not(.page-link):focus {
+  background-color: #02BC77 !important;
+}
+
+.sk-primary.sk-chasing-dots .sk-child, .sk-primary.sk-circle .sk-child:before, .sk-primary.sk-cube-grid .sk-cube, .sk-primary.sk-double-bounce .sk-child, .sk-primary.sk-fading-circle .sk-circle:before, .sk-primary.sk-folding-cube .sk-cube:before, .sk-primary.sk-rotating-plane, .sk-primary.sk-spinner-pulse, .sk-primary.sk-three-bounce .sk-child, .sk-primary.sk-wandering-cubes .sk-cube, .sk-primary.sk-wave .sk-rect {
+  background-color: #02BC77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.card {
+  border: 1px solid #02BC77;
+  border-radius: 4px;
+}
+
+.forfait-style-error {
+  padding-right: 16px;
+  background: #CC0000;
+  border: 1px solid white;
+  border-radius: 9px;
+}
+
+.forfait-style-warning {
+  padding-right: 16px;
+  background: #FF8800;
+  border: 1px solid white;
+  border-radius: 9px;
+}

@@ -1,0 +1,64 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card" style="border:1px solid #02BC77">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <app-filter-table [placeholder]="'Rechercher par genre ou adresse'"
+                                  (onFilter)="update($event)"></app-filter-table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <app-export-button [typeData]="'TRAVAUX'" [dataSelected]="this.datas"
+                               [titleFile]="'Dendromap_Alertes_extraction'"></app-export-button>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="datas"
+        [deletable]="false"
+        [editable]="false"
+        [showAble]="true"
+        [sliceStart]="(currentPage-1) * perPage"
+        [sliceEnd]="currentPage * perPage"
+        (selectAll)="selectInvAll($event)"
+        (selectOne)="selectOne($event)"
+        [selectAllStatus]="selectAllStatus"
+        [isDblClick]="true"
+        (dbclick)="show($event)"
+        (showClick)="show($event)"
+      >
+      </app-table-data>
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted"> Total : {{ totalItems }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [maxSize]="20" [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0">
+
+            </ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+
+    </div>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

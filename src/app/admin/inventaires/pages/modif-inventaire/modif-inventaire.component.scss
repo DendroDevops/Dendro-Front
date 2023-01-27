@@ -1,0 +1,27 @@
+.sk-primary.sk-chasing-dots .sk-child, .sk-primary.sk-circle .sk-child:before, .sk-primary.sk-cube-grid .sk-cube, .sk-primary.sk-double-bounce .sk-child, .sk-primary.sk-fading-circle .sk-circle:before, .sk-primary.sk-folding-cube .sk-cube:before, .sk-primary.sk-rotating-plane, .sk-primary.sk-spinner-pulse, .sk-primary.sk-three-bounce .sk-child, .sk-primary.sk-wandering-cubes .sk-cube, .sk-primary.sk-wave .sk-rect {
+  background-color: #02BC77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.card {
+  border: 1px solid #02BC77;
+  border-radius: 4px;
+}
+
+.tooltiptext .ng-star-inserted {
+  background-color: #02BC77;
+}
+.material-style :host /deep/ {
+  @import 'src/vendor/styles/_custom-variables/libs';
+  wizard ul.steps-indicator li {
+    &::before {
+      opacity: 1!important;
+    }
+    div a {
+      opacity: 1!important;
+    }
+  }
+}

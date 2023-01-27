@@ -1,0 +1,5 @@
+:host /deep/ {
+  ng-select.is-invalid ~ .invalid-feedback {
+    display: block;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="form-group" [formGroup]="selectFormGroup">
+  <label class="form-label">{{textLabel}}</label>
+  <ng-select notFoundMsg="Aucun résultat trouvé"
+             [class]="(selectFormGroup.get(formName).errors && selectFormGroup.get(formName).touched) ?
+            'is-invalid' : 'is-valid'"
+             (ngModelChange)="isValueChange()"
+             [placeholder]="placeholder"
+             [allowClear]="true"
+             [multiple]="isMultiple"
+             [options]="DATA_TAB"
+             [formControlName]="formName">
+  </ng-select>
+  <small class="invalid-feedback">{{errorText}}</small>
+</div>

@@ -1,0 +1,59 @@
+.page-item.active .page-link,
+.page-item.active .page-link:hover,
+.page-item.active .page-link:focus,
+.pagination li.active > a:not(.page-link),
+.pagination li.active > a:not(.page-link):hover,
+.pagination li.active > a:not(.page-link):focus {
+  background-color: #02bc77 !important;
+}
+
+:host /deep/ .ql-container.ql-snow {
+  height: 600px;
+}
+
+.sk-primary.sk-chasing-dots .sk-child,
+.sk-primary.sk-circle .sk-child:before,
+.sk-primary.sk-cube-grid .sk-cube,
+.sk-primary.sk-double-bounce .sk-child,
+.sk-primary.sk-fading-circle .sk-circle:before,
+.sk-primary.sk-folding-cube .sk-cube:before,
+.sk-primary.sk-rotating-plane,
+.sk-primary.sk-spinner-pulse,
+.sk-primary.sk-three-bounce .sk-child,
+.sk-primary.sk-wandering-cubes .sk-cube,
+.sk-primary.sk-wave .sk-rect {
+  background-color: #02bc77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.card {
+  border-radius: 4px;
+}
+.dp-hidden {
+  width: 0;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+

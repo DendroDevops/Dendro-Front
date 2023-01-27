@@ -1,0 +1,52 @@
+<div class="card mb-3">
+  <div class="card-body" [formGroup]="bevaGroup">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="form-label">Indice espèce</label>
+          <input
+            [class]="(bevaGroup.get('varietyGrade').errors && bevaGroup.get('varietyGrade').touched) ? 'form-control is-invalid' : 'form-control is-valid'"
+            formControlName="varietyGrade" name="varietyGrade" type="text">
+          <small class="invalid-feedback">Format de l'indice espèce incorrect (format numérique type X,X)</small>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="my-3 form-group">
+          <label class="form-label"> Indice de situation</label>
+          <select class="form-control is-valid"
+                  formControlName="locationIndex" name="locationIndex">
+            <option value="{{val.name}}" *ngFor="let val of LOCATION_INDEX_TAB">{{val.displayName}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="my-3 form-group">
+          <label class="form-label"> Indice sanitaire</label>
+          <select class="form-control is-valid"
+                  formControlName="healthColumn" name="healthColumn">
+            <option value="{{val.name}}" *ngFor="let val of HEALTH_INDEX_TAB">{{val.displayName}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="my-3 form-group">
+          <label class="form-label"> Indice esthétique</label>
+          <select class="form-control is-valid"
+                  formControlName="aestheticColumn" name="aestheticColumn">
+            <option value="{{val.name}}" *ngFor="let val of AESTHETIC_INDEX_TAB">{{val.displayName}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="form-label">Beva</label>
+          <input class="form-control" formControlName="beva" name="beva" type="text" disabled>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

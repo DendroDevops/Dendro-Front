@@ -1,0 +1,15 @@
+<div class="float-sm-right d-flex justify-content-center align-items-center">
+<span *ngIf="authService.isRoleDeleted()" class="ion ion-ios-trash text-danger "
+      [swal]="{title:appService.messageDelete.title,
+                        text:appService.messageDelete.subMessage,
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Supprimer',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}"
+      (confirm)="delete()"
+      ngbTooltip="Supprimer"
+      style="font-size:2rem;cursor:pointer;"></span>
+</div>

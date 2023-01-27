@@ -1,0 +1,257 @@
+<div *ngIf="(appService.getGroupe == 'DENDROMAP') && user">
+  <div class="media align-items-center py-3 mb-3">
+    <img
+      [src]="user.img ? appService.urlBase + 'images/' + user.img : appService.default_img"
+      class="d-block ui-w-100 rounded-circle" alt="">
+    <div class="media-body ml-4">
+      <h4 class="font-weight-bold mb-0">{{user.prenom}} {{user.nom}} </h4>
+      <div class="text-muted mb-2">@{{user.username}}</div>
+      <button [class]="'btn btn-sm ' + ( user.isActive ? 'btn-success' : 'btn-danger')" [swal]="{title: 'Etes-vous sûr(e)s?',
+                                    text: 'Vous êtes sur le point de ' + (user.isActive ? 'désactiver' : 'activer') + ' un utilisateur!',
+                                    type:'warning',
+                                    showCancelButton:true,
+                                    confirmButtonText: user.isActive ? 'DESACTIVER' : 'ACTIVER',
+                                    cancelButtonText:'Annuler',
+                                    showCloseButton:true,
+                                    cancelButtonClass:'btn btn-md btn-default',
+                                    confirmButtonClass:'btn btn-md btn-warning'}"
+              [ngbTooltip]="!user.isActive ? 'Activer' : 'Désactiver'"
+              (confirm)="DesactiveOrActive(user)"
+              (cancel)="declineDialog.show()"> {{user.isActive ? 'Actif' : 'Inactif'}}
+      </button>&nbsp;
+      <button class="btn btn-default btn-sm"
+              (click)="open(defaultModal, { windowClass: 'modal-md animate' }, user.profil)">{{user.profil.name}}</button>&nbsp;
+    </div>
+  </div>
+
+  <div class="card mb-4" style="border:1px solid #02BC77">
+    <div class="card-body">
+      <table class="table user-view-table m-0">
+        <tbody>
+        <tr>
+          <td>Email</td>
+          <td>
+            <span>{{user.email}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Creation</td>
+          <td>{{user.createdAt | date: 'dd/MM/yyyy H:mm'}}</td>
+        </tr>
+
+        <tr>
+          <td>Profil</td>
+          <td>
+            <span class="text-primary" style="cursor: pointer"
+                  (click)="open(defaultModal, { windowClass: 'modal-md animate' }, user.profil)"> {{user.profil.name}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>groupe</td>
+          <td>
+            <span>{{user.groupe.name | lowercase }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Status:</td>
+          <td>
+            <span
+              [class]=" user.isActive? 'badge badge-outline-success' : 'badge badge-outline-danger'">{{ user.isActive ? 'Actif' : 'Inactif'}}</span>
+          </td>
+        </tr>
+        <tr *ngIf="user.groupe.groupeType !== 'DENDROMAP'">
+          <td>Forfait:</td>
+          <td>
+            {{ user.groupe.forfait.name }}
+          </td>
+        </tr>
+        <tr *ngIf="user.groupe.groupeType !== 'DENDROMAP'">
+          <td>Durée</td>
+          <td>
+            {{ displayCodeForfait }}
+          </td>
+        </tr>
+
+        <tr *ngIf="user.groupe.groupeType !== 'DENDROMAP'">
+          <td>Date fin</td>
+          <td>
+            {{user.groupe.dateEcheance ? (user.groupe.dateEcheance | date: 'dd/MM/yyyy H:mm') : ''}}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="(this.appService.getGroupe != 'DENDROMAP') && user">
+  <div class="row" *ngIf="user">
+    <div class="col-md-4">
+      <!-- Side info -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="media text-center">
+            <img style="max-width: 100%;box-shadow:1px 0px 4px #000000b0;"
+                 [src]="user.img ? appService.urlBase + 'images/' + user.img : this.appService.default_img"
+                 alt class="img-fluid contact-content-img rounded-circle">
+          </div>
+        </div>
+        <hr class="border-light m-0">
+        <div class="card-body">
+          <div class="mb-2">
+            <span class="text-muted" *ngIf="user.nom">Nom et Prenom:</span>&nbsp;
+            {{user.prenom}} {{user.prenom}}
+          </div>
+          <div class="mb-2">
+            <span class="text-muted">Email :</span>&nbsp;
+            {{user.email}}
+          </div>
+          <div class="mb-2">
+            <span class="text-muted">Username :</span>&nbsp;
+            <a href="javascript:void(0)" class="text-dark">{{user.username}}</a>
+          </div>
+          <div class="mb-2">
+            <span class="text-muted">Profil :</span>&nbsp;
+            <a href="javascript:void(0)" class="text-dark">{{user.profil.name}}</a>
+          </div>
+          <div class="mb-2">
+            <span class="text-muted">Role :</span>&nbsp;
+            <a href="javascript:void(0)" class="text-dark">{{droit}}</a>
+          </div>
+
+          <div class="mb-2">
+            <span class="text-muted">Statut : </span>&nbsp;
+            <a href="javascript:void(0)" class="text-dark">{{user.isActive ? 'Actif' : 'Inactif'}}</a>
+          </div>
+          <p class="text-center">
+            <a href="javascript:void(0)" (click)="resetPassword(user.id)" class="btn btn-success btn-md">
+              Reinitialiser mot de passe</a></p>
+        </div>
+        <div class="card-footer text-center">
+          <div *ngIf="!user?.emailActive"><span
+            class="badge badge-danger">{{user?.emailActive ? 'EMAIL VERIFIE' : 'EMAIL NON VERIFIE'}}</span>
+            <p class="text-center mt-2">Il semble que cet utilisateur n'a pas encore validé son email. <br>
+              <a href="javascript:void(0)" (click)="onEmailConfirm(user.id)"> Renvoyer le mail de confirmation </a></p>
+          </div>
+        </div>
+      </div>
+      <!-- / Side info -->
+
+    </div>
+    <div class="col">
+      <!-- Info -->
+      <div class="row no-gutters row-bordered ui-bordered text-center mb-4"
+           style="border-radius:4px;border:1px solid #02BC77">
+        <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
+          <div class="font-weight-bold">
+            <div class="badge badge-success">{{inventaireStat?.arbre}}</div>
+          </div>
+          <div class="text-muted small"><strong>Arbres</strong></div>
+        </a>
+        <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
+          <div class="font-weight-bold">
+            <div class="badge badge-success">{{inventaireStat?.ebc}}</div>
+          </div>
+          <div class="text-muted small"><strong>EBC <span
+            class="d-none d-sm-block">(Espace Boisé Classé)</span></strong></div>
+        </a>
+        <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
+          <div class="font-weight-bold">
+            <div class="badge badge-success">{{inventaireStat?.epp}}</div>
+          </div>
+          <div class="text-muted small"><strong>EPP <span
+            class="d-none d-sm-block">(Espace Paysager à préserver)</span></strong></div>
+        </a>
+      </div>
+      <!-- / Info -->
+      <!-- Posts -->
+      <div [@moveInLeft]="state">
+        <form [formGroup]="userForm" (ngSubmit)="updateUser()">
+          <div class="card mb-4">
+            <div class="card-header mb-0">
+              <h4 class="text-center">
+                MODIFIER PROFIL
+              </h4>
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="form-row">
+                <div class="col-sm-12">
+                  <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Nom d\'utilisateur *'"
+                                       [formName]="'username'"
+                                       [errorText]="'Pseudo doit avoir plus de 2 caractères'"></app-text-input-form>
+                </div>
+                <div class="col-md-12">
+                  <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Email *'"
+                                       [formName]="'email'"
+                                       [errorText]="'Saisir un email valide'"></app-text-input-form>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-6">
+                  <app-select-input-form
+                    [selectFormGroup]="userForm"
+                    [textLabel]="'Profil *'"
+                    [formName]="'profil'"
+                    [DATA_TAB]="profilsOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a href="javascript:void(0)" (click)="updateUser()" class="btn btn-success btn-md float-right">
+                Modifier</a>
+            </div>
+
+          </div>
+        </form>
+
+
+      </div>
+      <!-- / Posts -->
+    </div>
+  </div>
+</div>
+
+<ng-template #defaultModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Modifier Profil
+    </h5>
+    <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="custom-controls-stacked">
+          <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                 *ngFor="let profile of profilsOptions; let isLast=last">
+            <input name="profil" type="radio" [value]="profile.value" [(ngModel)]="profilPop.id"
+                   class="custom-control-input">
+            <span class="custom-control-label">{{profile.label}}</span>
+            <br *ngIf="!isLast">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="col-sm-6 btn btn-default" (click)="d('Cross click')">
+      Annuler
+    </button>
+    <button type="button" class="col-sm-6 btn btn-success"
+            (click)="modiferProfil();  c('Close click');">
+      Enregistrer
+    </button>
+
+  </div>
+</ng-template>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

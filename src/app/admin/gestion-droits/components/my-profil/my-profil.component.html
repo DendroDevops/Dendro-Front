@@ -1,0 +1,543 @@
+<div class="card overflow-hidden" style="border:1px solid #02BC77" [@moveInUp]="state">
+  <div class="row no-gutters row-bordered row-border-light" *ngIf="user">
+    <div class="col-md-3 pt-0">
+      <div class="list-group list-group-flush account-settings-links">
+        <button type="button" class="list-group-item list-group-item-action" [ngClass]="{active: curTab === 'general'}"
+                (click)="curTab = 'general'">Mon profil
+        </button>
+        <button type="button" class="list-group-item list-group-item-action" [ngClass]="{active: curTab === 'info'}"
+                (click)="curTab = 'info'">Mon compte
+        </button>
+        <button type="button" class="list-group-item list-group-item-action" *ngIf="user.groupe.isStripped"
+                [ngClass]="{active: curTab === 'forfait'}" (click)="curTab = 'forfait'">Mon forfait
+        </button>
+      </div>
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'general'">
+
+      <div class="card-body media align-items-center">
+        <img [src]="user.img ? appService.urlBase + 'images/' + user.img : this.appService.default_img" alt=""
+             class="d-block" width="70" height="70">
+        <div class="media-body ml-4">
+        </div>
+      </div>
+      <hr class="border-light m-0">
+
+      <div class="card-body">
+        <div class="form-group" *ngIf="!authService.isVisiteur()">
+          <label class="form-label">Nom d'utilisateur</label>
+          <input [(ngModel)]="user.username" type="text" class="form-control mb-1" value="nmaxwell">
+        </div>
+        <label class="mb-4">Modifier la photo de profil</label>
+        <div class="mb-4">
+          <label class="btn btn-success">
+            Sélectionner
+            <input type="file" name="img" (change)="fileChangeListener($event)" class="sr-only">
+          </label>
+        </div>
+        <div class="d-flex">
+          <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+        </div>
+        <br>
+      </div>
+      <div class="card-footer">
+        <div class="text-right mt-3">
+          <button type="button" class="btn btn-success" (click)="telecharger(user.id)">ENREGISTRER</button>&nbsp;
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'password'">
+      <div class="card-body pb-2">
+
+        <div class="form-group">
+          <label class="form-label">Ancien</label>
+          <input type="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nouveau</label>
+          <input type="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirmation</label>
+          <input type="password" class="form-control">
+        </div>
+
+        <div class="text-right">
+          <button type="button" class="btn btn-success"><i class="ion ion-md-edit"></i>MODIFIER</button>&nbsp;
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'info'">
+      <form (ngSubmit)="modifCompte()" [formGroup]="formGroupCompte">
+        <div class="card-body pb-2">
+
+          <div class="form-group">
+            <label class="form-label">Nom</label>
+            <input formControlName="nom" name="nom" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Prénom</label>
+            <input formControlName="prenom" name="prenom" type="text" class="form-control">
+          </div>
+
+          <div *ngIf="!authService.isVisiteur()">
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input formControlName="email" name="email" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Mon groupe</label>
+              <input formControlName="groupe" name="groupe" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Mon accès</label>
+              <input [value]="user.profil.name" name="profil" type="text"
+                     class="form-control" style="color: #4E5155 !important" disabled>
+            </div>
+            <!--  Num Certification -->
+            <div class="row">
+              <div class="form-group col-sm-6 col-xs-12">
+                <label class="form-label">N° de certification Dendromap </label>
+                <input formControlName="numCertification" name="groupe" type="text" class="form-control" disabled>
+              </div>
+              <div class="form-group col-sm-6 col-xs-12">
+                <label class="form-label" for="nameSociete">Société </label>
+                <input formControlName="nameSociete" id="nameSociete" name="nameSociete" type="text"
+                       class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-4 col-xs-12">
+                <label class="form-label" for="addressSociete">Adresse </label>
+                <input formControlName="addressSociete" id="addressSociete" name="addressSociete" type="text"
+                       class="form-control is-valid"
+                       placeholder="Adresse ">
+              </div>
+              <div class="form-group col-sm-4 col-xs-12">
+                <label class="form-label" for="cp">Code Postal </label>
+                <input formControlName="cp" id="cp" name="cp" type="tel" class="form-control is-valid"
+                       placeholder="Code Postal " (change)="onChangeZipCode('modifCompte')">
+              </div>
+              <div class="form-group col-sm-4 col-xs-12">
+                <label class="form-label" for="ville">Ville </label>
+
+                <select formControlName="ville" id="ville" name="ville" class="form-control is-valid custom-select">
+                  <option *ngFor="let city of cityList" value="{{ city.nomCommune }}">{{ city.nomCommune }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label"> SIRET </label>
+              <input formControlName="siret" name="groupe" type="text" class="form-control">
+            </div>
+
+            <label class="mb-4">Ajouter un logo de societé
+              <br><small> <i>Taille idéale : 315 * 210 px</i></small>
+            </label>
+
+            <div class="mb-4">
+              <label class="btn btn-success btn-sm">
+                Selectionner
+                <input type="file" (change)="fileChangeListener($event)" class="sr-only">
+              </label>
+            </div>
+            <div class="d-flex">
+              <img-cropper #cropper (cropOnResize)="true" [image]="data" (onCrop)="cropped($event)"
+                           [settings]="cropperSettings"></img-cropper>
+              <div *ngIf="data.image" class="ml-3">
+                <img [src]="data.image" (change)="fileChangeBeta($event)" [width]="cropperSettings.croppedWidth"
+                     [height]="cropperSettings.croppedHeight">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-light m-0">
+        <div class="card-footer pb-2">
+          <div class="text-right">
+            <button type="submit" class="btn btn-success"><i class="ion ion-md-edit"></i>ENREGISTRER</button>&nbsp;
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'links'">
+      <div class="card-body pb-2">
+
+        <div class="form-group">
+          <label class="form-label">Twitter</label>
+          <input [(ngModel)]="accountData.info.twitter" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Facebook</label>
+          <input [(ngModel)]="accountData.info.facebook" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Google+</label>
+          <input [(ngModel)]="accountData.info.google" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">LinkedIn</label>
+          <input [(ngModel)]="accountData.info.linkedin" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Instagram</label>
+          <input [(ngModel)]="accountData.info.instagram" type="text" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'forfait'">
+      <div class="card-body pb-2">
+
+        <div class="error-server" *ngIf="errorMessage.show" [@fallIn]="state">
+          {{errorMessage.message}}
+        </div>
+
+        <div class="success-server" *ngIf="successMessage.show" [@fallIn]="state">
+          {{successMessage.message}}
+        </div>
+
+        <h4 class="mb-4">Abonnement</h4>
+        <div class="row">
+          <div class="col-sm-12 mb-3">
+
+            <h4 class="font-weight-bolder" *ngIf="user.groupe.isStripped">Forfait * </h4>
+            <div class="w-100"></div>
+
+            <h4 class="font-weight-semibold">Flex</h4>
+
+            <div class="w-100"></div>
+
+            <div class="row switchers-stacked">
+              <div class="demo-inline-spacing">
+                <div class="col-sm-6">
+                  <label class="switcher switcher-success">
+                    <input [disabled]="this.codeForfaitBase !== 'GRATUIT'" type="radio" [value]="'GRATUIT'"
+                           [(ngModel)]="this.codeForfaitBase"
+                           class="switcher-input" name="forfait" checked>
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Gratuit </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <h4 class="font-weight-semibold">Agile</h4>
+            <div class="w-100"></div>
+            <div class="row switchers-stacked">
+              <div class="demo-inline-spacing">
+                <div class="col-sm-6">
+                  <label class="switcher switcher-success">
+                    <input [disabled]="this.codeForfaitBase !== '12M'" type="radio" [value]="'12M'"
+                           [(ngModel)]="this.codeForfaitBase"
+                           class="switcher-input" name="forfait" checked>
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label"><b>12&nbsp;mois </b></span>
+                  </label>
+                </div>
+                <div class="col-sm-6">
+                  <label class="switcher switcher-success">
+                    <input type="radio" [disabled]="this.codeForfaitBase !== '6M'" [value]="'6M'"
+                           [(ngModel)]="this.codeForfaitBase" class="switcher-input"
+                           name="forfait">
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label"> <b>6&nbsp;mois </b></span>
+                  </label>
+                </div>
+
+                <div *ngIf="this.codeForfaitBase == '1M_FREE'" class="col-sm-6">
+                  <label class="switcher switcher-success">
+                    <input type="radio" [value]="'1M_FREE'" [disabled]="this.codeForfaitBase !== '1M_FREE'"
+                           class="switcher-input" name="forfait"
+                           [(ngModel)]="this.codeForfaitBase">
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label"><b>1&nbsp;mois</b></span>
+                  </label>
+                </div>
+
+                <div
+                  *ngIf="(this.codeForfaitBase == '1M' || this.codeForfaitBase == '6M' || this.codeForfaitBase == '12M' || this.codeForfaitBase == 'GRATUIT') && this.codeForfaitBase != '1M_FREE'"
+                  class="col-sm-6">
+                  <label class="switcher switcher-success">
+                    <input type="radio" [value]="'1M'" [disabled]="this.codeForfaitBase !== '1M'" class="switcher-input"
+                           name="forfait"
+                           [(ngModel)]="this.codeForfaitBase">
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label"><b>1&nbsp;mois</b></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="col-sm-12 form-group">
+            <label class="d-flex justify-content-between align-items-end" for="name">Date de souscription</label>
+            <input [value]="user.groupe.dateSubscribed | date:'dd/MM/yyyy' " type="text" class="is-valid form-control"
+                   placeholder="">
+          </div>
+          <div class="col-sm-12 form-group">
+            <label class="d-flex justify-content-between align-items-end" for="name">Date d'échéance</label>
+            <input [value]="user.groupe.dateEcheance | date:'dd/MM/yyyy' " type="text" class="is-valid form-control">
+          </div>
+
+          <div class="col-sm-12">
+            <div class="text-left mt-3">
+
+              <button *ngIf="isChangingForfait" class="btn btn-success" (click)="isForfaitValide() ? open(defaultModal, { windowClass: 'modal-lg animate' })
+                      : this.customAlertService.toastAlert(
+                      this.TEXT,
+                      'toast-top-right', 'info')">
+                Changer de forfait
+              </button>&nbsp;
+
+              <button class="btn btn-md btn-danger" [swal]="{title:'Etes-vous sûr(e)?',
+                        text:'Vous êtes sur le point de résilier votre abonnement',
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Valider',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}" ngbTooltip="Résilier votre abonnement"
+                      (confirm)="onUnsubscribe()" (cancel)="declineDialog.show()"> Résilier mon abonnement
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!--   MODAL CHANGE FORFAIT -->
+        <!-- Modal template -->
+        <ng-template #defaultModal let-c="close" let-d="dismiss">
+
+          <div class="modal-header">
+            <h5 class="modal-title">
+              Information de paiement<br>
+            </h5>
+            <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+          </div>
+
+          <form (ngSubmit)="onSubmit(); c('Close click');" [formGroup]="ForfaitForm">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12 mb-3">
+                  <p class="text-center" style="font-size: 1rem;">Abonnement</p>
+
+                  <h4 class="font-weight-semibold">Flex</h4>
+
+                  <div class="w-100"></div>
+
+                  <div class="row switchers-stacked">
+                    <div class="demo-inline-spacing">
+                      <div class="col-sm-6" *ngIf="codeForfaitBase != 'GRATUIT'">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'GRATUIT'" formControlName="forfait" class="switcher-input"
+                                 name="forfait" checked>
+                          <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                          <span class="switcher-label">Gratuit </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <h4 class="font-weight-semibold">Agile</h4>
+                  <div class="w-100"></div>
+                  <div class="row switchers-stacked">
+                    <div class="demo-inline-spacing">
+                      <div class="col-sm-6" *ngIf="codeForfaitBase != '12M'">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'12M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait" checked>
+                          <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                          <span class="switcher-label"><b>12&nbsp;mois </b></span>
+                        </label>
+                      </div>
+                      <div class="col-sm-6" *ngIf="codeForfaitBase != '6M'">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'6M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait">
+                          <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                          <span class="switcher-label"> <b>6&nbsp;mois </b></span>
+                        </label>
+                      </div>
+                      <div class="col-sm-6" *ngIf="codeForfaitBase != '1M'">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'1M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait">
+                          <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                          <span class="switcher-label"><b>1&nbsp;mois</b></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="this.codeForfaitBase != 'GRATUIT' || !this.isChangingPayMode">
+                <div class="col-sm-12">
+                  <div class="custom-control-inline form-group">
+                    <label class="custom-control custom-radio pr-5">
+                      <input formControlName="changingMode" [value]="false" (change)="changingPayMode()"
+                             class="custom-control-input" name="changingMode" type="radio">
+                      <span class="custom-control-label">Conserver les mêmes informations de paiement</span>
+                    </label>
+
+                    <label class="custom-control custom-radio">
+                      <input formControlName="changingMode" [value]="true" (change)="changingPayMode()"
+                             class="custom-control-input" name="changingMode" type="radio">
+                      <span class="custom-control-label">Changer les informations de paiement</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="isChangingPayMode">
+                <div class="row">
+                  <div class="col-sm-12 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="name">Nom et prénom</label>
+                    <input formControlName="name" name="name" type="text" class="is-valid form-control" id="name"
+                           placeholder="Nom Prénom*">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('name').errors && ForfaitForm.controls.name.touched">Champ invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="address2">Société
+                    </label>
+                    <input formControlName="address2" name="address2" type="text" class="is-valid form-control"
+                           id="address2" placeholder="Société">
+                  </div>
+                  <div class="col-sm-6 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="address">Adresse</label>
+                    <input formControlName="address" name="address" type="text" class="is-valid form-control"
+                           id="address" placeholder="Adresse *">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('address').errors && ForfaitForm.controls.address.touched">Adresse
+                      invalide
+                    </small>
+                  </div>
+
+                  <div class="col-sm-6 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="zipCode">Code postal</label>
+                    <input formControlName="zipCode" id="zipCode" name="zipCode" type="tel"
+                           class="form-control is-valid"
+                           placeholder="Code Postal *" (change)="onChangeZipCode()">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('zipCode').errors && ForfaitForm.controls.zipCode.touched">Code
+                      postal
+                      invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="city">Commune</label>
+                    <select formControlName="city" id="city" class="form-control is-valid custom-select">
+                      <option *ngFor="let city of cityList" value="{{ city.nomCommune }}">{{ city.nomCommune }}</option>
+                    </select>
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('city').errors && ForfaitForm.controls.city.touched">Commune
+                      invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-12 col-xs-12 form-group">
+                    <label class="d-flex justify-content-between align-items-end" for="phoneNumber">Téléphone</label>
+                    <input formControlName="phoneNumber" name="phoneNumber" type="tel" class="is-valid form-control"
+                           id="phoneNumber" placeholder="0102030405 *">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('phoneNumber').errors && ForfaitForm.controls.phoneNumber.touched">N°
+                      de
+                      téléphone invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-12 col-xs-12 form-group">
+                    <p class="mt-3" style="font-size:1rem;">Ajouter une carte de paiement</p>
+                    <label class="form-label"> Numéro de la carte</label>
+                    <input formControlName="ccNumber" class="is-valid form-control"
+                           [textMask]="{mask: cardMaskFunction, guide: false, showMask: true}" type="text"
+                           placeholder="XXXX-XXXX-XXXX-XXXX">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('ccNumber').errors && ForfaitForm.controls.ccNumber.touched">Numero de
+                      carte invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-12 col-xs-12 form-group">
+                    <label class="form-label">Nom du titulaire de la carte</label>
+                    <input formControlName="nameCard" name="nameCard" type="text" class="is-valid form-control"
+                           placeholder="Noms et prénoms">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('nameCard').errors && ForfaitForm.controls.nameCard.touched">Information
+                      invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 form-group">
+                    <label class="form-label">Date d'expiration</label>
+                    <input formControlName="ccExp" name="ccExp" type="text"
+                           class="form-control is-valid" placeholder="MM/YY">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('ccExp').errors && ForfaitForm.controls.ccExp.touched">Date
+                      d'expiration
+                      invalide
+                    </small>
+                  </div>
+                  <div class="col-sm-6 col-xs-12">
+                    <label class="form-label">CVV</label>
+                    <input formControlName="ccCvc" name="ccCvc" type="text"
+                           class="form-control is-valid"
+                           placeholder="XXX">
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="ForfaitForm.get('ccCvc').errors && ForfaitForm.controls.ccCvc.touched">Code secret
+                      invalide
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <hr>
+              <button type="button" class="btn btn-default" (click)="c('Close click');">Annuler</button>
+              <button type="submit" class="btn btn-success">ENREGISTRER</button>
+            </div>
+          </form>
+        </ng-template>
+
+        <!--   END CHANGE FORFAIT -->
+        <br>
+      </div>
+    </div>
+
+    <div class="col-md-9" *ngIf="curTab === 'notifications'">
+    </div>
+    <div class="col-md-9" *ngIf="curTab === 'acces'">
+    </div>
+  </div>
+  <!-- SPINNER -->
+  <app-spinner [visible]="visibleSpinner"></app-spinner>
+  <!-- FIN SPINNER -->

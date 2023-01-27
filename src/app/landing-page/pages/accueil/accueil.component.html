@@ -1,0 +1,410 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="height:100vh">
+    <app-header></app-header>
+    <!-- / Header -->
+    <div class="jumbotron ui-hero align-items-center ui-mh-100vh ui-bg-cover ui-bg-overlay-container text-white"
+         style="background-image: url('../../../../assets/static/img/architecture-buildings-city-137581.jpg');">
+        <div class="ui-bg-overlay bg-dark opacity-50"></div>
+        <div class="container flex-shrink-1 my-5">
+            <div class="row fadeOutLeft">
+                <div class="col-md-8 col-lg-6 col-xl-5 text-md-left text-center">
+                    <h1 class="display-2"> DENDROMAP<sub>®</sub></h1>
+                    <p class="lead pb-2 my-4">
+                        Découvrez notre puissant outil d’inventaire et de diagnostic sanitaire.
+                    </p>
+                    <button type="button" class="btn btn-lg btn-round btn-success" (click)="goInscription()"
+                            style="background-color:#EC1936"><span class="ion ion-ios-people"></span>&nbsp;&nbsp;Version
+                        Gratuite
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="presentation" class="p-4 landing-block bg-white">
+        <div class="container">
+            <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto">
+                <h1 class="display-4 text-center pb-4">
+                    <i class="lnr lnr-book text-success text-big align-middle"></i>&nbsp;
+                    <span class="align-middle">Qui sommes-nous ? </span>
+                </h1>
+                <div class="lead mt-4 mb-4">
+                    Dendromap<sub>®</sub> est une solution métier née de l’envie d’experts en arboriculture d’œuvrer
+                    pour la
+                    mise en avant et la protection des arbres. <br>
+                    Que vous soyez une collectivité, un professionnel ou un particulier, nous pouvons vous
+                    accompagner dans l’inventaire, le diagnostic sanitaire et la gestion de votre patrimoine arboré.
+                    Notre équipe est à votre écoute pour un accompagnement complet ou plus d’informations sur
+                    notre application.
+                </div>
+
+                <!-- <button class="btn btn-round btn-success btn-lg" > Decouvrir Arbocens</button> -->
+            </div>
+        </div>
+    </div>
+    <!-- SERVICES -->
+    <app-services></app-services>
+    <!-- FIN SERVICES -->
+    <hr class="landing-separator mx-auto">
+
+    <div id="tarifs" class="p-4 landing-block bg-white">
+        <div class="container">
+            <div class="col-md-10 col-lg-8 col-xl-7 text-center p-0 mx-auto mb-lg-5">
+
+                <h1 class="display-4 mb-2">
+                    Choisissez votre forfait
+                </h1>
+            </div>
+            <div class="row no-gutters row-bordered ui-bordered text-center" style="    box-shadow: 0 0px 1px 4px rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.18), 0 3px 1px -2px rgba(0, 0, 0, 0.04);
+                border: 1px solid #00000038;">
+                <!-- Captions -->
+                <div class="d-none d-lg-block col-lg-2">
+                    <h6 class="py-4 m-0">&nbsp; </h6>
+                    <hr class="m-0">
+                    <div class="py-4 uk-vertical-align-middle">
+            <span class="align-middle">
+              Accès tablette et smartphone
+            </span>
+                        <!-- Height -->
+                        <span class="display-3 align-middle">&nbsp;</span>
+
+                    </div>
+                    <div class="py-4">
+                        &nbsp;
+                    </div>
+                    <div class="py-4">
+                        &nbsp;
+                    </div>
+                    <div class="py-4">
+                        &nbsp;
+                    </div>
+
+                    <hr class="pt-2">
+                    <div class="py-4">
+                        <span class="align-middle">Accès Saas</span>
+                    </div>
+                </div>
+                <div class="d-none d-lg-block col-lg-4">
+                    <h6 class="py-4 m-0">&nbsp;Durée</h6>
+                    <hr class="m-0">
+
+                    <div class="py-3">
+            <span class="align-middle display-5">
+              <div class="btn-group btn-group-toggle" (change)="selectForfait($event)" ngbRadioGroup name="btn-radio"
+                   [(ngModel)]="radioButtonsModel">
+                <label class="btn btn-md  btn-success" ngbButtonLabel>
+                  <input type="radio" ngbButton [value]="'1M'"> 1 mois
+                </label>
+                <label class="btn btn-md  btn-success" ngbButtonLabel>
+                  <input type="radio" ngbButton [value]="'6M'"> 6 mois
+                </label>
+                <label class="btn btn-md btn-success" ngbButtonLabel>
+                  <input type="radio" ngbButton [value]="'12M'"> 12 mois
+                </label>
+              </div>
+            </span>
+                        <!-- Height -->
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.2rem">
+                        Inventaire par géolocalisation
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        Evaluation de la santé de l'arbre
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        Préconisations de travaux
+                    </div>
+
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: 0.05rem">
+                        Calcul de la valeur de l'arbre
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: 0.05rem">
+                        Tableau de pilotage des activités
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        Vue cartographique du patrimoine arboré
+                    </div>
+                    <hr class="m-0">
+
+                    <div class="py-4" style="margin-bottom: 0.05rem">
+                        Mise à jour d'inventaires en temps réel
+                    </div>
+                    <hr class="m-0">
+
+                    <div class="py-4" style="margin-bottom: 0.1rem">
+                        Edition de fiches de synthèses
+                    </div>
+                    <hr class="m-0">
+                </div>
+
+                <div class="col-md">
+                    <h6 class="bg-lighter p-4 m-0">Forfait FLEX</h6>
+                    <hr class="m-0">
+
+                    <div class="py-4" style="margin-bottom: -0.2rem">
+                        <span class="display-5 d-inline-block align-middle">Gratuit</span>
+                        <span class="d-lg-none d-inline-block text-muted text-big align-middle ml-2">/ mois</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.2rem">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                        <span class="d-lg-none d-none">gsfdgfh</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.1rem">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-close-circle text-danger text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+
+                    <!-- ACESS SAAS -->
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-close-circle text-danger text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-close-circle text-danger text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-close-circle text-danger text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-close-circle text-danger text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+
+                    <hr class="m-0">
+
+                    <div class="py-4">
+                        <button class="btn btn-md btn-success btn-round" (click)="getForfait('GRATUIT')">Choisir
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md">
+                    <h6 class="bg-lighter p-4 m-0">Forfait AGILE</h6>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.2rem">
+                        <span class="d-inline-block text-muted text-big align-middle mr-2"></span>
+                        <span class="display-5 d-inline-block align-middle"><strong>{{agile}}</strong> € T.T.C. /mois</span>
+                        <span class="d-lg-none d-inline-block text-muted text-big align-middle ml-2">/ mois</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.2rem">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                        <span class="d-lg-none d-none">gsfdgfh</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4" style="margin-bottom: -0.1rem">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                        <span class="d-lg-none d-none">yt</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <!-- SAAS -->
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                        <span class="d-lg-none d-none">yt</span>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                    </div>
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <i class="ion ion-ios-checkmark-circle text-success text-large line-height-1 align-middle mr-2"></i>
+                        <span class="d-lg-none d-none">yt</span>
+                    </div>
+
+                    <hr class="m-0">
+                    <div class="py-4">
+                        <button class="btn btn-success btn-md btn-round" (click)="getForfait('Agile')">Choisir</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lead text-muted text-center mt-5">
+                <p> Bénéficiez de toute l'expertise Dendromap<sub>®</sub> en téléchargeant l'application
+                    sur <b> AppStore </b> et <b>
+                        GooglePlay </b></p>
+                Téléchargez notre plaquette ici&nbsp;&nbsp;
+                <a class="btn btn-round btn-success" href="../../../../assets/static/Plaquette_Dendromap_2019.pdf"
+                   target="_blank">
+                    Télécharger
+                </a>
+            </div>
+        </div>
+    </div>
+    <hr class="landing-separator mx-auto">
+
+    <div id="pourquoi" class="p-4 landing-block bg-white">
+        <div class="container">
+            <div class="col-md-10 col-xs-12 col-lg-8 col-xl-7 text-center p-0 mx-auto mb-lg-5">
+                <h1 class="display-4 mb-2">
+                    Pourquoi Dendromap <sub style="margin-left: -9px;">®</sub> ?<br>
+                    <span style="font-size:1.3rem;"> De vrais bénéfices métiers </span>
+                </h1>
+
+            </div>
+
+            <div class="row text-center">
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5>Préservation et gestion <br> du patrimoine arboré</h5>
+                    <img src="../../../../assets/static/encart-champignons-rond.png" style="width: 20rem;"
+                         class="img-responsive"
+                         alt="">
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5>Gain de temps <br> et d'efficience terrain</h5>
+                    <img src="../../../../assets/static/encart-tablette-rond.png" style="width: 20rem;"
+                         class="img-responsive"
+                         alt="">
+                </div>
+                <div class="col-sm-6 col-lg-4 my-4">
+                    <h5>Anticipation des travaux, <br> aide au budget</h5>
+                    <img src="../../../../assets/static/encart-dashboard-rond.png" style="width: 20rem;"
+                         class="img-responsive"
+                         alt="">
+                </div>
+            </div>
+            <br>
+            <div class="col-md-10 col-xs-12 col-lg-8 col-xl-7 text-center p-0 mx-auto mb-lg-5">
+                <h1 class="display-4 mb-2">
+                    Une multitude de fonctionnalités <br>
+                    <span style="font-size:1.3rem;"> pour les professionnels de l'arbre </span>
+                </h1>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Inventaire par géolocalisation</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Référencez précisement l'ensemble de votre patrimoine arboré sur Google Map et accédez à la
+                        totalité de
+                        votre parc
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Diagnostic sanitaire complet</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Effectuez des expertises complètes d'arbres et d'espaces boisés selon les méthodes visuelles et
+                        quantifiées
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Mise à jour d'inventaire en temps réel</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Gérez facilement les inventaires et l'historique des interventions pour garder un patrimoine à
+                        jour
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Préconisations de travaux </h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Bénéficiez de recommandations d'élagage adaptées suite aux diagnostics sanitaires
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Alerte et programmation de travaux</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Recevez une alerte avant chaque date d'écheance et anticiper mieux vos interventions
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Suivi de missions terrain</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Envoyez des ordres de missions aux équipes qu'ils pourront pointer comme réalisées
+                    </div>
+                </div>
+
+                <!-- OTHERS -->
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Tableau de pilotage des activités </h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Accédez à la vue globale de vos performances, suivez les indicateurs métiers
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi"> Estimation de la valeur du parc</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Calculez la valeur de remplacement d'un arbre selon des critères esthétiques et d'environnement
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 col-lg-4 my-4">
+                    <h5 class="title-multi">Edition de rapports de diagnostic</h5>
+                    <div class="ui-company-text text-muted bloc-droit">
+                        Envoyez à vos clients des expertises complètes et personnalisables
+                    </div>
+                </div>
+                <!-- END OTHERS -->
+            </div>
+        </div>
+    </div>
+
+
+    <hr class="landing-separator mx-auto">
+
+    <div id="telecharger" class="landing-block bg-white mb-4">
+        <div class="ui-hero ui-mh-61vh bg-white">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-8 col-xl-6 text-md-left text-center my-5">
+                        <h1 class="display-3 mb-4">
+                            <i class="lnr lnr-cloud-download text-success text-big align-middle"></i>&nbsp;
+                            <span class="align-middle">Télécharger</span>
+                        </h1>
+                        <p class="lead text-muted py-2">
+                        <span class="text-big">
+                            Dendromap<sub>®</sub> est disponible sur les plateformes mobiles ios et android.<br>
+                            Créez d’abord un identifiant sur notre site pour pouvoir vous connecter sur l’application.
+                        </span>
+                        </p>
+                        <a href="https://itunes.apple.com/fr/app/dendromap/id1453862775?mt=8"
+                           class="text-transform-none text-left m-3">
+                            <img src="../../../../assets/static/download-apple.svg" style="width: 12rem;" alt="">
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.arbocens.dendromap"
+                           class="text-transform-none text-left m-3">
+                            <img src="../../../../assets/static/download-android.png" style="width: 14rem;" alt="">
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-xs-12 col-xl-6 my-5">
+                        <div class="ui-device iphone mw-100 mx-auto" style="width: 230px;">
+                            <img src="../../../../assets/static/samsung-galaxy-tab-s4.png" class="device-img"
+                                 style="height:25rem;width:26rem;" alt>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="landing-separator mx-auto">
+    <app-footer></app-footer>
+</div>

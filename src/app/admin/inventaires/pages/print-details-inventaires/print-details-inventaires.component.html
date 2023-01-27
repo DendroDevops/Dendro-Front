@@ -1,0 +1,826 @@
+<div class="invoice-print p-0" *ngFor="let inventaire of inventaires; let i=index">
+  <div class="row">
+      <div class="container">
+          <a class="btn btn-default btn-print" routerLink="/admin/inventaires/detail/print" target="_blank">
+              Imprimer</a>
+          <br>
+          <br>
+          <div class="bloc-siret row">
+              <div class="col-sm-6 text-center" style="padding-top: 1rem;">
+                  <div class="card-img-logo">
+                      <img *ngIf="inventaire.user?.groupe.imgLogo"
+                          [src]="inventaire.user?.groupe.imgLogo ? appService.urlBaseLogoImg + inventaire.user?.groupe.imgLogo :''"
+                          class="img-logo" alt="">
+                  </div>
+
+              </div>
+              <div class="col-sm-6">
+                  <p><strong>{{inventaire.user?.groupe.nameSociete}}</strong> <br>
+                      {{inventaire.user?.groupe.addressSociete}} <br>
+
+                      {{inventaire.user?.groupe.cp}} {{inventaire.user?.groupe.ville}} <br>
+
+                      <b> SIRET : </b>{{inventaire.user?.groupe.siret}}
+                  </p>
+
+                  <p><b> Recenseur : </b> {{inventaire.user?.prenom}} {{inventaire.user?.nom}}</p>
+
+                  <p> Certification Dendromap : {{inventaire.user?.groupe.numCertification}}</p>
+              </div>
+          </div>
+          <br>
+          <div *ngIf="!isWoodArea(inventaire.type)">
+              <h4 class="title-fiche text-center mb-3 p-1">
+                  FICHE DE SYNTHESE ARBRE - {{inventaire?.id}}
+              </h4>
+              <div class="row">
+                  <div class="col-sm-3 col-xs-12">
+                      <p><b>Date : </b>{{inventaire?.createdAt | date:'dd/MM/yyyy' }}</p>
+                      <p><b>Genre (latin) : </b> {{inventaire?.arbre.espece.genre}}<br>
+                          <b>Nom (FR) : </b> {{inventaire?.arbre.espece.nomFr}}
+                      </p>
+                  </div>
+                  <div class="col-sm-3 col-xs-12">
+                      <p style="margin-top: 2.3rem;"><b> Espèce :</b> {{inventaire?.arbre.espece.name}}</p>
+                  </div>
+                  <div class="col-sm-3 col-xs-12">
+                      <p><b>Code : </b>{{inventaire?.arbre.codeSite}}</p>
+                      <p><b>Cultivar : </b> {{inventaire?.arbre.espece.cultivar}}
+                      </p>
+                  </div>
+                  <div class="col-sm-3 col-xs-12">
+                      <p><b>Identification : </b> {{inventaire?.arbre.numSujet}}</p>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <p><b>Adresse : </b>{{inventaire?.arbre.address}} - {{inventaire?.arbre.ville}}</p>
+                  </div>
+                  <div class="col-sm-6">
+                      <p><b>Coordonnées GPS : </b> {{inventaire?.arbre.coord.lat}}, {{inventaire?.arbre.coord.long}}
+                      </p>
+                  </div>
+              </div>
+
+              <br>
+              <h4 class="title-fiche-gray text-center mb-3 p-1">
+                  Caractéristiques
+              </h4>
+              <div class="row">
+                  <div class="col-sm-4">
+                      <p class="bordure_black_gauche">
+                          <b> Hauteur en m : </b> {{inventaire?.arbre.hauteur}}
+                          <br> <b> Diamètre en cm : </b> {{inventaire?.arbre.diametre}}
+                          <br> <b> Stade de dév. : </b>{{inventaire?.arbre.stadeDev}}
+                          <br> <b> Remarquable : </b>
+                          <span *ngFor="let critere of inventaire?.arbre.critere; let isLast=last">{{critere}}{{isLast
+                              ? '' : ', '}}&nbsp;</span>
+                          <span
+                              *ngIf="!inventaire?.arbre.critereOther && inventaire?.arbre.critere.length == 0">Non</span>
+                      </p>
+                  </div>
+                  <div class="col-sm-4">
+                      <p class="bordure_black_gauche">
+                          <b> Port : </b>{{inventaire?.arbre.portArbre}}
+                          <br> <b> Tronc
+                              : </b>{{inventaire?.arbre.caractTroncMultiples ? 'Tronc multiples' + ' (' +
+                          inventaire?.arbre.caractTroncMultiples + ')' : inventaire?.arbre.caractTronc}}
+                          <br> <b> Pied de l'arbre : </b> <span
+                              *ngFor="let pied of inventaire.arbre.caractPied; let isLast=last">{{pied}}{{isLast ? ''
+                              : ', '}} </span>
+                      </p>
+                  </div>
+                  <div class="col-sm-4">
+                      <p class="bordure_black_gauche">
+                          <b> Implantation : </b>{{inventaire?.arbre.implantation}}
+                          <br> <b> Domaine : </b>{{inventaire?.arbre.domaine}}
+                          <br> <b> Situation
+                              : </b> {{inventaire?.arbre.locationIndex}}
+                          <br> <b> Accès : </b>
+                          {{ (inventaire?.arbre.accessibilite && inventaire?.arbre.accessibilite !== 'Accès difficile,
+                          précisez :') ?
+                          inventaire?.arbre.accessibilite : inventaire?.arbre.accessibiliteOther ?
+                          inventaire?.arbre.accessibiliteOther : ''}}
+                      </p>
+                  </div>
+              </div>
+              <br>
+
+              <h4 class="title-fiche-gray text-center mb-3 p-1" style="background-color: gray">
+                  Environnement
+              </h4>
+              <div class="row">
+                  <div class="col-sm-4">
+                      <div class="bordure_black_gauche">
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <b> Cohabitation : </b>
+                                  <span
+                                      *ngFor="let pro of inventaire?.arbre.proximite; let isLast=last;">{{pro}}{{isLast
+                                      ? '' : ', '}}</span>
+                              </div>
+                              <div class="col-sm-12">
+                                <b> Demande de DICT : </b>
+                                <span
+                                  *ngFor="let pro of inventaire?.arbre.proximiteWithDict; let isLast=last;">{{pro}}{{isLast ? '' : ', '}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                      <div class="bordure_black_gauche">
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <b> Nuisance : </b>
+                                  <span *ngFor="let nuis of inventaire?.arbre.nuisance"> {{nuis}} <br></span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                      <div class="bordure_black_gauche">
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <b> Fréquentation : </b>
+                                  {{inventaire?.arbre.tauxFreq}} <br>
+                              </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-sm-12">
+                                  <b>Type de Passage : </b>
+                                  <span *ngFor="let types of inventaire?.arbre.typePassage; let isLast=last">
+                                      {{types}}{{isLast ? '' : ', '}}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <br>
+              <div class="first-bloc">
+                  <h4 class="title-fiche-gray text-center mb-3 p-1" style="background-color: gray">
+                      Diagnostic visuel
+                  </h4>
+                  <div class="row">
+                      <div class="col-sm-2">
+                          Evaluation du risque
+                      </div>
+                      <div class="col-sm-7">
+                          <table class="table card-table table-bordered">
+                              <tbody>
+                                  <tr>
+                                      <td class="risque-color-green"></td>
+                                      <td class="risque-color-yellow"></td>
+                                      <td class="risque-color-red"></td>
+                                      <td class="risque-color-black"></td>
+                                  </tr>
+                                  <tr style="font-size:0.9em;" class="p-0 text-center">
+                                      <td style="width: 20%">Risque faible</td>
+                                      <td style="width: 20%">Risque modéré</td>
+                                      <td style="width: 20%">Risque élevé</td>
+                                      <td style="width: 20%">Risque imminent</td>
+                                  </tr>
+                              </tbody>
+
+                          </table>
+                      </div>
+
+                      <div class="col-sm-3 mt-2 text-right">
+                          <span style="border : 1px solid black;" class="p-2"> <b> Valeur estimée :
+                              </b>{{inventaire?.arbre?.beva | currency:'EUR': 'symbol':'3.2':'fr' }}</span>
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <div class="row">
+                              <div class="col-sm-3">
+                                  <img *ngIf="inventaire?.arbre.risque && inventaire.arbre.risque[2]"
+                                      [src]="  '../../../assets/Tree/' + (inventaire?.arbre.risque !== null ? inventaire?.arbre.risque[2] : 'faible') + '_Houppier.png' "
+                                      class="img-san">
+                                  <img *ngIf="inventaire?.arbre.risque && inventaire.arbre.risque[1]"
+                                      [src]="'../../../assets/Tree/' + (inventaire?.arbre.risque !== null ? inventaire?.arbre.risque[1] : 'faible') +  '_Tronc.png'"
+                                      class="img-san-tronc">
+                                  <img *ngIf="inventaire?.arbre.risque && inventaire.arbre.risque[0]"
+                                      [src]="'../../../assets/Tree/' + (inventaire?.arbre.risque !== null ? inventaire?.arbre.risque[0] : 'faible') + '_Racines.png'"
+                                      class="img-san-racine">
+                              </div>
+
+                              <div class="col-sm-3 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img [src]="inventaire?.arbre.imgUrl.img1 ? appService.urlBaseArbreImg + inventaire?.arbre.imgUrl.img1 : ''"
+                                          style="width:100%; max-height:20rem;background:white;"
+                                          class="img-responsive" alt="">
+                                  </a>
+                              </div>
+                              <div class="col-sm-3 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img [src]="inventaire?.arbre.imgUrl.img2 ? appService.urlBaseArbreImg + inventaire?.arbre.imgUrl?.img2 : ''"
+                                          style="width:100%; max-height:20rem;background:white;"
+                                          class="rounded img-fluid" alt="">
+                                  </a>
+                              </div>
+                              <div class="col-sm-3 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img [src]="inventaire?.arbre.imgUrl.img3 ? appService.urlBaseArbreImg + inventaire?.arbre.imgUrl.img3 : ''"
+                                          style="width:100%; max-height:20rem;background:white;"
+                                          class="img-responsive" alt="">
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <br>
+              <div class="second-bloc" style="padding-top: 12rem;">
+                  <h4 class=" title-fiche-gray text-center mb-3 p-1
+          " style="background-color: gray;">
+                      Diagnostic sanitaire
+                  </h4>
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <table class="table table-bordered card-table">
+                              <thead>
+                                  <tr class="d-flex">
+                                      <th class="col-2"></th>
+                                      <th class="col-4">Défauts mécaniques</th>
+                                      <th class="col-4">Préconisations de travaux</th>
+                                      <th class="col-2">Risque de rupture</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="d-flex">
+                                      <td class="col-2"><b> Système racinaire </b>
+                                          <br>
+                                          <span></span>
+                                      </td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire?.arbre.etatSanCollet"><span
+                                                  *ngFor="let etatSanCollet of inventaire?.arbre.etatSanCollet; let isLast=last">
+                                                  {{etatSanCollet}}{{isLast ? '' : ', '}}&nbsp;</span>
+                                          </p>
+                                          <p><span *ngIf="inventaire?.arbre.etatSanColletCavite"> <b> Cavité, nombre
+                                                      :</b> <br>
+                                                  {{inventaire?.arbre.etatSanColletCavite}}
+                                              </span>
+                                          </p>
+                                          <p><span *ngIf="inventaire.arbre.etatSanColletChampignons.length !== 0"><b>
+                                                      Champignons lignivores, précisez :</b> <br></span>
+                                              <span
+                                                  *ngFor="let etatSanTroncChamp of inventaire?.arbre.etatSanColletChampignons; let isLast=last">
+                                                  {{etatSanTroncChamp.name}}{{isLast ? '' : ', '}}
+                                              </span>
+                                          </p>
+                                      </td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire?.arbre.abattage">
+                                              <span>{{inventaire?.arbre.abattage}}</span>
+                                          </p>
+                                          <span
+                                              *ngFor="let travauxCollet of inventaire?.arbre.travauxColletMultiple; let isLast=last">{{travauxCollet}}{{isLast
+                                              ? '' : ', '}}</span>
+                                      </td>
+                                      <td class="col-2">{{ inventaire?.arbre.risque !== null ?
+                                          inventaireService.convertRisqueGnl(inventaire?.arbre.risque[0]) : null }}
+                                          <br>
+                                          <span class="risque-color-faible" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[0]) == 'Faible')"></span>
+                                          <span class="risque-color-modere" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[0]) == 'Modéré')"></span>
+                                          <span class="risque-color-eleve" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[0]) == 'Elevé')"></span>
+                                          <span class="risque-color-imminent" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[0]) == 'Imminent')"></span>
+                                      </td>
+                                  </tr>
+                                  <tr class="d-flex">
+                                      <td class="col-2"><b> Tronc </b></td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire.arbre.etatSanTronc.length !== 0">
+                                              <span
+                                                  *ngFor="let etatSanCollet of inventaire.arbre.etatSanTronc; let isLast=last">{{etatSanCollet}}{{isLast
+                                                  ? '' : ', '}}</span>
+                                          </p>
+                                          <p *ngIf="inventaire?.arbre.etatSanTroncCorpsEtranger">
+                                              <span *ngIf="inventaire?.arbre.etatSanTroncCorpsEtranger"> <b> Corps
+                                                      étranger : </b>
+                                                  {{inventaire?.arbre.etatSanTroncCorpsEtranger}}</span>
+                                          </p>
+                                          <span *ngIf="inventaire?.arbre.etatSanTroncCavite"> <b> Cavité, nombre :</b>
+                                              {{inventaire?.arbre.etatSanTroncCavite}}
+                                              <br></span>
+                                          <span *ngIf="inventaire.arbre.etatSanTroncChampignons.length !== 0"><b>
+                                                  Champignons lignivores, précisez :</b> <br></span>
+                                          <span
+                                              *ngFor="let etatSanTroncChamp of inventaire?.arbre.etatSanTroncChampignons; let isLast=last;">
+                                              {{etatSanTroncChamp.name}}{{isLast ? '' : ', '}}</span>
+                                          <br>
+                                          <span
+                                              *ngIf="inventaire?.arbre.etatSanTroncChampignonsAutres">{{inventaire.arbre.etatSanTroncChampignonsAutres}}</span>
+                                          <br>
+                                          <span *ngIf="inventaire.arbre.etatSanTroncNuisibles.length !== 0"><b>Parasites,
+                                                  nuisibles :</b></span>
+                                          <span
+                                              *ngFor="let etatSanNui of inventaire?.arbre.etatSanTroncNuisibles; let isLast=last">
+                                              {{etatSanNui.name}}{{isLast ? '' : ', '}}</span>
+                                          <br>
+                                          <span *ngIf="inventaire?.arbre.etatSanTroncNuisiblesAutres"> <b> Autres
+                                                  parasites : </b>{{inventaire?.arbre.etatSanTroncNuisiblesAutres}}
+                                              <br></span>
+                                      </td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire?.arbre.abattage">{{inventaire?.arbre.abattage}}</p>
+                                          <p *ngIf="inventaire?.arbre.travauxTroncMultiple.length !== 0">
+                                              <span
+                                                  *ngFor="let travauxTronc of inventaire?.arbre.travauxTroncMultiple; let isLast=last">
+                                                  {{travauxTronc}}{{isLast ? '' : ', '}}
+                                              </span>
+                                          </p>
+                                          <p><span *ngIf="inventaire?.arbre.travauxTroncProtection"> <b> Protection
+                                                      particulière, précisez : </b>
+                                                  {{inventaire?.arbre.travauxTroncProtection}}</span>
+                                          </p>
+                                      </td>
+                                      <!--                <td>{</td>-->
+                                      <td class="col-2">{{inventaire?.arbre.risque !== null ?
+                                          inventaireService.convertRisqueGnl(inventaire?.arbre.risque[1]) : null }}
+                                          <br>
+                                          <span class="risque-color-faible" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[1]) == 'Faible')"></span>
+                                          <span class="risque-color-modere" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[1]) == 'Modéré')"></span>
+                                          <span class="risque-color-eleve" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[1]) == 'Elevé')"></span>
+                                          <span class="risque-color-imminent" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[1]) == 'Imminent')"></span>
+                                      </td>
+                                  </tr>
+                                  <tr class="d-flex">
+                                      <td class="col-2"><b>Houppier</b></td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire?.arbre.etatSanHouppier.length !== 0">
+                                              <span
+                                                  *ngFor="let etatSanHouppier of inventaire?.arbre.etatSanHouppier; let isLast=last">
+                                                  {{etatSanHouppier}}{{isLast ? '' : ', '}}
+                                              </span>
+                                          </p>
+                                          <p *ngIf="inventaire.arbre.etatSanHouppierChampignons.length !== 0">
+                                              <span><b> Champignons lignivores, précisez :</b> <br></span>
+                                              <span
+                                                  *ngFor="let etatSanHouppierChamp of inventaire?.arbre.etatSanHouppierChampignons">
+                                                  {{etatSanHouppierChamp.name}}</span>
+                                              <br>
+                                          </p>
+                                          <p *ngIf="inventaire.arbre.etatSanHouppierNuisibles.length !== 0">
+                                              <span><b> Parasites, nuisibles :</b> <br></span>
+                                              <span
+                                                  *ngFor="let etatSanHouppierNui of inventaire?.arbre.etatSanHouppierNuisibles; let isLast=last">
+                                                  {{etatSanHouppierNui.name}}{{isLast ? '' : ', '}}
+                                              </span>
+                                              <br>
+                                              <span *ngIf="inventaire?.arbre.etatSanHouppierNuisiblesAutres"> <b>
+                                                  Autre, précisez :</b>
+                                                  {{inventaire?.arbre.etatSanHouppierNuisiblesAutres}}</span>
+                                              <br>
+                                          </p>
+                                      </td>
+                                      <td class="col-4">
+                                          <p *ngIf="inventaire?.arbre.abattage">
+                                              <span>{{inventaire?.arbre.abattage}}</span>
+                                          </p>
+                                          <p *ngIf="inventaire?.arbre.travauxHouppierMultiple.length !== 0">
+                                              <span
+                                                  *ngFor="let travauxHouppier of inventaire?.arbre.travauxHouppierMultiple; let isLast=last">
+                                                  {{travauxHouppier}}{{isLast ? '' : ', '}}
+                                              </span>
+                                          </p>
+                                      <td class="col-2">{{inventaire?.arbre.risque !== null ?
+                                          inventaireService.convertRisqueGnl(inventaire?.arbre.risque[2]) : null}}
+                                          <br>
+                                          <span class="risque-color-faible" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[2]) == 'Faible')"></span>
+                                          <span class="risque-color-modere" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[2]) == 'Modéré')"></span>
+                                          <span class="risque-color-eleve" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[2]) == 'Elevé')"></span>
+                                          <span class="risque-color-imminent" style="padding-right: 5rem;"
+                                              *ngIf="(inventaire?.arbre.risque !== null) && (inventaireService.convertRisqueGnl(inventaire?.arbre.risque[2]) == 'Imminent')"></span>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+
+                      </div>
+
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <table class="table table-bordered card-table">
+                          <tbody>
+                              <tr>
+                                  <td><b> Etat sanitaire global </b></td>
+                                  <td>
+                                      <p class="mb-0" *ngIf="inventaire?.arbre.etatSanGeneral.length !== 0">
+                                          <span
+                                              *ngFor="let risque of inventaire?.arbre.etatSanGeneral; let isLast=last">
+                                              {{risque !== 'Examen complémentaire requis' ? risque : ''}}{{isLast ||
+                                              (risque === 'Examen complémentaire requis') ? '' : ', '}}
+                                          </span>
+                                      </p>
+                                      <span *ngIf="inventaire?.arbre.etatSanGeneralOther">Autre, précisez :
+                                          {{inventaire?.arbre.etatSanGeneralOther}}</span><br>
+                                      <span>Examen complémentaire requis : {{containsExam(inventaire) ? 'Oui' : 'Non'}}</span>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td><b> Risque de rupture général</b>
+                                  </td>
+                                  <td>
+                                      <span *ngFor="let risque of inventaire?.arbre.risqueGeneral">
+                                          {{risque}}&nbsp;&nbsp;
+                                          <span class="risque-color-faible" style="padding-right: 5rem;"
+                                              *ngIf="risque == 'Faible'"></span>
+                                          <span class="risque-color-modere" style="padding-right: 5rem;"
+                                              *ngIf="risque == 'Modéré'"></span>
+                                          <span class="risque-color-eleve" style="padding-right: 5rem;"
+                                              *ngIf="risque == 'Elevé'"></span>
+                                          <span class="risque-color-imminent" style="padding-right: 5rem;"
+                                              *ngIf="risque == 'Imminent'"></span>
+                                      </span>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <div class="col-sm-6">
+                      <table class="table table-bordered card-table">
+                          <tbody>
+                              <tr>
+                                  <td><b> Date de prochaine visite </b></td>
+                                  <td>
+                                      {{ getStatusIsVisite(inventaire.type, inventaire?.arbre) ?
+                                      (inventaire?.arbre.userEditedDateTravaux | date: 'dd/MM/yyyy') : ''}}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td><b> Date d'intervention </b></td>
+                                  <td>
+                                      <span> {{ !getStatusIsVisite(inventaire.type, inventaire?.arbre) ?
+                                          (inventaire?.arbre.userEditedDateTravaux | date: 'dd/MM/yyyy') : ''}}</span>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td><b> DT/DICT requis </b></td>
+                                  <td>{{inventaire?.arbre.proximiteWithDict.length !== 0 ? '0ui' : 'Non' }}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="row pt-3">
+                <div class="col-sm-12 left">Commentaires : <span
+                  *ngIf="inventaire?.arbre.risqueGeneralOther">{{inventaire?.arbre.risqueGeneralOther}}</span>
+                </div>
+              </div>
+          </div>
+          <!--      INVENTAIRE EBC/EPP -->
+          <div *ngIf="isWoodArea(inventaire.type)">
+              <h4 class="title-fiche text-center mb-3 p-1">
+                  FICHE DE
+                  SYNTHESE {{inventaire?.type.toUpperCase() == 'EBC' ? 'ESPACE BOISE' : inventaire?.type.toUpperCase()
+                  }}
+                  - {{inventaire?.id}}
+              </h4>
+              <div class="row">
+                  <div class="col-sm-4 col-xs-12">
+                      <p><b>Date : </b>{{inventaire?.createdAt | date:'dd/MM/yyyy' }}</p>
+                      <p><b>Adresse : </b>{{inventaire?.epaysage.address}} <br> {{inventaire?.epaysage.ville}}</p>
+                  </div>
+
+                  <div class="col-sm-6 col-xs-12">
+                      <p><b>Code site : </b>{{inventaire?.epaysage.essence[0].codeSite}}</p>
+                      <p><b>Surface (ha) : </b> {{inventaire?.epaysage?.area}}</p>
+
+                  </div>
+                  <div class="col-sm-2 col-xs-12">
+                      <p><b>Identification : </b> {{getEssence(inventaire)?.numSujet}}</p>
+                  </div>
+              </div>
+              <h4 class="title-fiche-gray text-center mb-3 p-1">
+                  Espèces dominantes présentes
+              </h4>
+              <div class="row">
+                  <div class="col-sm-12">
+                      <table class="table table-bordered card-table">
+                          <thead>
+                              <tr>
+                                  <th>Numéro</th>
+                                  <th>Genre (latin)</th>
+                                  <th>Espèces</th>
+                                  <th>Cultivar</th>
+                                  <th>Nom (Fr)</th>
+                                  <th>Nbre de sujets</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let data of inventaire?.epaysage.essence; let i = index">
+                                  <td>{{i + 1}}</td>
+                                  <td>{{data.espece?.genre}}</td>
+                                  <td>{{data.espece?.name}}</td>
+                                  <td>{{data.espece?.cultivar}}</td>
+                                  <td>{{data.espece.nomFr}}</td>
+                                  <td>{{data.countSubject}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div
+                  *ngFor="let essenceOfInventaire of inventaire?.epaysage.essence; let isLastGlobal=last; let i=index">
+                  <br>
+                  <h4 class="title-fiche-gray text-center mb-3 p-1">
+                      Caractéristiques - Espèce {{i + 1}}
+                  </h4>
+                  <div class="row">
+                      <div class="col-sm-4">
+                          <p class="bordure_black_gauche">
+                              <b> Hauteur en m : </b> {{essenceOfInventaire?.hauteur}}
+                              <br> <b> Diamètre en cm : </b> {{essenceOfInventaire?.diametre}}
+                              <br> <b> Stade de dév. : </b>{{essenceOfInventaire?.stadeDev}}
+                              <br> <b> Protection
+                                  : </b>
+                              <span
+                                  *ngFor="let critere of essenceOfInventaire?.critere; let isLast=last">{{critere}}{{isLast
+                                  ? '' : ', '}}&nbsp;</span>
+                              <span *ngIf="essenceOfInventaire?.critereOther">
+                                  <br>{{essenceOfInventaire?.critereOther}}</span>
+                              <span
+                                  *ngIf="!essenceOfInventaire?.critereOther && essenceOfInventaire?.critere.length == 0">Non</span>
+                          </p>
+                      </div>
+                      <div class="col-sm-4">
+                          <p class="bordure_black_gauche">
+                              <b> Forme Houppier : </b>{{essenceOfInventaire?.houppier}}<br>
+                              <b> Type
+                                  : </b>{{essenceOfInventaire?.caract ? essenceOfInventaire?.caractOther ?
+                              essenceOfInventaire.caractOther : essenceOfInventaire.caract : ''}}
+                          </p>
+                      </div>
+                      <div class="col-sm-4">
+                          <p class="bordure_black_gauche">
+                              <b> Implantation : </b> En groupe
+                              <br> <b> Domaine : </b>{{essenceOfInventaire?.domaine}}
+                              <br> <b> Situation
+                                  :</b> {{essenceOfInventaire?.locationIndex}}
+                              <br> <b> Accès : </b>
+                              {{ (essenceOfInventaire?.accessibilite && essenceOfInventaire?.accessibilite !== 'Accès
+                              difficile, précisez :') ?
+                              essenceOfInventaire?.accessibilite : essenceOfInventaire?.accessibiliteOther ?
+                              essenceOfInventaire?.accessibiliteOther : ''}}
+                          </p>
+                      </div>
+                  </div>
+                  <br>
+                  <!-- ENVIRONNEMENT -->
+                  <br>
+                  <h4 class="title-fiche-gray text-center mb-3 p-1" style="background-color: gray">
+                      Environnement - Espèce {{i + 1}}
+                  </h4>
+                  <div class="row">
+                      <div class="col-sm-4">
+                          <div class="bordure_black_gauche">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <b> Cohabitation : </b>
+                                      <span *ngFor="let pro of essenceOfInventaire?.proximite">{{pro}} <br></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="bordure_black_gauche">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <b> Nuisance : </b>
+                                      <span *ngFor="let nuis of essenceOfInventaire?.nuisance"> {{nuis}} <br></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="bordure_black_gauche">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <b> Fréquentation : </b>
+                                      {{essenceOfInventaire?.tauxFreq}} <br>
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                      <b>Type de Passage : </b>
+                                      <span *ngFor="let types of essenceOfInventaire?.typePassage; let isLast=last">
+                                          {{types}}{{isLast ? '' : ',
+                                          '}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+                  <h4 class="title-fiche-gray text-center mb-3 p-1">
+                      Diagnostic visuel - Espèce {{i + 1}}
+                  </h4>
+                  <div class="row">
+                    <div class="col-sm-2">
+                      Evaluation du risque
+                    </div>
+                    <div class="col-sm-6">
+                      <table class="table card-table table-bordered">
+                        <tbody>
+                        <tr>
+                          <td class="risque-color-green"></td>
+                          <td class="risque-color-yellow"></td>
+                          <td class="risque-color-red"></td>
+                          <td class="risque-color-black"></td>
+                        </tr>
+                        <tr style="font-size:0.9em;" class="p-0 text-center">
+                          <td style="width: 20%">Risque faible</td>
+                          <td style="width: 20%">Risque modéré</td>
+                          <td style="width: 20%">Risque élevé</td>
+                          <td style="width: 20%">Risque imminent</td>
+                        </tr>
+                        </tbody>
+
+                      </table>
+                    </div>
+
+                    <div class="col-sm-4 mt-2 text-right">
+                      <span style="border : 1px solid black;"
+                        class="p-2"> <b> Valeur estimée : </b>{{essenceOfInventaire?.beva ? (essenceOfInventaire?.beva | currency:'EUR': 'symbol':'3.2':'fr') : 'Non calculée' }}</span>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <div class="row">
+                              <div class="col-sm-4 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img *ngIf="essenceOfInventaire.imageUrl.img1"
+                                          [src]="essenceOfInventaire?.imageUrl.img1 ? appService.urlBaseEssenceImg + essenceOfInventaire?.imageUrl.img1 : ''"
+                                          style="width:100%;height:20rem;background:white;" class="img-responsive">
+                                  </a>
+                              </div>
+                              <div class="col-sm-4 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img *ngIf="essenceOfInventaire.imageUrl.img2"
+                                          [src]="essenceOfInventaire?.imageUrl.img2 ? appService.urlBaseEssenceImg + essenceOfInventaire?.imageUrl.img2 : ''"
+                                          style="width:100%;height:20rem;background:white;" class=" rounded img-fluid"
+                                          alt="">
+                                  </a>
+                              </div>
+                              <div class="col-sm-4 col-xs-12">
+                                  <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in"
+                                      style="border-radius:4px;">
+                                      <img *ngIf="essenceOfInventaire.imageUrl.img3"
+                                          [src]="essenceOfInventaire?.imageUrl.img3 ? appService.urlBaseEssenceImg + essenceOfInventaire?.imageUrl?.img3 : ''"
+                                          style="width:100%; height:20rem;background:white;" class="img-responsive"
+                                          alt="">
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <br>
+                  <br>
+                  <h4 class="title-fiche-gray text-center mb-3 p-1">Diagnostic sanitaire - Espèce {{i + 1}}</h4>
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <table class="table table-bordered card-table">
+                              <thead>
+                                  <tr>
+                                      <th>Nombre de sujets concernés</th>
+                                      <th>Champignons / Parasites / Nuisibles</th>
+                                      <th>Préconisations de travaux</th>
+                                      <th>Total sujets concernés</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>{{essenceOfInventaire.nbreSujetConcerne ?
+                                          essenceOfInventaire.nbreSujetConcerne : 0}}</td>
+                                      <td>
+                                          <span
+                                              *ngFor="let champignons of essenceOfInventaire.etatSanGeneralChampignons;let isLast=last;">{{champignons.name}}{{isLast
+                                              ? '' : ', '}}</span>
+                                          <span
+                                              *ngIf="essenceOfInventaire.etatSanGeneralChampignonsAutres">{{essenceOfInventaire.etatSanGeneralChampignonsAutres}}</span>
+                                          <br>
+                                          <span
+                                              *ngFor="let parasites of essenceOfInventaire.etatSanGeneralParasite; let isLast=last">{{parasites.name}}{{isLast
+                                              ? '' : ', '}}</span>
+                                          <br>
+                                          <span
+                                              *ngIf="essenceOfInventaire.etatSanGeneralParasiteAutres">{{essenceOfInventaire.etatSanGeneralParasiteAutres}}
+                                          </span>
+                                      </td>
+                                      <td>
+                                          <span
+                                              *ngFor="let travaux of essenceOfInventaire.travaux;let isLast=last">{{travaux}}{{isLast
+                                              ? '' : ', '}}
+                                              <br></span>
+                                      </td>
+                                      <td>{{essenceOfInventaire.nbreSujetConcerne}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                      <div class="col-sm-6">
+                          <table class="table table-bordered card-table">
+                              <tbody>
+                                  <tr>
+                                      <td><b> Etat physiologique</b></td>
+                                      <td>
+                                          <span *ngFor="let etatGnle of essenceOfInventaire?.etatGeneral">{{etatGnle}}
+                                              <br></span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td><b> Risque de rupture général</b>
+                                      </td>
+                                      <td>{{essenceOfInventaire?.risque}}
+                                          <span
+                                              style="margin-left:1rem ;border: 1px solid black; padding-right: 5rem;"
+                                              class="risque-color-faible"
+                                              *ngIf="essenceOfInventaire?.risque == 'Faible'"></span>
+                                          <span
+                                              style="margin-left:1rem ;border: 1px solid black; padding-right: 5rem;"
+                                              class="risque-color-modere"
+                                              *ngIf="essenceOfInventaire?.risque == 'Modéré'"></span>
+                                          <span
+                                              style="margin-left:1rem ;border: 1px solid black; padding-right: 5rem;"
+                                              class="risque-color-imminent"
+                                              *ngIf="essenceOfInventaire?.risque == 'Imminent'"></span>
+                                          <span
+                                              style="margin-left:1rem ;border: 1px solid black; padding-right: 5rem;"
+                                              class="risque-color-eleve"
+                                              *ngIf="essenceOfInventaire?.risque == 'Elevé'"></span>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <div class="col-sm-6">
+                          <table class="table table-bordered card-table">
+                              <tbody>
+                                  <tr>
+                                      <td><b> Date de prochaine visite </b></td>
+                                      <td>
+                                          {{ getStatusIsVisite('essence', essenceOfInventaire) ?
+                                          (essenceOfInventaire?.userEditedDateTravaux | date: 'dd/MM/yyyy') : ''}}
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td><b> Date d'intervention </b></td>
+                                      <td>
+                                          <span> {{ !getStatusIsVisite('essence', essenceOfInventaire) ?
+                                              (essenceOfInventaire?.userEditedDateTravaux | date: 'dd/MM/yyyy') :
+                                              ''}}</span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td><b> DT/DICT requis </b></td>
+                                      <td>{{essenceOfInventaire?.proximiteWithDict?.length !== 0 ? '0ui' : 'Non' }}
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-sm-6 left">Commentaires : <span
+                        *ngIf="essenceOfInventaire?.travauxSoin">{{essenceOfInventaire?.travauxSoin}}</span>
+                    </div>
+                  </div>
+                  <br *ngIf="!isLastGlobal">
+              </div>
+
+              <!--        END -->
+          </div>
+          <!-- END OF EBC / EPP -->
+      </div>
+  </div>
+  <div class="pagebreak"> </div>
+</div>

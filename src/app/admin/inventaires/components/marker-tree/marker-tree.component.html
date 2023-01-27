@@ -1,0 +1,20 @@
+<agm-marker *ngIf="!this.isEssence(inventory.type)" [latitude]="inventory.coord.lat" [iconUrl]='{"url": !inventory.isFinished ? iconBrouillon
+: inventory?.arbre?.implantation?.includes("alignement")
+? iconEnAlignement
+: iconTermine, "scaledSize": {"height": 30, "width": 40}}' [longitude]="inventory.coord.long">
+
+  <agm-info-window>
+    <h4 class="mb-0"> {{inventory.arbre.genre}}&nbsp;{{inventory.arbre.name}} {{inventory.arbre.cultivar}} <br>
+      <small *ngIf="!inventory.isFinished" style="font-size : 16px;" class="text-danger"> Brouillon</small>
+    </h4>
+    <br>
+    <p><span style="font-size: 13px;" *ngIf="inventory.arbre.critere.length !== 0">Arbre remarquable</span> <br>
+      <strong>Hauteur :</strong> {{inventory.arbre.hauteur}} m,
+      <strong> Diamètre : </strong>  {{inventory.arbre.diametre}} cm
+      <br>
+      Mis à jour
+      le {{inventory.updatedAt ? (inventory.updatedAt | date: 'dd/MM/yyy') : (inventory.createdAt | date: 'dd/MM/yyy')}}
+    </p>
+    <button class="btn btn-block btn-xs btn-success" (click)="show(inventory.id)"> Detail</button>
+  </agm-info-window>
+</agm-marker>

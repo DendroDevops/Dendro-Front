@@ -1,0 +1,49 @@
+[1107/181408.656:ERROR:scoped_process_suspend.cc(31)] NtSuspendProcess: Tentative d’accès à un processus en cours d’arrêt. (0xc000010a)
+[1107/181408.656:ERROR:scoped_process_suspend.cc(31)] NtSuspendProcess: Tentative d’accès à un processus en cours d’arrêt. (0xc000010a)
+[1107/181408.656:ERROR:scoped_process_suspend.cc(31)] NtSuspendProcess: Tentative d’accès à un processus en cours d’arrêt. (0xc000010a)
+[1107/181409.334:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(545)] ReadProcessData failed
+[1107/181409.334:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(545)] ReadProcessData failed
+[1107/181409.334:ERROR:process_reader_win.cc(242)] ReadMemory at 0x7ffde4e654d0 of 12 bytes failed: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:ERROR:process_info.cc(545)] ReadProcessData failed
+[1107/181409.334:ERROR:process_info.cc(545)] ReadProcessData failed
+[1107/181409.334:WARNING:process_snapshot_win.cc(69)] ReadMemory ExceptionInformation failed
+[1107/181409.334:ERROR:process_info.cc(545)] ReadProcessData failed
+[1107/181409.334:ERROR:process_reader_win.cc(242)] ReadMemory at 0x7ffde4e654d0 of 12 bytes failed: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:WARNING:process_snapshot_win.cc(69)] ReadMemory ExceptionInformation failed
+[1107/181409.334:ERROR:process_reader_win.cc(242)] ReadMemory at 0x7ffde4e654d0 of 12 bytes failed: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:WARNING:process_snapshot_win.cc(69)] ReadMemory ExceptionInformation failed
+[1107/181409.334:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Tentative d’accès à un processus en cours d’arrêt. (0xc000010a)
+[1107/181409.334:ERROR:process_reader_win.cc(242)] ReadMemory at 0x7ffde4e654d0 of 12 bytes failed: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:WARNING:process_snapshot_win.cc(69)] ReadMemory ExceptionInformation failed
+[1107/181409.334:ERROR:process_reader_win.cc(242)] ReadMemory at 0x7ffde4e654d0 of 12 bytes failed: Seule une partie d’une requête ReadProcessMemory ou WriteProcessMemory a été effectuée. (0x12B)
+[1107/181409.334:WARNING:process_snapshot_win.cc(69)] ReadMemory ExceptionInformation failed
+[1107/181409.334:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Tentative d’accès à un processus en cours d’arrêt. (0xc000010a)
+[0403/150847.454:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-22872387\Crashpad\reports\94cdba45-3cac-4f2b-8904-83dc8178ad2e.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0403/150847.489:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0404/100627.068:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-22872387\Crashpad\reports\b30e207f-145a-4571-af6f-4279d06323c2.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0404/100627.195:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0404/100705.889:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-22872387\Crashpad\reports\e9cc01d6-e00c-465a-9247-b5038862c2f5.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0404/100705.889:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0404/100730.991:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-22872387\Crashpad\reports\04be7326-9874-4d18-a291-f25ed1df2ea9.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0404/100730.991:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0415/181743.960:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-57990095\Crashpad\reports\c43c4434-d7b8-46dd-8bd4-d3be8f9c9070.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0415/181744.015:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0415/181824.134:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-57990095\Crashpad\reports\ada6a3af-29cc-460a-8b00-f8afb22d3945.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0415/181824.134:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0416/100713.902:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-57990095\Crashpad\reports\7c8e24ab-b6d6-4733-9b3e-e1cdb0fd8601.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0416/100714.509:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0416/101029.012:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-57990095\Crashpad\reports\23373084-9318-4f79-be3c-a7137facb2d4.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0416/101029.012:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0416/101153.147:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-57990095\Crashpad\reports\73f83c2b-5e98-47cc-85c2-2e6f0355d443.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0416/101153.147:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0417/171812.576:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-6390395\Crashpad\reports\32e8a8de-3164-42f2-a751-9a055dcbbdfd.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0417/171812.622:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0417/171855.374:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-6390395\Crashpad\reports\c77ae3f5-1486-4429-a481-b75b3eff622f.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0417/171855.374:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0417/171919.211:ERROR:file_io_win.cc(170)] CreateFile C:\Users\josel\AppData\Local\Temp\karma-6390395\Crashpad\reports\8ece475b-ef51-4983-a1ae-7594396ecb22.dmp: Le chemin d’accès spécifié est introuvable. (0x3)
+[0417/171919.211:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed

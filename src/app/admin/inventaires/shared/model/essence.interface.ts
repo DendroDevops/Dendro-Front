@@ -1,0 +1,67 @@
+import {Espece} from "../../../config-inventaire/shared/model/espece.interface";
+import {Champignons} from "../../../config-inventaire/shared/model/Champignons";
+import {ImgInventaire, Inventaire} from "./inventaire.interface";
+import {Nuisible} from '../../../config-inventaire/shared/model/nuisible.interface';
+import {Resource} from "../../../../shared/modele/resource";
+
+export interface Essence extends Resource {
+  espece: Espece;
+  critere?: String[];
+  countSubject?: number;
+  diametre?: Number;
+  hauteur?: Number;
+  surface?: Number;
+  area?: string;
+  stadeDev?: String;
+  houppier?: String;
+  etatGeneral?: String[];
+  risque?: String;
+  nbreSujetConcerne?: number;
+  travaux?: String[];
+  dateTravaux?: String;
+  dateProVisite?: String;
+  epaysage?: number;
+  codeSite?: String;
+  numSujet?: String;
+  caract?: String;
+  caractOther?: String;
+  domaine?: String;
+  nuisance?: String[];
+  etatSanGeneralChampignons?: Champignons[];
+  etatSanGeneralParasite?: Nuisible[];
+  critereOther?: String;
+  proximite?: String[];
+  proximiteWithDict?: String[];
+  proximiteOther?: String;
+  tauxFreq?: String;
+  typePassage?: String[];
+  typePassageOther?: String;
+  accessibilite?: String;
+  accessibiliteOther?: String;
+  travauxOther?: String;
+  travauxCom?: String;
+  travauxSoin?: String;
+  travauxProtection?: String;
+  travauxTypeIntervention?: String;
+  imageUrl: ImgInventaire;
+  travauxColletOther?: String;
+  address?: String;
+  ville?: String;
+  pays?: String;
+  travauxTroncOther?: String;
+  travauxTroncProtection?: String;
+  etatSanGeneralOther?: String;
+  userEditedDateTravaux: any;
+  etatSanGeneralParasiteAutres: string;
+  statusTravaux: boolean;
+  // BEVA
+  varietyGrade?: any;
+  healthIndex?: any;
+  aestheticIndex?: any;
+  locationIndex?: any;
+  aestheticColumn?: any;
+  healthColumn?: any;
+  beva?: any;
+  etatSanGeneralChampignonsAutres?: string;
+  inventaire?: Inventaire
+}

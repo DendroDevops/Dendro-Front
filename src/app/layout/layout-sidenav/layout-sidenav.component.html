@@ -1,0 +1,78 @@
+<sidenav [orientation]="orientation" [ngClass]="getClasses()">
+  <!-- Inner -->
+  <div class="sidenav-inner" [ngClass]="{ 'py-1': orientation !== 'horizontal' }">
+    <p style="margin: auto; margin-top: 5px; margin-bottom: 10px;">
+      <img src="../../../assets/siteweb/Img/Logo/dark.svg" width="90" alt="">
+      <br> DENDROMAP <br>
+    </p>
+    <sidenav-divider class="mb-1"></sidenav-divider>
+
+    <sidenav-router-link icon="ion ion-md-desktop" route="/admin/accueil" [active]="isActive('/admin/accueil')">Vue
+      d'ensemble
+    </sidenav-router-link>
+    <sidenav-router-link *ngIf="displayAgile" icon="ion ion-md-pin" route="/admin/geo-inventaires"
+                         [active]="isActive('/admin/geo-inventaires')">Carte des inventaires
+    </sidenav-router-link>
+    <sidenav-router-link *ngIf="displayAgile" icon="ion ion-md-list" route="/admin/inventaires"
+                         [active]="isActive('/admin/inventaires')">
+      Liste des inventaires
+    </sidenav-router-link>
+    <sidenav-menu *ngIf="displayAgile" icon="ion ion-md-speedometer" text="Gestion de travaux"
+                  [active]="isMenuActive('/admin/gestion-travaux')" [open]="isMenuOpen('/admin/gestion-travaux')">
+      <sidenav-router-link route="/admin/gestion-travaux/alerte" [active]="isActive('/admin/gestion-travaux/alerte')">
+        Alertes
+      </sidenav-router-link>
+      <sidenav-router-link route="/admin/gestion-travaux/travaux" [active]="isActive('/admin/gestion-travaux/travaux')">
+        Travaux
+      </sidenav-router-link>
+      <!-- <sidenav-router-link route="/admin/gestion-travaux/examen" [active]="isActive('/admin/gestion-travaux/examen')">
+        Visites / Examens
+      </sidenav-router-link> -->
+    </sidenav-menu>
+
+    <sidenav-router-link *ngIf="displayAgile" icon="ion ion-md-add-circle-outline" route="/admin/plantations"
+                         [active]="isActive('/admin/plantations')">  Nouvelle implantation
+    </sidenav-router-link>
+
+    <sidenav-router-link *ngIf="displayAgile" icon="ion ion-ios-create" route="/admin/saisie-valide"
+                         [active]="isActive('/admin/saisie-valide')">Saisies à valider
+    </sidenav-router-link>
+    <sidenav-divider *ngIf="displayDendro" class="mb-1"></sidenav-divider>
+    <sidenav-router-link *ngIf="displayDendro" icon="ion ion-logo-euro" route="/admin/codes-promo"
+      [active]="isActive('/admin/codes-promo')">Codes Promo
+    </sidenav-router-link>
+    <sidenav-divider class="mb-1"></sidenav-divider>
+    <sidenav-router-link *ngIf="displayDendro" icon="ion ion-md-mail"
+                         route="/admin/contacts" [active]="isActive('/admin/contacts')">Contact
+    </sidenav-router-link>
+    <sidenav-divider class="mb-1"></sidenav-divider>
+    <sidenav-header class="small font-weight-semibold" *ngIf="displayAdmin">CONFIGURATION
+    </sidenav-header>
+    <sidenav-menu icon="ion ion-md-speedometer" *ngIf="displayAdmin" text="Gestion de Droits"
+                  [active]="isMenuActive('/admin/gestion-droits')" [open]="isMenuOpen('/admin/gestion-droits')">
+      <sidenav-router-link route="/admin/gestion-droits/groupe" [active]="isActive('/admin/gestion-droits/groupe')"
+                           *ngIf="displayDendro"> Groupe
+      </sidenav-router-link>
+      <sidenav-router-link route="/admin/gestion-droits/active-groupe"
+                           [active]="isActive('/admin/gestion-droits/active-groupe')"
+                           *ngIf="displayDendro"> Activer groupe
+      </sidenav-router-link>
+      <sidenav-router-link route="/admin/gestion-droits/profil" [active]="isActive('/admin/gestion-droits/profil')"
+                           *ngIf="displayDendro">Profil
+      </sidenav-router-link>
+      <sidenav-router-link route="/admin/gestion-droits/user" [active]="isActive('/gestion-droits/user')">Utilisateur
+      </sidenav-router-link>
+    </sidenav-menu>
+
+    <sidenav-menu icon="ion ion-md-leaf" *ngIf="displayDendro" text="Listes enregistrées"
+                  [active]="isMenuActive('/admin/config-inventaire')" [open]="isMenuOpen('/admin/config-inventaire')">
+      <sidenav-router-link route="/admin/config-inventaire/espece"
+                           [active]="isActive('/admin/config-inventaire/espece')" *ngIf="displayDendro"> Essences
+      </sidenav-router-link>
+      <sidenav-router-link route="/admin/config-inventaire/champignons"
+                           [active]="isActive('/admin/config-inventaire/champignons')" *ngIf="displayDendro">
+        Champignons
+      </sidenav-router-link>
+    </sidenav-menu>
+  </div>
+</sidenav>

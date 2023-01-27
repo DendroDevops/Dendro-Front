@@ -1,0 +1,51 @@
+:host /deep/ {
+  .swiper-container .swiper-slide {
+    padding: 5rem 0;
+    text-align: center;
+    font-size: 1.5rem;
+    background: #ecebed;
+  }
+
+  #swiper-vertical {
+    max-height: 195px;
+  }
+
+  #swiper-3d-cube-effect {
+    max-width: 300px;
+  }
+
+  #swiper-3d-coverflow-effect .swiper-slide {
+    max-width: 300px;
+  }
+
+  #swiper-3d-flip-effect,
+  #swiper-3d-flip-effect .swiper-slide {
+    max-width: 300px;
+  }
+
+  #swiper-3d-flip-effect {
+    padding: 50px;
+  }
+
+  @media (min-width: 992px) {
+    .landing-block {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+  }
+}
+
+.title-multi {
+  color: #02BC77;
+}
+
+sub {
+  bottom: 0.45em;
+}
+
+.bloc-droit {
+  text-align: left;
+}
+.table-fixed {
+  margin-bottom: -0.2rem !important;
+}

@@ -1,0 +1,394 @@
+<div class="row" *ngIf="essence">
+  <div class="col-md-3">
+    <!-- / Side info -->
+    <app-info-user-inventory
+      [urlRoutePage]="'/admin/inventaires/essence/modifier/' + essence.id"
+      [urlBackPage]="this.urlBackPage"
+      [idUrlPage]="this.essence.id"
+      [data]="this.essence"
+      [textLabelBtnShow]="'MODIFIER'"
+      [isVisiteurConfig]="true"
+      [typeInventory]="''">
+    </app-info-user-inventory>
+    <!-- / Side basic info -->
+  </div>
+  <!--  -->
+  <div class="col-md-9">
+
+    <ngb-tabset class="nav-tabs-top mb-4">
+      <ngb-tab title="Identification">
+        <ng-template ngbTabContent>
+          <div class="card-body">
+            <h5 class="text-center"> Essence</h5>
+            <div class="row">
+
+              <div class="col-sm-6">
+                <ul class="list-group p-0">
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Genre
+                    <span class="badge badge-default">{{essence?.espece.genre}}</span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Espèce
+                    <span class="badge badge-default">{{essence?.espece.name}} </span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="essence?.espece.cultivar">Cultivar
+                    <span class="badge badge-default">{{essence?.espece.cultivar}}</span>
+                  </li>
+
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Nom Français
+                    <span class="badge badge-default">{{essence?.espece.nomFr}}</span>
+                  </li>
+
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Feuillu/ Résineux
+                    <span
+                      class="badge badge-default">{{essence?.espece.categorie === 'R' ? 'Résineux' : 'Feuillu'}}</span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Tarif
+                    <span
+                      class="badge badge-default">{{essence?.espece.tarif}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-6">
+                <ul class="list-group p-0 ">
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Identification
+                    <span class="badge badge-default">{{essence?.numSujet}}</span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Code site
+                    <span class="badge badge-default">{{essence?.codeSite}}</span>
+                  </li>
+                </ul>
+
+                <ul class="list-group p-0">
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Hauteur
+                    <span class="badge badge-default">{{essence?.hauteur}} m</span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Diamètre
+                    <span class="badge badge-default">{{essence?.diametre}} cm</span>
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">Surface
+                    <span class="badge badge-default">{{essence?.area}} ha</span>
+                  </li>
+                </ul>
+              </div>
+
+              <br>
+              <div class="col-sm-12">
+                <h5 class="my-3"> Images</h5>
+                <div class="row">
+                  <div class="col-sm-4 col-xs-12">
+                    <img *ngIf="essence?.imageUrl.img1"
+                         [src]="essence?.imageUrl ? urlBaseEssence + essence.imageUrl?.img1 + '?p='+ current : ''"
+                         style="width:100%;height:15rem;background:black;"
+                         class="img-responsive" alt="">
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                    <img *ngIf="essence?.imageUrl.img2"
+                         [src]="essence?.imageUrl ? urlBaseEssence + essence.imageUrl?.img2 + '?p='+ current : ''"
+                         style="width:100%;height:15rem;background:black;"
+                         class="img-responsive" alt="">
+                  </div>
+                  <div class="col-sm-4 col-xs-12">
+                    <img *ngIf="essence?.imageUrl.img3"
+                         [src]="essence?.imageUrl ? urlBaseEssence + essence.imageUrl?.img3 + '?p='+ current : ''"
+                         style="width:100%; border-radius: 3px;height:15rem;background:black;"
+                         class="img-responsive" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Caractéristiques">
+        <ng-template ngbTabContent>
+          <div class="card-body">
+
+            <h5> Type</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.caract">{{essence.caract}}</li>
+              <li style="min-height: 2.5rem;" *ngIf="essence.caractOther"
+                  class="list-group-item d-flex justify-content-between align-items-center">{{essence.caractOther}}</li>
+            </ul>
+
+            <h5 class="my-3"> Stade de développement</h5>
+
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence?.stadeDev}}
+              </li>
+            </ul>
+            <h5 class="my-3"> Forme du houppier</h5>
+
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence?.houppier}}
+              </li>
+            </ul>
+
+            <h5 class="my-3"> Critère remarquable : </h5>
+            <ul class="list-group p-0" *ngIf="essence.critere.length !== 0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let critere  of essence.critere">
+                <span *ngIf="critere !== 'comment'">{{critere}}</span>
+              </li>
+              <li style="min-height: 2.5rem;"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.critereOther">
+                {{essence.critereOther}}
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Etat sanitaire">
+        <ng-template ngbTabContent>
+          <div class="card-body">
+            <h5 class="my-3"> Etat physiologique</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let etatSanGeneral of essence.etatGeneral">
+                {{etatSanGeneral}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.etatSanGeneralOther">
+                {{essence.etatSanGeneralOther}}
+              </li>
+            </ul>
+            <ul class="list-group p-0"
+                *ngIf="essence.etatSanGeneralChampignons.length !== 0 || essence.etatSanGeneralChampignonsAutres">
+              <h5 style="font-size:0.8rem;" class="my-3"><i> Champignons </i></h5>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let etatSanGeneralChampignons of essence.etatSanGeneralChampignons">
+                {{etatSanGeneralChampignons.name}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.etatSanGeneralChampignonsAutres">
+                {{essence.etatSanGeneralChampignonsAutres}}
+              </li>
+            </ul>
+
+            <ul class="list-group pt-0"
+                *ngIf="essence.etatSanGeneralParasite.length !== 0 || essence.etatSanGeneralOther">
+              <h5 style="font-size:0.8rem;" class="my-3">Parasites, nuisibles</h5>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let etatSanParasites of essence.etatSanGeneralParasite">
+                {{etatSanParasites.name}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.etatSanGeneralParasiteAutres">
+                {{essence.etatSanGeneralParasiteAutres}}
+              </li>
+            </ul>
+            <h5 class="my-3"> Evaluation du risque</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.risque}}
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Environnement">
+        <ng-template ngbTabContent>
+          <div class="card-body">
+            <h5 class="my-3"> Domaine</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.domaine}}
+              </li>
+            </ul>
+
+            <h5 class="my-3"> Nuisances constatées</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let nuisance of essence.nuisance">{{nuisance}}
+              </li>
+            </ul>
+
+            <h5 class="my-3"> Proximite directe</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let pro of essence.proximite">{{pro}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.proximiteOther">
+                {{essence.proximiteOther}}
+              </li>
+            </ul>
+
+            <ul class="list-group p-0" *ngIf="essence.proximiteWithDict.length !== 0">
+              <h5 class="my-3">Demande de DICT</h5>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let proximite of essence.proximiteWithDict">{{proximite}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.proximiteWithDict.length === 0">Non
+              </li>
+            </ul>
+            <h5 class="my-3"> Taux de fréquentation</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.tauxFreq}}
+              </li>
+            </ul>
+
+            <h5 class="my-3">Type de passage</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let typePassage of essence.typePassage">{{typePassage}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.typePassageOther">
+                {{essence.typePassageOther}}
+              </li>
+            </ul>
+            <h5 class="my-3"> En cas de travaux</h5>
+            <ul class="list-group p-0">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{ (essence.accessibilite === 'other') ? essence.accessibiliteOther : essence.accessibilite ? essence.accessibilite : ''}}
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="TRAVAUX">
+        <ng-template ngbTabContent>
+          <div class="card-body" *ngIf="!essence.statusTravaux">
+            <h5 class="my-3"> Nombre de sujets concernés</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.nbreSujetConcerne}}
+              </li>
+            </ul>
+            <h5 class="my-3"> Préconisation de travaux</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let travaux of essence.travaux">
+                {{travaux}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.travauxOther">
+                {{essence.travauxOther}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.travauxSoin">
+                {{essence.travauxSoin}}
+              </li>
+            </ul>
+
+            <h5 class="my-3"> Date Echéance</h5>
+            <ul class="list-group p-0 ">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.dateProVisite">
+                {{essence.dateProVisite}}
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.dateTravaux">
+                {{essence.dateTravaux}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.userEditedDateTravaux ? (essence.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+              </li>
+            </ul>
+          </div>
+          <div class="card-body" *ngIf="essence.statusTravaux">
+            <h5 class="text-center">Aucune activité renseignée</h5>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="VALEUR BEVA">
+        <ng-template ngbTabContent>
+          <div class="card-body">
+            <h5 style="font-size:1rem;"> Indice espèce</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.varietyGrade}}
+              </li>
+            </ul>
+
+            <h5 class="my-3" style="font-size:1rem;"> Indice de situation</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.locationIndex}}
+              </li>
+            </ul>
+
+            <h5 class="my-3" style="font-size:1rem;"> Indice sanitaire</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.healthIndex}}
+              </li>
+            </ul>
+            <h5 class="my-3" style="font-size:1rem;"> Indice esthétique</h5>
+            <ul class="list-group ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.aestheticIndex}}
+              </li>
+            </ul>
+
+            <h5 class="my-3" style="font-size:1rem;"> Valeur BEVA</h5>
+            <ul class="list-group ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.beva}}
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab title="Historique">
+        <ng-template ngbTabContent>
+          <div class="card-body" *ngIf="essence.statusTravaux">
+            <h5 class="text-center">Travaux
+              du {{essence.inventaire.updatedAt ? (essence.inventaire.updatedAt | date:'dd/MM/yyyy') : ''}}
+            </h5>
+
+            <h5 class="my-3"> Nombre de sujets concernés</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.nbreSujetConcerne}}
+              </li>
+            </ul>
+            <h5 class="my-3"> Préconisation de travaux</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngFor="let travaux of essence.travaux">
+                {{travaux}}
+              </li>
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center"
+                  *ngIf="essence.travauxOther">
+                {{essence.travauxOther}}
+              </li>
+            </ul>
+
+            <h5 class="my-3">Date échéance initiale</h5>
+            <ul class="list-group p-0 ">
+              <li style="min-height: 2.5rem;" class="list-group-item d-flex justify-content-between align-items-center">
+                {{essence.userEditedDateTravaux ? (essence.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+              </li>
+            </ul>
+          </div>
+          <div class="card-body" *ngIf="!essence.statusTravaux">
+            <h5 class="text-center">Aucune activité renseignée</h5>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+
+  </div>
+</div>

@@ -1,0 +1,146 @@
+<!-- TRUE VERSION -->
+<div class="row" *ngIf="!list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card mb-3">
+      <h4 class="card-header text-center">
+        Nouvelle implantation
+      </h4>
+      <form (ngSubmit)="onAdd()" [formGroup]="plantGroup">
+        <div class="card-body">
+          <div class="error-server" *ngIf="errorMessage.show" [@fallIn]="state">
+            {{errorMessage.message}}
+          </div>
+
+          <div class="success-server" *ngIf="successMessage.show" [@fallIn]="state">
+            {{successMessage.message}}
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="col-sm-12">
+                <app-espece-form [especeGroup]="plantGroup" [errorText]="'Champs obligatoire'"></app-espece-form>
+              </div>
+              <br>
+              <div class="col-sm-12">
+                <app-text-input-form
+                  [textFormGroup]="plantGroup"
+                  [textLabel]="'Hauteur'"
+                  [formName]="'hauteur'" [required]="true" [errorText]="'Hauteur invalide'"></app-text-input-form>
+              </div>
+              <div class="col-sm-12">
+                <app-text-input-form
+                  [textFormGroup]="plantGroup"
+                  [textLabel]="'Diamètre'"
+                  [formName]="'diametre'" [required]="true" [errorText]="'Diamètre invalide'"></app-text-input-form>
+              </div>
+              <br>
+              <div class="col-sm-12">
+                <app-date-input-form [dateEcheanceForm]="plantGroup" [formName]="'dateEcheance'" [textLabel]="'Date de réalisation'">
+                </app-date-input-form>
+              </div>
+
+            </div>
+
+            <div class="col-sm-6">
+              <h5 class="text-center">Positionner l’arbre</h5>
+              <agm-map [fullscreenControl]='true' [latitude]="coord.lat" [longitude]="coord.long"
+                       [mapTypeControl]='true'
+                       [zoom]="zoom">
+                <agm-marker [latitude]="coord.lat" [markerDraggable]="true" [longitude]="coord.long"
+                            (dragEnd)="getCoord($event)">
+                </agm-marker>
+              </agm-map>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-100"></div>
+        <div class="card-footer text-muted" style="text-align:right;">
+          <app-button [textLabel]="'Ajouter'" [type]="'submit'" [classButton]="'btn btn-success btn-md'"
+                      [formGroup]="plantGroup"></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="row" *ngIf="list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <app-filter-table [placeholder]="'Rechercher par genre ou adresse'"
+                                  (onFilter)="update($event)"></app-filter-table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="float-sm-right">
+              <span class="fa fa-file-excel text-success mr-3" ngbTooltip="Extraire en fichier excel"
+                    (click)="exportAsXLSX()"
+                    style="font-size:2rem;cursor:pointer;"></span>
+              <span *ngIf="authService.isRoleDeleted()" class="ion ion-ios-trash text-danger" ngbTooltip="Supprimer"
+                    [swal]="{title:appService.messageDelete.title,
+                    text:appService.messageDelete.subMessage,
+                    type:'warning',
+                    showCancelButton:true,
+                    confirmButtonText:'Supprimer',
+                    cancelButtonText:'Annuler',
+                    showCloseButton:true,
+                    cancelButtonClass:'btn btn-md btn-default',
+                    confirmButtonClass:'btn btn-md btn-warning'}"
+                    (cancel)="declineDialog.show()"
+                    (confirm)="deleteMany()"
+                    style="font-size:2rem;cursor:pointer;"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="datas"
+        [sliceStart]="(currentPage-1) * perPage"
+        [sliceEnd]="currentPage * perPage"
+        [deletable]="false"
+        [editable]="false"
+        (selectAll)="selectInvAll($event)"
+        (selectOne)="selectOne($event)"
+        [selectAllStatus]="selectAllStatus"
+        [isDblClick]="true"
+        (dbclick)="show($event)"
+      >
+      </app-table-data>
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} sur {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage" size="sm"
+              class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<app-button-float
+  *ngIf="!authService.isVisiteur()"
+  [list]="list"
+  (clickBtn)="onChangingMenu($event)">
+</app-button-float>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

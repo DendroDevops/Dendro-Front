@@ -1,0 +1,65 @@
+<div class="card mb-1">
+  <div class="card-body">
+    <div class="col-xl-12">
+      <ngb-tabset class="nav-tabs-top mb--1">
+        <ngb-tab *ngFor="let inv of epaysage.essence; let i=index;" [title]="'Espece ' + (i+1)">
+
+          <ng-template ngbTabContent>
+            <div class="text-center">
+              <img *ngIf="isImgUrl(inv)" [src]="urlBaseEssence + displayImage(inv) + '?p='+ current"
+                   style="width:100%;height:15rem;background:#fafafa; object-fit: contain"
+                   class="img-responsive" alt="">
+            </div>
+            <div class="card-body">
+              <h4 class="mb-0"> {{inv.espece.genre}}&nbsp;{{inv.espece.name}}&nbsp;{{inv.espece.cultivar}}
+                <a href="javascript:void(0)" style="font-size:0.9rem;padding-top:0.45rem;"
+                   class="badge badge-success">{{typeInv}}</a>
+              </h4>
+              <br>
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">Nombre de sujets
+                  présents
+                  <span class="badge badge-default">{{inv.countSubject}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Hauteur moyenne
+                  <span class="badge badge-default">{{inv.hauteur}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Diamètre moyen
+                  <span class="badge badge-default">{{inv.diametre}}</span>
+                </li>
+              </ul>
+              <br>
+              <p class="font-weight-light">
+                Mis à jour le
+                <strong>{{updatedAt ? (updatedAt| date:'dd/MM/yyyy') : (createdAt | date:'dd/MM/yyyy')}}</strong>
+              </p>
+
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <app-button-show-page [urlRoutePage]="'/admin/inventaires/essence/modifier/' + inv.id"
+                                        [title]="'Modifier'">
+                  </app-button-show-page>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <app-button-show-page [backButton]="true" [title]="'RETOUR'">
+                  </app-button-show-page>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <app-button-show-page [urlRoutePage]="'/admin/inventaires/essence/' + inv.id"
+                                        [title]="'DETAIL'">
+                  </app-button-show-page>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+
+  </div>
+  <div class="card-footer">
+          <span class="badge badge-danger"
+                *ngIf="isFinished">{{!isFinished ? 'BROUILLON' : '' }}</span>
+  </div>
+</div>

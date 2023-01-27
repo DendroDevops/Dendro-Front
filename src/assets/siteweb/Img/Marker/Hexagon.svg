@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="40px" viewBox="0 0 35 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Marker/Hexagon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.7">
+        <g id="FAB/Create-visit/Open" transform="translate(-295.000000, -100.000000)" fill="#FFFFFF">
+            <g id="Group" transform="translate(280.000000, 88.000000)">
+                <path d="M32.5,12 C26.6666667,15.4210526 20.8333333,18.5789474 15,22 L15,42 C20.8333333,45.4210526 26.6666667,48.5789474 32.5,52 C38.3333333,48.5789474 44.1666667,45.4210526 50,42 L50,22 C44.1666667,18.5789474 38.3333333,15.4210526 32.5,12 Z" id="Marker/Hexagon"></path>
+            </g>
+        </g>
+    </g>
+</svg>

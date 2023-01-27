@@ -1,0 +1,67 @@
+<div class="col-md" [@moveInUp]="state">
+  <div class="card mb-3">
+    <h4 class="card-header text-center">
+      <i class="ion ion-md-arrow-back mr-0 float-left" style="cursor: pointer; font-size:1.7rem;"
+         (click)="appService.goBack()" ngbTooltip="Retour"></i> DETAIL ESSENCE
+    </h4>
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="col-sm-12">
+            <label>Genre </label>
+            <input [class]="showErrorGenre? 'form-control is-invalid' : 'form-control is-valid'"
+                   [(ngModel)]="espece.genre"
+                   (keyup)="onControlGenre()" placeholder="Genre" type="text">
+            <small class="invalid-feedback">{{errorGenre}}</small>
+          </div>
+          <br>
+          <div class="col-sm-12">
+            <label>Espèce *</label>
+            <input [class]="showErrorName? 'form-control is-invalid' : 'form-control is-valid'"
+                   [(ngModel)]="espece.name"
+                   (keyup)="onControlName()" placeholder="Nom Latin" type="text">
+            <small class="invalid-feedback">{{errorName}}</small>
+          </div>
+          <br>
+          <div class="col-sm-12">
+            <label>Cultivar </label>
+            <input class="form-control is-valid" [(ngModel)]="espece.cultivar" placeholder="Cultivar " type="text">
+          </div>
+          <br>
+          <div class="col-sm-12">
+            <label>Nom Français </label>
+            <input class="form-control is-valid" [(ngModel)]="espece.nomFr" placeholder="Nom Francais" type="text">
+          </div>
+          <br>
+          <div class="form-group col-md-12">
+            <label>Feuillux/Résineux *</label>
+            <select class="custom-select" (change)="onControlCategorie()" [(ngModel)]="espece.categorie"
+                    name="categorie">
+              <option value=""></option>
+              <option value="F">Feuillux</option>
+              <option value="R">Resineux</option>
+            </select>
+            <small style="color:#d9534f;font-size:0.9em; font-weight:bold">{{errorCategorie}}</small>
+          </div>
+          <br>
+          <div class="form-group col-md-12">
+            <label>Tarif </label>
+            <input class="form-control is-valid" [(ngModel)]="espece.tarif" (keyup)="onControlTarif()"
+                   placeholder="Tarif "
+                   type="text">
+            <small style="color:#d9534f;font-size:0.9em; font-weight:bold">{{errorTarif}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="card-footer text-muted" style="text-align:right;">
+      <a href="javascript:void(0)" (click)="modifier()" class="btn btn-success"> MODIFIER</a>
+    </div>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

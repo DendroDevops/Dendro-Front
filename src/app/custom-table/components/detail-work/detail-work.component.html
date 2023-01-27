@@ -1,0 +1,169 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{title}}
+  </h5>
+  <button type="button" class="close" (click)="activeModal.close('Cross click')">&times;</button>
+</div>
+<div>
+  <div *ngIf="isTree(data.type)">
+    <div class="card-body" *ngIf="!data.statusTravaux">
+      <h5 class="my-3"> Préconisation de travaux</h5>
+      <div *ngIf="data.abattage">
+        <ul class="list-group p-0 ">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{data.abattage}}
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="!data.abattage">
+        <h5 class="my-3 title-preco"> Système racinaire, collet</h5>
+        <ul class="list-group p-0" *ngIf="data.travauxColletMultiple.length !== 0">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let travauxColletMultiple of data.travauxColletMultiple">
+            {{travauxColletMultiple}}
+          </li>
+        </ul>
+        <ul class="list-group p-0" *ngIf="data.travauxColletOther">
+          <h5 class="my-3" style="font-size:0.8rem;"><i>Soin particulier, précisez :</i></h5>
+          <li style="min-height: 2.5rem;"
+              class="list-group-item d-flex justify-content-between align-items-center">
+            {{data.travauxColletOther}}
+          </li>
+        </ul>
+
+        <h5 class="my-3 title-preco"> Tronc</h5>
+        <ul class="list-group p-0" *ngIf="data.travauxTroncMultiple.length !== 0">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let travauxTroncMultiple of data.travauxTroncMultiple">
+            {{travauxTroncMultiple}}
+          </li>
+        </ul>
+        <ul class="list-group p-0 " *ngIf="data.travauxTroncOther">
+          <h5 class="my-3" style="font-size:0.8rem;"><i>Soin particulier, précisez :</i></h5>
+          <li style="min-height: 2.5rem;"
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngIf="data.travauxTroncOther">{{data.travauxTroncOther}}
+          </li>
+        </ul>
+
+        <ul class="list-group p-0 " *ngIf="data.travauxTroncProtection">
+          <h5 class="my-3" style="font-size:0.8rem;"><i>Protection particulière, précisez :</i></h5>
+          <li style="min-height: 2.5rem;"
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngIf="data.travauxTroncProtection">{{data.travauxTroncProtection}}
+          </li>
+        </ul>
+
+        <h5 class="my-3 title-preco"> Houppier</h5>
+        <ul class="list-group p-0" *ngIf="data.travauxHouppierMultiple.length !== 0">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let travauxHouppierMultiple of data.travauxHouppierMultiple">
+            {{travauxHouppierMultiple}}
+          </li>
+        </ul>
+        <ul class="list-group p-0 " *ngIf="data.travauxHouppierOther">
+          <h5 class="my-3" style="font-size:0.8rem;"><i>Soin particulier, précisez</i></h5>
+          <li style="min-height: 2.5rem;"
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngIf="data.travauxHouppierOther">{{data.travauxHouppierOther}}
+          </li>
+        </ul>
+      </div>
+
+      <h5 class="my-3">Diagnostic global</h5>
+
+      <ul class="list-group p-0" *ngIf="data.etatSanGeneral.length !== 0">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let etat of data.etatSanGeneral"
+        >{{etat}}
+        </li>
+      </ul>
+
+      <h5 class="my-3">Date échéance</h5>
+
+      <ul class="list-group p-0">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngIf="data.dateProVisite">
+          <span class="badge badge-default">{{data.dateProVisite}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngIf="data.dateTravaux">
+          {{data.dateTravaux}}
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.userEditedDateTravaux ? (data.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+        </li>
+      </ul>
+
+      <h5 class="my-3"> Commentaires</h5>
+      <ul class="list-group p-0 ">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.risqueGeneralOther}}
+        </li>
+      </ul>
+    </div>
+    <div class="card-body" *ngIf="data.statusTravaux">
+      <h5 class="text-center">Aucune activité renseignée </h5>
+    </div>
+  </div>
+
+  <div *ngIf="!isTree(data.type)">
+    <div class="card-body" *ngIf="!data.statusTravaux">
+      <h5 class="my-3"> Préconisation de travaux</h5>
+      <ul class="list-group p-0 ">
+        <li style="min-height: 2.5rem;"
+            class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let travaux of data.travaux">
+          {{travaux}}
+        </li>
+        <h5 class="my-3" style="font-size:0.8rem;" *ngIf="data.travauxSoin"><i>Soin particulier, précisez</i>
+        </h5>
+        <li style="min-height: 2.5rem;" *ngIf="data.travauxSoin"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.travauxSoin}}
+        </li>
+        <h5 class="my-3" style="font-size:0.8rem;" *ngIf="data.travauxProtection"><i>Protection particulière,
+          précisez
+          : </i></h5>
+        <li style="min-height: 2.5rem;" *ngIf="data.travauxProtection"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.travauxProtection}}
+        </li>
+      </ul>
+      <h5 class="my-3">Diagnostic global</h5>
+
+      <ul class="list-group p-0">
+        <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let etatGe of data.etatGeneral">{{etatGe}}
+        </li>
+      </ul>
+
+      <h5 class="my-3"> Date Echéance</h5>
+      <ul class="list-group p-0 ">
+        <li style="min-height: 2.5rem;"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.userEditedDateTravaux ? (data.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+        </li>
+      </ul>
+      <h5 class="my-3"> Commentaires :</h5>
+      <ul class="list-group p-0 ">
+        <li style="min-height: 2.5rem;" *ngIf="data.risqueGeneralOther"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.etatSanGeneralOther}}
+        </li>
+        <li style="min-height: 2.5rem;" *ngIf="data.travauxOther"
+            class="list-group-item d-flex justify-content-between align-items-center">
+          {{data.travauxOther}}
+        </li>
+      </ul>
+    </div>
+    <div class="card-body" *ngIf="data.statusTravaux">
+      <h5 class="text-center">Aucune activité renseignée</h5>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="activeModal.dismiss('Close click')"> Fermer</button>
+</div>

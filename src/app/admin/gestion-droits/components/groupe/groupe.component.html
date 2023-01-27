@@ -1,0 +1,333 @@
+<div class="row" *ngIf="!list" [@moveInUp]="state">
+  <div class="col-md">
+
+    <form [formGroup]="groupForm" (ngSubmit)="add()">
+      <div class="card mb-3" style="border:1px solid #02BC77">
+        <h4 class="card-header text-center">
+          AJOUT GROUPE
+        </h4>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <input formControlName="name" name="name"
+                     [class]="'form-control ' + (groupForm.get('name').errors  && groupForm.controls.name.touched ? 'is-invalid' : 'is-valid')"
+                     placeholder="Groupe *" type="text">
+              <small class="invalid-feedback" *ngIf="groupForm.get('name').errors && groupForm.controls.name.touched">
+                Champs obligatoire
+              </small>
+            </div>
+            <br>
+            <div class="form-group col-sm-6">
+              <br>
+              <div class="custom-controls-stacked">
+                <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                       *ngFor="let userGroup of groupeTypes">
+                  <input name="groupeType" type="radio" [value]="userGroup.name"
+                         formControlName="groupeType"
+                         class="custom-control-input">
+                  <span class="custom-control-label">{{userGroup.displayName}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <input formControlName="licence" name="licence"
+                     [class]="'form-control ' + (groupForm.get('licence').errors  && groupForm.controls.licence.touched ? 'is-invalid' : 'is-valid')"
+                     placeholder="Nombre de licence *" type="number">
+              <small class="invalid-feedback"
+                     *ngIf="groupForm.get('licence').errors && groupForm.controls.name.touched">Saisir un entier</small>
+            </div>
+            <br>
+          </div>
+          <div class="w-100"></div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12">
+
+              <h4 class="font-weight-bolder">Forfait * </h4>
+              <div class="w-100"></div>
+
+              <h4 class="font-weight-semibold">Flex</h4>
+
+              <div class="w-100"></div>
+
+              <div class="row switchers-stacked">
+                <div class="demo-inline-spacing">
+                  <div class="form-group col-sm-6">
+                    <label class="switcher switcher-success">
+                      <input type="radio" [value]="'GRATUIT'" formControlName="forfait" name="forfait"
+                             class="switcher-input"
+
+                             checked>
+                      <span class="switcher-indicator">
+                                                      <span class="switcher-yes"></span>
+                                                      <span class="switcher-no"></span>
+                                                      </span>
+                      <span class="switcher-label">Gratuit </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <h4 class="font-weight-semibold">Agile</h4>
+              <div class="w-100"></div>
+              <div class="row switchers-stacked">
+                <div class="demo-inline-spacing">
+                  <div class="form-group col-sm-6">
+                    <label class="switcher switcher-success">
+                      <input type="radio" [value]="'1M'" formControlName="forfait" name="forfait" class="switcher-input"
+                      >
+                      <span class="switcher-indicator">
+                                <span class="switcher-yes"></span>
+                                <span class="switcher-no"></span>
+                              </span>
+                      <span
+                        class="switcher-label"><b>1&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(1) | date:'dd/MM/yyyy'}}&nbsp;
+                                  </span>
+                    </label>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label class="switcher switcher-success">
+                      <input type="radio" [value]="'6M'" formControlName="forfait" name="forfait"
+                             class="switcher-input">
+                      <span class="switcher-indicator">
+                                <span class="switcher-yes"></span>
+                                <span class="switcher-no"></span>
+                              </span>
+                      <span
+                        class="switcher-label"><b>6&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(6) | date:'dd/MM/yyyy'}}&nbsp;
+                                  </span>
+                    </label>
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label class="switcher switcher-success">
+                      <input type="radio" [value]="'12M'" formControlName="forfait" name="forfait"
+                             class="switcher-input"
+                             checked>
+                      <span class="switcher-indicator">
+                                                      <span class="switcher-yes"></span>
+                                                      <span class="switcher-no"></span>
+                                                      </span>
+                      <span
+                        class="switcher-label"><b>12&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(12) | date:'dd/MM/yyyy'}}&nbsp;
+                                  </span>
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--          <div class="w-100"></div>-->
+
+        </div>
+        <div class="card-footer text-muted" style="text-align:right;">
+          <button type="submit" class="btn btn-success">Ajouter</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="row" *ngIf="list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col">
+            Page: &nbsp;
+            <select [(ngModel)]="perPage" (change)="update()"
+                    class="custom-select custom-select-sm d-inline-block w-auto">
+              <option *ngFor="let limit of [10, 20, 30, 40, 50]">{{limit}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="text" [(ngModel)]="filterVal" (input)="currentPage = 1; update()"
+                   class="form-control form-control-sm d-inline-block w-auto float-sm-right" placeholder="Recherche...">
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="groupes"
+        [sliceStart]="(currentPage-1) * perPage"
+        [sliceEnd]="currentPage * perPage"
+        [deletable]="true"
+        [editable]="true"
+        (deleteClick)="delete($event)"
+        >
+      </app-table-data>
+      <!-- / Table -->
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+
+      <!-- MODAL -->
+      <ng-template #defaultModal let-c="close" let-d="dismiss">
+        <form [formGroup]="groupUpdateForm" (ngSubmit)="updateGroupe()">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              Modifier <span class="font-weight-light">Groupe</span><br>
+            </h5>
+            <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <input formControlName="name" name="name"
+                     [class]="'form-control ' + (groupUpdateForm.get('name').errors  && groupUpdateForm.controls.name.touched ? 'is-invalid' : 'is-valid')"
+                     placeholder="Groupe *" type="text">
+              <small class="invalid-feedback"></small>
+            </div>
+            <br>
+            <div class="form-group">
+              <div class="custom-controls-stacked">
+                <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                       *ngFor="let userGroup of groupeTypes">
+                  <input name="groupeType" type="radio" [value]="userGroup.name" formControlName="groupeType"
+                         class="custom-control-input">
+                  <span class="custom-control-label">{{userGroup.displayName}}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <input formControlName="licence" name="licence"
+                     [class]="'form-control ' + (groupUpdateForm.get('licence').errors  && groupUpdateForm.controls.licence.touched ? 'is-invalid' : 'is-valid')"
+                     placeholder="Nombre de licence " type="text">
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-12">
+
+                <h4 class="font-weight-bolder">Forfait * </h4>
+                <div class="w-100"></div>
+
+                <h4 class="font-weight-semibold">Flex</h4>
+
+                <div class="w-100"></div>
+
+                <div class="row switchers-stacked">
+                  <div class="demo-inline-spacing">
+                    <div class="col-sm-6">
+                      <label class="switcher switcher-success">
+                        <input type="radio" [value]="'GRATUIT'"
+                               class="switcher-input"
+                               formControlName="forfait" name="forfait"
+                               checked>
+                        <span class="switcher-indicator">
+                                                  <span class="switcher-yes"></span>
+                                                  <span class="switcher-no"></span>
+                                                  </span>
+                        <span class="switcher-label">Gratuit </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <h4 class="font-weight-semibold">Agile</h4>
+                <div class="w-100"></div>
+                <div class="row switchers-stacked">
+                  <div class="demo-inline-spacing">
+
+                    <div *ngIf="this.codeForfaitBase == '1M_FREE'" class="col-sm-6">
+                      <label class="switcher switcher-success">
+                        <input type="radio" [value]="'1M_FREE'"
+                               class="switcher-input" formControlName="forfait" name="forfait">
+                        <span class="switcher-indicator">
+                              <span class="switcher-yes"></span>
+                              <span class="switcher-no"></span>
+                            </span>
+                        <span
+                          class="switcher-label"><b>1&nbsp;mois</b></span>
+                      </label>
+                    </div>
+
+                    <div class="col-sm-6"
+                         *ngIf="(this.codeForfaitBase == '1M' || this.codeForfaitBase == '6M' || this.codeForfaitBase == '12M' || this.codeForfaitBase == 'GRATUIT') && this.codeForfaitBase != '1M_FREE'">
+                      <label class="switcher switcher-success">
+                        <input type="radio" [value]="'1M'" formControlName="forfait" name="forfait"
+                               class="switcher-input">
+                        <span class="switcher-indicator">
+                                                  <span class="switcher-yes"></span>
+                                                  <span class="switcher-no"></span>
+                                                  </span>
+                        <span
+                          class="switcher-label"><b>1&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(1) | date:'dd/MM/yyyy'}}&nbsp;
+                              </span>
+                      </label>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="switcher switcher-success">
+                        <input type="radio" [value]="'6M'" formControlName="forfait" name="forfait"
+                               class="switcher-input">
+                        <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                        <span
+                          class="switcher-label"><b>6&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(6) | date:'dd/MM/yyyy'}}
+                              </span>
+                      </label>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <label class="switcher switcher-success">
+                        <input type="radio" [value]="'12M'" formControlName="forfait" name="forfait"
+                               class="switcher-input"
+                        >
+                        <span class="switcher-indicator">
+                            <span class="switcher-yes"></span>
+                            <span class="switcher-no"></span>
+                          </span>
+                        <span
+                          class="switcher-label"><b>12&nbsp;mois</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date&nbsp;fin&nbsp;:&nbsp;{{getExpiredDateForfaitFormNow(12)|date:'dd/MM/yyyy'}}
+                              </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="c('Close click')"> Fermer</button>
+            <button type="submit" class="btn btn-success"> Modifier</button>
+          </div>
+        </form>
+      </ng-template>
+      <!-- END MODAL -->
+    </div>
+  </div>
+
+</div>
+<br>
+<app-button-float
+  [list]="list"
+  (clickBtn)="this.list = $event">
+</app-button-float>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

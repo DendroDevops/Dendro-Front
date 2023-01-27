@@ -1,0 +1,128 @@
+<!-- Filters -->
+<div class="row">
+  <div class="col-md-9 p-2" style="min-height: 51rem; border: 1px solid #02BC77; border-radius: 3px;">
+
+    <agm-map [fullscreenControl]='true' [mapTypeControl]='true' [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+             (zoomChange)="zoomChange($event)">
+      <agm-marker-cluster [minimumClusterSize]="5" imagePath="../../../assets/clusterImage/m">
+        <div *ngFor="let inventory of datas">
+          <app-marker-tree [inventory]="inventory"></app-marker-tree>
+          <agm-polygon [fillOpacity]="inventory.isFinished ? 0.0 : 0.3"
+                       [fillColor]="inventory?.isFinished ? '' : fillcolor"
+                       [strokeColor]="inventory.type === 'EBC'?  ebcStroke : eppStroke"
+                       (polyClick)="open(defaultModal, { windowClass: 'modal-md animate' }, inventory)"
+                       *ngIf="isEssence(inventory.type)"
+                       [paths]="inventory.coord"
+                       [clickable]="true">
+          </agm-polygon>
+        </div>
+      </agm-marker-cluster>
+
+    </agm-map>
+  </div>
+  <div class="col-md-3">
+    <div class="ui-bordered px-4 pt-4 mb-4" style="background: white;border:1px solid #02BC77; border-radius: 4px;">
+      <form [formGroup]="searchForm" (ngSubmit)="search()">
+        <div class="form-row">
+          <div class="col-sm-12 mb-4">
+            <app-espece-form [especeGroup]="searchForm"></app-espece-form>
+          </div>
+          <div class="col-sm-12 mb-4">
+            <app-text-input-form [textFormGroup]="searchForm" [textLabel]="'Code site ou identification'"
+                                 [formName]="'codeSite'"></app-text-input-form>
+          </div>
+
+          <div class="col-md-12 mb-4">
+            <label class="switcher switcher-square  switcher-success">
+              <input type="checkbox" class="switcher-input" formControlName="arbreRemarquable">
+              <span class="switcher-indicator">
+                  <span class="switcher-yes"></span>
+                  <span class="switcher-no"></span>
+                </span>
+              <span class="switcher-label">Arbre remarquable</span>
+            </label>
+          </div>
+
+          <div class="col-md-12 mb-4">
+            <label class="switcher switcher-square  switcher-success">
+              <input type="checkbox" class="switcher-input" formControlName="isFinished">
+              <span class="switcher-indicator">
+                  <span class="switcher-yes"></span>
+                  <span class="switcher-no"></span>
+                </span>
+              <span class="switcher-label">Brouillon</span>
+            </label>
+          </div>
+          <div class="col-sm-12 mb-4">
+            <app-auto-complete-address [formName]="'address'" [addressForm]="searchForm"></app-auto-complete-address>
+          </div>
+          <div class="col-md-12 col-xl-12 mb-4">
+            <label class="form-label d-none d-md-block">&nbsp;</label>
+            <button type="submit" class="btn btn-outline btn-success btn-block">Rechercher</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- MODAL -->
+<ng-template #defaultModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">
+    </h5>
+    <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-xl-12">
+
+        <ngb-tabset class="nav-tabs-top mb--1">
+          <ngb-tab *ngFor="let inv of inventairePopUp.essences; let i=index;" [title]="'Espece ' + (i+1)">
+            <ng-template ngbTabContent>
+              <div class="card-body">
+                <h4 class="mb-0"> {{inv.genre}}&nbsp;{{inv.name}}&nbsp;{{inv.cultivar}}<br>
+                </h4>
+                <br>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">Nombre de sujets
+                    présents
+                    <span class="badge badge-default">{{inv.countSubject}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">Hauteur moyenne
+                    <span class="badge badge-default">{{inv.hauteur}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">Diamètre moyen
+                    <span class="badge badge-default">{{inv.diametre}}</span>
+                  </li>
+                </ul>
+                <br>
+                <p class="font-weight-light">
+                  Mis à jour le
+                  <strong>{{inventairePopUp.updatedAt ? (inventairePopUp.updatedAt | date: 'dd/MM/yyy') : (inventairePopUp.createdAt | date: 'dd/MM/yyy')}}</strong>
+                </p>
+                <br>
+                <div class="row">
+                  <button type="button" class="col-sm-12 btn btn-success"
+                          (click)="show(inventairePopUp.id);  c('Close click');">
+                    Detail
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+  </div>
+</ng-template>
+<!-- END MODAL -->
+<!-- / Filters -->
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

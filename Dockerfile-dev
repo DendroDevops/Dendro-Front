@@ -1,0 +1,7 @@
+FROM node:12
+RUN npm install -g @angular/cli@8.3.8
+USER node
+WORKDIR /app
+COPY . .
+EXPOSE 4200 49153
+CMD npm start

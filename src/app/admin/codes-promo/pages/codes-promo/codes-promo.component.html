@@ -1,0 +1,167 @@
+<div class="row" *ngIf="!list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card mb-3">
+      <h5 class="card-header">Ajouter un nouveau code</h5>
+      <!--
+              <form (ngSubmit)="onSubmit()" [formGroup]="codePromoGroup">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <app-text-input-form
+                [textFormGroup]="codePromoGroup"
+                [textLabel]="'Code'"
+                [formName]="'code'"
+                [required]="true"
+                [errorText]="'Code invalide'"
+              ></app-text-input-form>
+            </div>
+            <div class="col-sm-12">
+              <app-text-input-form
+                [textFormGroup]="codePromoGroup"
+                [textLabel]="'Quantité'"
+                [formName]="'quantity'"
+                [required]="true"
+                [errorText]="'Quantité invalide'"
+              ></app-text-input-form>
+            </div>
+            <div class="col-sm-6">
+              <div class="dp-hidden position-absolute">
+                <div class="input-group">
+                  <input
+                    name="datepicker"
+                    class="form-control"
+                    ngbDatepicker
+                    #datepicker="ngbDatepicker"
+                    [autoClose]="'outside'"
+                    (dateSelect)="onDateSelection($event)"
+                    [displayMonths]="2"
+                    [dayTemplate]="t"
+                    outsideDays="hidden"
+                    [startDate]="fromDate!"
+                    tabindex="-1"
+                  />
+                  <ng-template #t let-date let-focused="focused">
+                    <span
+                      class="custom-day"
+                      [class.focused]="focused"
+                      [class.range]="isRange(date)"
+                      [class.faded]="isHovered(date) || isInside(date)"
+                      (mouseenter)="hoveredDate = date"
+                      (mouseleave)="hoveredDate = null"
+                    >
+                      {{ date.day }}
+                    </span>
+                  </ng-template>
+                </div>
+              </div>
+              <app-text-input-form
+                #dpFromDate
+                [textFormGroup]="codePromoGroup"
+                [textLabel]="'Durée'"
+                [formName]="'fromDate'"
+                [required]="true"
+                [errorText]="'Durée invalide'"
+                (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+                (click)="datepicker.toggle()"
+              ></app-text-input-form>
+            </div>
+            <div class="col-sm-6">
+              <app-text-input-form
+                #dpToDate
+                [textFormGroup]="codePromoGroup"
+                [textLabel]="''"
+                [formName]="'toDate'"
+                [required]="true"
+                [errorText]="'Durée invalide'"
+                (input)="toDate = validateInput(toDate, dpToDate.value)"
+                (click)="datepicker.toggle()"
+              ></app-text-input-form>
+            </div>
+            <div class="col-sm-12">
+              <app-select-input-form
+                [selectFormGroup]="codePromoGroup"
+                [textLabel]="'Type'"
+                [formName]="'type'"
+                [placeholder]="'Pourcentage'"
+                [errorText]="'Type invalide'"
+                [DATA_TAB]="typeOptions"
+              >
+              </app-select-input-form>
+            </div>
+            <div class="col-sm-12">
+              <app-text-input-form
+                [textFormGroup]="codePromoGroup"
+                [textLabel]="'Valeur'"
+                [formName]="'value'"
+                [required]="true"
+                [errorText]="'Valeur invalide'"
+              ></app-text-input-form>
+            </div>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="card-footer text-muted" style="text-align: right">
+          <app-button
+            [textLabel]="'Valider'"
+            [type]="'submit'"
+            [classButton]="'btn btn-success btn-md'"
+            [formGroup]="codePromoGroup"
+          ></app-button>
+        </div>
+      </form>
+      -->
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <div class="card-body">
+        <hr class="border-light m-0" />
+        <app-table-data
+          [COLUMNS]="columns"
+          [DATA]="datas"
+          [sliceStart]="(currentPage - 1) * perPage"
+          [sliceEnd]="currentPage * perPage"
+          [deletable]="false"
+          [editable]="false"
+          [isDblClick]="true"
+          (dbclick)="show($event)"
+        >
+        </app-table-data>
+      </div>
+
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems"
+              >Afficher {{ currentPage }} sur {{ totalPages }} entrées</span
+            >
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination
+              [collectionSize]="totalItems"
+              [pageSize]="perPage"
+              [(page)]="currentPage"
+              size="sm"
+              class="d-flex justify-content-center justify-content-sm-end m-0"
+            >
+              <ng-template ngbPaginationPrevious>Prev</ng-template>
+              <ng-template ngbPaginationNext>Next</ng-template>
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-button-float
+  *ngIf="!authService.isVisiteur()"
+  [list]="list"
+  (clickBtn)="onChangingMenu($event)"
+>
+</app-button-float> -->
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>

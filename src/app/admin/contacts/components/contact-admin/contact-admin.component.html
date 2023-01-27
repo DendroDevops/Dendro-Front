@@ -1,0 +1,70 @@
+<div class="row">
+  
+    <div class="col">
+  
+      <!-- Messages list -->
+      <div class="card" style="border:1px solid #02BC77">
+  
+        <!-- Header -->
+        <h4 class="card-header media flex-wrap align-items-center py-4">
+          <div class="media-body"><i class="ion ion-md-mail text-success"></i> &nbsp; Contacts</div>
+          <input type="text" class="form-control form-control-sm" placeholder="recherche..." style="max-width: 10rem;">
+        </h4>
+        <!-- / Header -->
+  
+        <!-- Controls -->
+        <div class="media flex-wrap align-items-center py-1 px-2">
+          <div class="media-body d-flex flex-wrap flex-basis-100 flex-basis-sm-auto">
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted" ngbTooltip="Refresh"><i class="ion ion-md-refresh"></i></button>
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted" ngbTooltip="Mark as unread"><i class="ion ion-md-mail-unread"></i></button>
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted" ngbTooltip="Mark as important"><i class="ion ion-md-alert"></i></button>
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted" ngbTooltip="Move to spam"><i class="ion ion-md-folder-open"></i></button>
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted" ngbTooltip="Move to trash"><i class="ion ion-md-trash"></i></button>
+          </div>
+  
+          <div class="text-muted mr-3 ml-auto">1 de {{totalItems}}</div>
+  
+          <div class="d-flex flex-wrap">
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted"><i class="ion ion-ios-arrow-back"></i></button>
+            <button type="button" class="btn btn-default borderless md-btn-flat icon-btn text-muted"><i class="ion ion-ios-arrow-forward"></i></button>
+          </div>
+        </div>
+        <hr class="border-light m-0">
+        <!-- / Controls -->
+  
+        <ul class="list-group messages-list">
+
+            <li *ngFor="let data of datas" class="list-group-item px-4" (click)="detailContact(data.id)">
+              <div class="message-checkbox mr-1">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" [checked]="selected.includes(data)" (change)="toggleSelect($event, data)">
+                  <span class="custom-control-label"></span>
+                </label>
+              </div>
+              <a href="javascript:void(0)" class="ion d-block text-big mr-3"></a>
+              <a href="javascript:void(0)" class="message-sender flex-shrink-1 d-block text-dark">
+                {{data.groupe}}
+              </a>
+              <a href="javascript:void(0)" class="message-subject flex-shrink-1 d-block text-dark" [ngClass]="{'font-weight-bold': data.etat}">
+                {{data.objet}}
+              </a>
+              <div class="message-date text-muted">{{data.createdAt}}</div>
+            </li>
+    
+          </ul>
+  
+      </div>
+      <!-- / Messages list -->
+  
+    </div>
+  </div>  
+
+  <!-- SPINNER -->
+<div class="app-splash-screen" *ngIf="visibleSpinner">
+    <div class="app-splash-screen-content">
+        <div class="ui-w-60">
+            <svg class="d-block" viewBox="0 0 148 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><linearGradient id="a" x1="46.49" x2="62.46" y1="53.39" y2="48.2" gradientUnits="userSpaceOnUse"><stop stop-opacity=".25" offset="0"></stop><stop stop-opacity=".1" offset=".3"></stop><stop stop-opacity="0" offset=".9"></stop></linearGradient><linearGradient id="e" x1="76.9" x2="92.64" y1="26.38" y2="31.49" xlink:href="#a"></linearGradient><linearGradient id="d" x1="107.12" x2="122.74" y1="53.41" y2="48.33" xlink:href="#a"></linearGradient></defs><path class="fill-primary" transform="translate(-.1)" d="M121.36,0,104.42,45.08,88.71,3.28A5.09,5.09,0,0,0,83.93,0H64.27A5.09,5.09,0,0,0,59.5,3.28L43.79,45.08,26.85,0H.1L29.43,76.74A5.09,5.09,0,0,0,34.19,80H53.39a5.09,5.09,0,0,0,4.77-3.26L74.1,35l16,41.74A5.09,5.09,0,0,0,94.82,80h18.95a5.09,5.09,0,0,0,4.76-3.24L148.1,0Z"></path><path transform="translate(-.1)" d="M52.19,22.73l-8.4,22.35L56.51,78.94a5,5,0,0,0,1.64-2.19l7.34-19.2Z" fill="url(#a)"></path><path transform="translate(-.1)" d="M95.73,22l-7-18.69a5,5,0,0,0-1.64-2.21L74.1,35l8.33,21.79Z" fill="url(#e)"></path><path transform="translate(-.1)" d="M112.73,23l-8.31,22.12,12.66,33.7a5,5,0,0,0,1.45-2l7.3-18.93Z" fill="url(#d)"></path></svg>
+        </div>
+    </div>
+</div>
+<!-- FIN SPINNER -->

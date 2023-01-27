@@ -1,0 +1,15 @@
+<div *ngIf="!list" [@moveInUp]="state">
+  <app-add-espece (visibleSpinner)="visibleSpinner = $event" (list)="this.list = $event"></app-add-espece>
+</div>
+
+<div *ngIf="list" [@moveInUp]="state">
+  <app-list-espece (list)="this.list = $event" (visibleSpinner)="visibleSpinner= $event"></app-list-espece>
+</div>
+<br>
+<app-button-float
+  [list]="list"
+  (clickBtn)="this.list = $event">
+</app-button-float>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

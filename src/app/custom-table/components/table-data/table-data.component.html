@@ -1,0 +1,106 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered card-table">
+    <thead>
+    <tr class="text-center">
+      <th *ngFor="let c of COLUMNS;let i=index let last=last" class="text-nowrap text-left {{c.thClass}}" [ngStyle]="c.style">
+        <span ngbDropdown  [placement]="(last || (i === COLUMNS.length - 2) ) ? 'bottom-right' : 'bottom-left'" *ngIf="c.name !== 'actions' && !c.isCheck">
+            <ng-container *ngIf="c.name === orderByColumn">
+              <span *ngIf="sortBy =='asc'" id="{{c.name}}" role="button" class="ion ion-md-arrow-up"></span>
+              <span *ngIf="sortBy =='desc'" id="{{c.name}}" role="button" class="ion ion-md-arrow-down"></span>
+            </ng-container>
+            {{c.display}} &nbsp;
+            <span ngbDropdownToggle *ngIf="c.isSort" [class.dropdown-menu-right]="last" [class.dropdown-menu-end]="last" id="{{c.name}}" role="button" class="ion ion-md-more cursor-pointer"></span>
+          <div ngbDropdownMenu  [attr.aria-labelledby]="c.name" class="dropdown-menu">
+            <ng-container *ngIf="c.isDate || (c.isDate && c.isObject)">
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'desc')">Plus récente</a>
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'asc')">Plus ancienne</a>
+            </ng-container>
+            <ng-container *ngIf="c.isString || (c.isObject && c.isString)">
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'asc')">A-Z</a>
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'desc')">Z-A</a>
+            </ng-container>
+            <ng-container *ngIf="c.isNumber || c.isCurrency">
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'asc')">Ordre croissant</a>
+            <a ngbDropdownItem class="dropdown-item" href="#" (click)="$event.preventDefault();filter(i, 'desc')">Ordre décroissant</a>
+            </ng-container>
+          </div>
+        </span>
+        <label *ngIf="c.isCheck" class="custom-control custom-checkbox">
+          <input type="checkbox" [checked]="selectAllStatus"
+                 (change)="selectInvAll();"
+                 class="custom-control-input is-valid">
+          <span class="custom-control-label"></span>
+        </label>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of DATA | slice: sliceStart:sliceEnd " (dblclick)="isDblClick && details(data.id)" [class]="isVentoryStyle(data)">
+      <td class="align-middle {{c.tdClass ? c.tdClass : ''}}" *ngFor="let c of COLUMNS">
+        <label class="custom-control custom-checkbox" *ngIf="c.isCheck">
+          <input type="checkbox" [checked]="data?.selected" (change)="checkOne(data)"
+                 class="custom-control-input is-valid">
+          <span class="custom-control-label"></span>
+        </label>
+        <span *ngIf="c.isModelProperty && !c.isDate && !c.tdValue && !c.isObject && !c.isCurrency && !c.isIcon && !c.isLowerCase"> <span class="{{c.tdClassFn ? c.tdClassFn(data) : ''}}"></span>{{ data[c.name] }}</span>
+        <span *ngIf="c.isModelProperty && c.tdValue && !c.isDate && !c.isObject && !c.isCurrency && !c.isIcon && !c.isLowerCase"> <span class="{{c.tdClassFn ? c.tdClassFn(data) : ''}}"></span>{{ c.tdValue(data) }}</span>
+        <span *ngIf="c.isModelProperty && !c.isDate && !c.isObject && !c.isCurrency && !c.isIcon && c.isLowerCase"> <span class="{{c.tdClassFn ? c.tdClassFn(data) : ''}}"></span>{{ data[c.name] | lowercase }}</span>
+        <span *ngIf="c.isComplex">{{ c.tdValue(data) }}</span>
+        <span *ngIf="c.isObject && !c.isDate && !c.isLowerCase">{{data[c.objectName] && data[c.objectName][c.name]}}</span>
+        <span *ngIf="c.isObject && !c.isDate && c.isLowerCase">{{data[c.objectName] && data[c.objectName][c.name] | lowercase}}</span>
+        <span *ngIf="c.isDate && c.isObject">{{data[c.objectName] && data[c.objectName][c.name] | date: 'dd/MM/yyyy'}}</span>
+        <span *ngIf="c.isDate && !c.isObject">{{data[c.name] | date: (c.dateFormat || 'dd/MM/yyyy')}}</span>
+        <span *ngIf="c.isCurrency">{{data[c.name] | currency : 'EUR': 'symbol': '2.2-2': 'fr'}}</span>
+        <span *ngIf="c.isModalLink"><a href="javascript:void(0)" (click)="openModal(data, c)">{{c.display}}</a></span>
+        <ng-container *ngIf="c.isIcon">
+          <span *ngIf="data[c.name] ">
+            <i [class]="c.icons.iconSuccesClass"></i>
+          </span>
+          <span *ngIf="!data[c.name] ">
+            <i [class]="c.icons.iconErrorClass"></i></span>
+        </ng-container>
+        <label *ngIf="c.isSwitcher" class="switcher switcher-square  switcher-success">
+          <input type="checkbox" class="switcher-input" [(ngModel)]="data[c.name]">
+          <span class="switcher-indicator" style="cursor: pointer;"
+                [swal]="{title: appService.messageDelete.title,
+                              text: 'Vous êtes sur le point de ' + (data[c.name] ? 'désactiver' : 'activer') + ' un utilisateur!',
+                              type:'warning',
+                              showCancelButton:true,
+                              confirmButtonText: data[c.name] ? 'DESACTIVER' : 'ACTIVER',
+                              cancelButtonText:'Annuler',
+                              showCloseButton:true,
+                              cancelButtonClass:'btn btn-md btn-default',
+                              confirmButtonClass:'btn btn-md btn-warning'}"
+                [ngbTooltip]="!data[c.name] ? 'Activer' : 'Désactiver'"
+                (confirm)="c.switchFunc(data, i)" (cancel)="declineDialog.show()">
+            <span class="switcher-yes"></span>
+            <span class="switcher-no"></span>
+          </span>
+        </label>
+
+        <span *ngIf="c.name == 'actions'">
+          <a href="javascript:void(0)" *ngIf="showAble" (click)="show(data.id)"
+            class="btn btn-default btn-xs icon-btn md-btn-flat" ngbTooltip="Voir"><i class="ion ion-md-eye"></i></a>
+          <a *ngIf="editable && !c.isModal" (click)="edit(data.id)" href="javascript:void(0)"
+            class="btn btn-default btn-xs icon-btn md-btn-flat" ngbTooltip="Modifier"><i class="ion ion-md-create"></i></a>
+          <a *ngIf="editable && c.isModal" (click)="c.open(c.modalComponent(), { windowClass: 'modal-md animate' }, data)" href="javascript:void(0)"
+            class="btn btn-default btn-xs icon-btn md-btn-flat" ngbTooltip="Modifier"><i class="ion ion-md-create"></i></a>
+          <button *ngIf="deletable" [swal]="{title:'Etes-vous sûr(e)?',
+                          text:'Vous êtes sûr le point d\'effectuer une suppression!',
+                          type:'error',
+                          showCancelButton:true,
+                          confirmButtonText:'Valider',
+                          cancelButtonText:'Annuler',
+                          showCloseButton:true,
+                          cancelButtonClass:'btn btn-md btn-default',
+                          confirmButtonClass:'btn btn-md btn-warning'}" ngbTooltip="Supprimer" (confirm)="delete(data.id)"
+            (cancel)="declineDialog.show()" class="btn btn-default btn-xs icon-btn md-btn-flat">
+            <i class="ion ion-md-close"></i>
+          </button>
+        </span>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

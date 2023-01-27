@@ -1,0 +1,83 @@
+<div class="authentication-wrapper authentication-2 ui-bg-cover ui-bg-overlay-container px-4"
+     style="background-image: url('../../../../assets/static/img/Background.png');">
+    <div class="ui-bg-overlay bg-dark opacity-25"></div>
+
+    <div class="authentication-inner py-5">
+
+        <div class="card" [@fallIn]="state">
+            <div class="p-4 p-sm-5" style="padding: 1rem !important;padding-top:5px;">
+                <!-- Logo -->
+                <div class="d-flex justify-content-center align-items-center pb-2 mb-4">
+                    <div class="ui-w-60">
+                        <div class="w-100 position-relative" style="padding-bottom: 10%">
+                            <img src="../../../../assets/siteweb/Img/Logo/white.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <!-- / Logo -->
+                <!-- Form -->
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                    <div class="error-server" *ngIf="errorMessage.show" [@fallIn]="state">
+                        {{errorMessage.message}}
+                    </div>
+
+                    <div class="input-group input-group-md">
+                        <input
+                                [class]="'form-control ' + (loginForm.get('email').errors  && loginForm.controls.email.touched ? 'is-invalid' : 'is-valid')"
+                                formControlName="email" name="email" placeholder="Saisir un email *"
+                                type="text">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ion ion-md-mail"></i></span>
+                        </div>
+                    </div>
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="loginForm.get('email').errors?.email && loginForm.controls.email.touched"> Email
+                        invalide
+                    </small>
+                    <br>
+                    <div class="input-group input-group-md">
+                        <input
+                                [class]="'form-control ' + (loginForm.get('password').errors  && loginForm.controls.email.touched ? 'is-invalid' : 'is-valid')"
+                                formControlName="password" name="password" placeholder="Mot de passe"
+                                [type]="passwordVisible? 'text' : 'password'">
+                        <div class="input-group-prepend">
+              <span class="input-group-text"><i (click)="isPasswordVisible()"
+                                                [class]="'ion ' + (passwordVisible? 'ion-md-eye': 'ion-md-eye-off')"></i></span>
+                        </div>
+                    </div>
+                    <small style="color:red;font-size:0.9em; font-weight:bold"
+                           *ngIf="loginForm.get('password').errors?.pattern && loginForm.controls.password.touched">
+                        Respectez le format (minimum) : <br>
+                        8 caractères, 1 majuscule, 1 caractère spécial et 1 nombre.
+                    </small>
+
+                    <a class="d-block small" style="text-align:right; margin-top:15px;"
+                       routerLink="/password-reset">Mot de passe oublié?</a>
+                    <br>
+                    <div class="d-flex justify-content-between align-items-center m-0">
+                        <button type="submit" class="btn btn-success btn-block">Se Connecter</button>
+                    </div>
+                </form>
+                <!-- / Form -->
+            </div>
+            <div class="card-footer py-3 px-4 px-sm-5">
+                <div class="text-center text-muted">
+                    Membre ? <a href="javascript:void(0)" routerLink="/Inscrire">S'Inscrire</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SPINNER -->
+<div class="app-splash-screen" *ngIf="visibleSpinner">
+    <div class="block-ui-template">
+        <div class="sk-folding-cube sk-primary">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
+        <h5 class="text-center mb-0">CHARGEMENT...</h5>
+    </div>
+</div>
+<!-- FIN SPINNER -->

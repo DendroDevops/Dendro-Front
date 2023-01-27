@@ -1,0 +1,558 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="error-server" *ngIf="errorMessage.show" [@fallIn]="state">
+      {{errorMessage.message}}
+    </div>
+
+    <div class="success-server" *ngIf="successMessage.show" [@fallIn]="state">
+      {{successMessage.message}}
+    </div>
+
+    <form (ngSubmit)="update()" *ngIf="essence" [formGroup]="inventoryForm">
+      <wizard [navBarLocation]="'top'" [navBarLayout]="'custom'" [navigationMode]="'free'">
+        <wizard-step navigationSymbol="1" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Identification
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <app-espece-form [especeGroup]="inventoryForm"
+                                   (selectEvent)="onChangeValueEspece($event)"></app-espece-form>
+                </div>
+
+                <div class="my-3 col-sm-6">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Diamètre'"
+                                       [formName]="'diametre'" [errorText]="'Diamètre invalide'"></app-text-input-form>
+                </div>
+
+                <div class="my-3 col-sm-6">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Hauteur'"
+                                       [formName]="'hauteur'" [errorText]="'Hauteur invalide'"></app-text-input-form>
+                </div>
+
+                <div class="my-3 col-sm-6">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Code Site'"
+                                       [formName]="'codeSite'"></app-text-input-form>
+                </div>
+
+                <div class="my-3 col-sm-6">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Surface totale (en ha)'"
+                                       [formName]="'area'" [errorText]="'Surface invalide'"></app-text-input-form>
+                </div>
+
+                <div class="my-3 col-sm-6">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Identification'"
+                                       [formName]="'numSujet'"></app-text-input-form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" nextStep>Suivant</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+        </wizard-step>
+        <wizard-step navigationSymbol="2" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Images
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <div class="message-attachment ui-bordered p-2 mr-3 mb-3">
+                        <h3 class="text-center">Image 1</h3>
+                        <div style="text-align: center">
+                          <img
+                            [src]="essence?.imageUrl.img1 ? urlBaseEssence + essence.imageUrl?.img1 + '?p='+current : appService.urlLogo2"
+                            id="img-1" class="img-responsive"
+                            style="height:13rem;background:white;border-radius : 3px;">
+                        </div>
+                        <hr>
+                        <div class="media-body ml-1">
+                          <div>
+                            <a href="javascript:void(0)" (click)="modifImg(1)"
+                               class="btn btn-success btn-xs">Modifier</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img1" (click)="deleteImg(1)"
+                               class="btn btn-danger btn-xs">Supprimer</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img1" (click)="rotate(1)"
+                               class="btn btn-secondary btn-xs">Pivoter</a>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <div class="message-attachment ui-bordered p-2 mr-3 mb-3">
+                        <h3 class="text-center">Image 2</h3>
+                        <div style="text-align: center">
+
+                          <img
+                            [src]="essence?.imageUrl.img2 ? urlBaseEssence + essence.imageUrl?.img2 + '?p='+current : appService.urlLogo2"
+                            id="img-2" class="img-responsive"
+                            style="height:13rem;background:white;border-radius : 3px;">
+                        </div>
+                        <hr>
+                        <div class="media-body ml-1">
+                          <div>
+                            <a href="javascript:void(0)" (click)="modifImg(2)"
+                               class="btn btn-success btn-xs">Modifier</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img2" (click)="deleteImg(2)"
+                               class="btn btn-danger btn-xs">Supprimer</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img2" (click)="rotate(2)"
+                               class="btn btn-secondary btn-xs">Pivoter</a>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                      <div class="message-attachment ui-bordered p-2 mr-3 mb-3">
+                        <h3 class="text-center">Image 3</h3>
+                        <div style="text-align: center">
+                          <img
+                            [src]="essence?.imageUrl.img3 ? urlBaseEssence + essence.imageUrl?.img3 + '?p='+current : appService.urlLogo2"
+                            id="img-3" class="img-responsive"
+                            style="height:13rem;background:white;border-radius : 3px;">
+                        </div>
+                        <hr>
+                        <div class="media-body ml-1">
+                          <div>
+                            <a href="javascript:void(0)" (click)="modifImg(3)"
+                               class="btn btn-success btn-xs">Modifier</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img3" (click)="deleteImg(3)"
+                               class="btn btn-danger btn-xs">Supprimer</a>
+                            <a href="javascript:void(0)" *ngIf="essence.imageUrl.img3" (click)="rotate(3)"
+                               class="btn btn-secondary btn-xs">Pivoter</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="canvasImgVisible" [@fallIn]="state" class="col-sm-12">
+                  <hr>
+                  <div class="card mb-3">
+                    <h4 class="card-header text-center">
+                      Image {{positionImg}}
+                    </h4>
+                    <br>
+                    <div class="ng2-file-upload-drop-zone text-center py-5 px-3 mx-3 mb-3"
+                         ng2FileDrop
+                         [ngClass]="{'ng2-file-upload-file-over': hasBaseDropZoneOver}"
+                         (fileOver)="fileOver($event)"
+                         [uploader]="uploader">
+
+                      <h4>Sélectionner l'image</h4>
+                      <label class="btn btn-success">
+                        <i class="far fa-file-image" style="font-size:2rem;"></i>
+                        <input type="file" class="sr-only" ng2FileSelect
+                               [uploader]="uploader"
+                               multiple>
+                      </label>
+                    </div>
+
+
+                    <ul class="list-group mt-4" [class.d-none]="!uploader?.queue?.length">
+                      <!-- Files -->
+                      <li class="list-group-item" *ngFor="let item of uploader.queue">
+                        <div class="media">
+                          <div class="media-body">
+                            <div>
+                              <span *ngIf="item.isError"><i
+                                class="ion ion-md-alert text-danger text-big mr-2"></i></span>
+                              <strong>{{ item?.file?.name }}</strong>
+                            </div>
+                            <div>
+                              <small class="text-muted" nowrap>
+                                {{ item?.file?.size / 1024 / 1024 | number:'.2' }} MB
+                              </small>
+                            </div>
+                          </div>
+                          <div class="align-self-center ml-3">
+                            <button type="button" ngbTooltip="supprimer l'image" class="btn btn-sm icon-btn btn-danger"
+                                    (click)="item.remove()"><i
+                              class="ion ion-md-trash"></i></button>
+                          </div>
+                        </div>
+                      </li>
+
+                    </ul>
+                    <!-- END CONFIG FILES -->
+                  </div>
+
+                  <div class="text-center">
+                    <button type="button" class="btn-success btn-md" (click)="uploadImage()"
+                            [disabled]="uploader.queue.length === 0">
+                      ENREGISTRER
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" (click)="updateRotation(); uploadImage()" nextStep>Suivant
+            </button>
+            <button type="button" class="btn btn-success" (click)="updateRotation(); uploadImage(); update()">TERMINER
+            </button>
+          </div>
+        </wizard-step>
+        <wizard-step navigationSymbol="3" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Caractéristiques
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Type'"
+                    [formName]="'caract'"
+                    (selectEvent)="isCaractOtherChange($event)"
+                    [DATA_TAB]="caractOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('caractOther').value || isCaractOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Autre, précisez'"
+                                           [formName]="'caractOther'"></app-textarea-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Stade de développement'"
+                    [formName]="'stadeDev'"
+                    [DATA_TAB]="stadeDevOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Forme du Houppier'"
+                    [formName]="'houppier'"
+                    [DATA_TAB]="houppierOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Protection particulière'"
+                    (selectEvent)="isCritereOtherChange($event)"
+                    [formName]="'critere'"
+                    [DATA_TAB]="critereOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('critereOther').value || isCritereOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Autre, précisez : '"
+                                           [formName]="'critereOther'"></app-textarea-input-form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" nextStep>Suivant</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+        </wizard-step>
+        <wizard-step navigationSymbol="5" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Etat Sanitaire
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Etat physiologique'"
+                    (selectEvent)="isHeathDiagChange($event)"
+                    [formName]="'etatGeneral'"
+                    [DATA_TAB]="etatGeneralOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12"
+                     *ngIf="inventoryForm.get('etatSanGeneralChampignons').value.length !== 0 || isHealthDiagChampignons">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Champignons lignivores, précisez : '"
+                    (selectEvent)="onChangeEtatSanChampignonsOther($event)"
+                    [formName]="'etatSanGeneralChampignons'"
+                    [DATA_TAB]="champignonsOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12"
+                     *ngIf="inventoryForm.get('etatSanGeneralChampignonsAutres').value || isEtatSanChampignonsAutres">
+                  <app-text-input-form [textFormGroup]="inventoryForm"
+                                       [textLabel]="'Autres Champignons : '"
+                                       [formName]="'etatSanGeneralChampignonsAutres'"></app-text-input-form>
+                </div>
+
+                <div class="col-sm-12"
+                     *ngIf="inventoryForm.get('etatSanGeneralParasite').value.length > 0 || isHealthDiagParasite">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Parasites et nuisibles :'"
+                    (selectEvent)="isHealthDiagNuisibleOther($event)"
+                    [formName]="'etatSanGeneralParasite'"
+                    [DATA_TAB]="parasitesOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12"
+                     *ngIf="inventoryForm.get('etatSanGeneralParasiteAutres').value || isHealthDiagParasiteOther">
+                  <app-text-input-form [textFormGroup]="inventoryForm"
+                                       [textLabel]="'Autres parasites : '"
+                                       [formName]="'etatSanGeneralParasiteAutres'"></app-text-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('etatSanGeneralOther').value || isHeathDiagOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Commentaires : '"
+                                           [formName]="'etatSanGeneralOther'"></app-textarea-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Evaluation du risque'"
+                    [formName]="'risque'"
+                    [DATA_TAB]="risqueOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class=" text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" nextStep>Suivant</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+        </wizard-step>
+
+        <wizard-step navigationSymbol="4" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Environnement
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+
+                <div class="col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Domaine'"
+                    [formName]="'domaine'"
+                    [DATA_TAB]="domaineOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Nuisance constatées'"
+                    [formName]="'nuisance'"
+                    [DATA_TAB]="nuisanceOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Proximité directe'"
+                    [formName]="'proximite'"
+                    (selectEvent)="isProximiteChange($event)"
+                    [DATA_TAB]="proximiteOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('proximiteOther').value || isProximiteOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Autre, précisez'"
+                                           [formName]="'proximiteOther'"></app-textarea-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Demande de DICT'"
+                    [formName]="'proximiteWithDict'"
+                    [DATA_TAB]="proximiteWithDictOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Taux de fréquentation'"
+                    [formName]="'tauxFreq'"
+                    [DATA_TAB]="tauxFreqOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Type de passage'"
+                    (selectEvent)="isTypePassageChange($event)"
+                    [formName]="'typePassage'"
+                    [DATA_TAB]="typePassageOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('typePassageOther').value || isTypePassageOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Autre, précisez : '"
+                                           [formName]="'typePassageOther'"></app-textarea-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'En cas de travaux'"
+                    (selectEvent)="isAccessibiliteChange($event)"
+                    [formName]="'accessibilite'"
+                    [DATA_TAB]="accessibiliteOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('accessibiliteOther').value || isAccessibiliteOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Accès difficile, précisez : '"
+                                           [formName]="'accessibiliteOther'"></app-textarea-input-form>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" nextStep>Suivant</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+        </wizard-step>
+
+        <wizard-step navigationSymbol="6" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Travaux
+          </ng-template>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="my-3 col-sm-12">
+                  <app-text-input-form [textFormGroup]="inventoryForm" [textLabel]="'Nombre de sujets concernés'"
+                                       [formName]="'nbreSujetConcerne'"
+                                       [errorText]="'Valeur incorrecte'"></app-text-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Préconisation de travaux :'"
+                    [formName]="'travaux'"
+                    (selectEvent)="isTravauxChange($event)"
+                    [DATA_TAB]="travauxOptions"
+                    [isMultiple]="true">
+                  </app-select-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('travauxOther').value || isTravauxOther">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Autres, précisez : '"
+                                           [formName]="'travauxOther'"></app-textarea-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('travauxSoin').value || isTravauxSoin">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm" [textLabel]="'Commentaires : '"
+                                           [formName]="'travauxSoin'"></app-textarea-input-form>
+                </div>
+
+                <div class="col-sm-12" *ngIf="inventoryForm.get('travauxProtection').value || isTravauxProtection">
+                  <app-textarea-input-form [textareaGroup]="inventoryForm"
+                                           [textLabel]="'Protection particulière, précisez : '"
+                                           [formName]="'travauxProtection'"></app-textarea-input-form>
+                </div>
+
+                <div class="my-3 col-sm-12">
+                  <app-select-input-form
+                    [selectFormGroup]="inventoryForm"
+                    [textLabel]="'Echéance :'"
+                    [formName]="'dateTravaux'"
+                    (selectEvent)="isEcheanceChange($event)"
+                    [DATA_TAB]="dateTravauxOptions"
+                    [isMultiple]="false">
+                  </app-select-input-form>
+                </div>
+
+                <div class="my-3 text-center col-sm-4">
+                  <app-date-input-form [formName]="'userEditedDateTravaux'" [dateEcheanceForm]="inventoryForm"
+                                       [placement]="'top-right'"></app-date-input-form>
+                </div>
+                <!--END-->
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="button" class="btn btn-default" nextStep>Suivant</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+
+        </wizard-step>
+        <wizard-step navigationSymbol="7" navigationSymbolFontFamily="Roboto">
+          <ng-template wizardStepTitle>
+            Beva
+          </ng-template>
+          <app-beva [bevaGroup]="inventoryForm"></app-beva>
+          <div class="text-right">
+            <button type="button" class="btn btn-default" previousStep>Précédent</button>
+            <button type="submit" class="btn btn-success">TERMINER</button>
+          </div>
+        </wizard-step>
+      </wizard>
+    </form>
+  </div>
+</div>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

@@ -1,0 +1,72 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <input type="text" class="form-control form-control-md" [(ngModel)]="filterVal"
+                       (input)="currentPage=1; update();"
+                       placeholder="Rechercher">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <button class="btn btn-md btn-success" [disabled]="!isValidChecked()"
+                    [swal]="{
+                        title:'Etes-vous sur(e)?',
+                        text:'Confimer que l\'action a bien été réalisée.',
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Valider',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}"
+                    ngbTooltip="Selectionner puis valider l'action"
+                    (confirm)="onChangeGroupMode()"> Changer mode
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="groupes"
+        [sliceStart]="(currentPage-1) * perPage"
+        [sliceEnd]="currentPage * perPage"
+        [deletable]="false"
+        [editable]="false"
+        (selectAll)="selectInvAll($event)"
+        (selectOne)="selectOne($event)"
+        [selectAllStatus]="selectAllStatus"
+        >
+      </app-table-data>
+      <!-- / Table -->
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+
+    </div>
+  </div>
+
+</div>
