@@ -35,6 +35,6 @@ testem.log
 # Env file
 #src/environments/environment.prod.ts
 #src/environments/environment.ts
-#testconfig
+
 
 # End of https://www.gitignore.io/api/angular
