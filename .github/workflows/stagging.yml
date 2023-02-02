@@ -23,7 +23,8 @@ jobs:
           branch: Develop
           tag_prefix: "v"
           major_pattern: "BREAKING CHANGE:"
-          minor_pattern: "feature:"
+          minor_pattern: "feat(pencil):"
+          patch_pattern: "fix(pencil):"
           version_format: "v${major}.${minor}.${patch}-prerelease${increment}"	
       -
         name: Login to Docker Hub
