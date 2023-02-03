@@ -18,13 +18,13 @@ jobs:
       -
         name: Semantic versioning
         id: versioning
-        uses: paulhatch/semantic-version@v5.0.2
+        uses: paulhatch/semantic-version@v4.0.2
         with: 
           branch: Develop
           tag_prefix: "v"
           major_pattern: "BREAKING CHANGE:"
-          minor_pattern: "feat(pencil):"
-          patch_pattern: "fix(pencil):"
+          minor_pattern: "feat:"
+          patch_pattern: "fix:"
           version_format: "v${major}.${minor}.${patch}-prerelease${increment}"	
       -
         name: Login to Docker Hub
