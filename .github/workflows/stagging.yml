@@ -24,7 +24,7 @@ jobs:
           tag_prefix: "v"
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
-          patch_pattern: "fix:"
+          #patch_pattern: "fix:"
           version_format: "v${major}.${minor}.${patch}-prerelease${increment}"	
       -
         name: Login to Docker Hub

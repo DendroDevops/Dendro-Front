@@ -19,6 +19,7 @@ RUN apt update -y \
 EXPOSE 80
 COPY --from=build /app/dist/angular-starter /var/www/html
 #COPY ./dist/angular-starter/ /var/www/html
+#test
 STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
