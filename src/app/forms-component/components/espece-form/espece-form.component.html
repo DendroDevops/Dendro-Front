@@ -1,0 +1,15 @@
+<div class="form-group" [formGroup]="especeGroup">
+  <label class="form-label">Essence</label>
+  <ng-select
+    [class]="(especeGroup.get('espece').touched && especeGroup.get('espece').errors) ?
+    'is-invalid' : 'is-valid'"
+    placeholder="Essence"
+    [allowClear]="true"
+    [disabled]="disabled"
+    [options]="selectOptions"
+    (ngModelChange)="isValueChange()"
+    formControlName="espece"
+    name="espece">
+  </ng-select>
+  <small class="invalid-feedback">{{errorText}}</small>
+</div>

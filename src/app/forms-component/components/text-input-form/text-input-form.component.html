@@ -1,0 +1,11 @@
+<!-- text input form component -->
+<div class="form-group" [formGroup]="textFormGroup">
+  <label class="form-label" [for]="formName">{{textLabel}}</label>
+  <input
+    [class]="(textFormGroup.get(formName).errors && textFormGroup.get(formName).touched) ?
+    'form-control is-invalid' : 'form-control is-valid'"
+    [id]="formName"
+    [placeholder]="placeholder" [formControlName]="formName"
+    [name]="formName" [type]="type">
+  <small class="invalid-feedback">{{errorText}}</small>
+</div>

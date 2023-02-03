@@ -1,0 +1,53 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered card-table">
+    <thead>
+    <tr class="text-center">
+      <th *ngFor="let c of COLUMNS" class="text-nowrap cursor-pointer" [style]="c.style">
+        <span *ngIf="c.name !== 'actions' && !c.isCheck">{{c.display}}</span>
+        <label *ngIf="c.isCheck" class="custom-control custom-checkbox">
+          <input type="checkbox" [checked]="selectAllStatus"
+                 (change)="selectInvAll();"
+                 class="custom-control-input is-valid">
+          <span class="custom-control-label"></span>
+        </label>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of DATA" (dblclick)="isDblClick && details(data.id)" [class]="isVentoryStyle(data)">
+      <td class="align-middle" *ngFor="let c of COLUMNS">
+        <label class="custom-control custom-checkbox" *ngIf="c.isCheck">
+          <input type="checkbox" [checked]="data?.selected" (change)="checkOne(data)"
+                 class="custom-control-input is-valid">
+          <span class="custom-control-label"></span>
+        </label>
+        <span *ngIf="c.isModelProperty && !c.isDate && !c.isObject && !c.isCurrency">{{ data[c.name] }}</span>
+        <span *ngIf="c.isObject">{{data[c.name] && data[c.name][c.objectName]}}</span>
+        <span *ngIf="c.isDate">{{data[c.name] | date: 'dd/MM/yyyy'}}</span>
+        <span *ngIf="c.isCurrency">{{data[c.name] | currency : 'EUR': 'symbol': '2.2-2': 'fr'}}</span>
+        <span *ngIf="c.name == 'actions'">
+            <a *ngIf="editable" (click)="edit(data.id)" href="javascript:void(0)"
+               class="btn btn-default btn-xs icon-btn md-btn-flat" ngbTooltip="Modifier"><i
+              class="ion ion-md-create"></i></a>
+            <button *ngIf="deletable"
+                    [swal]="{title:'Etes-vous sûr(e)?',
+                            text:'Vous êtes sûr le point d\'effectuer une suppression!',
+                            type:'error',
+                            showCancelButton:true,
+                            confirmButtonText:'Valider',
+                            cancelButtonText:'Annuler',
+                            showCloseButton:true,
+                            cancelButtonClass:'btn btn-md btn-default',
+                            confirmButtonClass:'btn btn-md btn-warning'}"
+                    ngbTooltip="Supprimer"
+                    (confirm)="delete(data.id)" (cancel)="declineDialog.show()"
+                    class="btn btn-default btn-xs icon-btn md-btn-flat">
+              <i class="ion ion-md-close"></i>
+            </button>
+        </span>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,92 @@
+<div class="col-md" [@moveInUp]="state" *ngIf="champignon">
+  <div class="card mb-3">
+    <h4 class="card-header text-center">
+      <i class="ion ion-md-arrow-back mr-0 float-left" style="cursor: pointer; font-size:1.7rem;"
+        (click)="this.appService.goBack()" ngbTooltip="Retour"></i> DETAIL CHAMPIGNON
+    </h4>
+    <div class="card-body">
+      <form [formGroup]="champignonForm" (ngSubmit)="modifier()" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="col-sm-12">
+              <app-text-input-form [textFormGroup]="champignonForm" [textLabel]="'Champignon *'"
+                placeholder="Nom Latin Champignon" [formName]="'name'" [errorText]="'Champs obligatoire'">
+              </app-text-input-form>
+            </div>
+            <br>
+            <div class="col-sm-12">
+              <app-text-input-form [textFormGroup]="champignonForm" [textLabel]="'Attaque sur feuillus'"
+                placeholder="Nom Francais" [formName]="'attaqueF'"></app-text-input-form>
+            </div>
+            <br>
+            <div class="col-sm-12">
+              <app-text-input-form [textFormGroup]="champignonForm" [textLabel]="'Attaque sur résineux'"
+                placeholder="Attaque sur Résineux" [formName]="'attaqueR'"></app-text-input-form>
+            </div>
+            <br>
+            <div class="form-group col-sm-12" [formGroup]="champignonForm">
+              <div class="custom-controls-stacked ml-3">
+                <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                  *ngFor="let category of categories">
+                  <input name="category" type="radio" [value]="category.name" formControlName="category"
+                    class="custom-control-input">
+                  <span class="custom-control-label">{{category.displayName}}</span>
+                </label>
+              </div>
+              <small class="invalid-feedback">Champs obligatoire</small>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-offset-3 col-sm-3 position-relative" *ngFor="let img of champignon?.imgUrl | keyvalue">
+            <ng-container *ngIf="img.value==''; else imgTemplate">
+              <div class="img-thumbnail img-thumbnail-zoom-in"
+                style="display: grid; place-items: center; height: 20rem; width: 100%;background: aliceblue; border-radius: 4px;">
+                <label class="btn btn-success">
+                  <i class="far fa-file-image" style="font-size:2rem;"></i>
+                  <input type="file" class="sr-only" (change)="onFileSelected($event, img.key)">
+                </label>
+              </div>
+            </ng-container>
+            <ng-template #imgTemplate>
+              <div class="position-absolute" style="z-index: 10; right: 1rem;">
+                <label class="btn btn-sm icon-btn btn-warning mr-1" type="button"><i class="ion ion-md-create"></i>
+                  <input type="file" class="sr-only" (change)="onFileSelected($event, img.key)">
+                </label>
+                <button class="btn btn-sm icon-btn btn-danger" type="button" [swal]="
+                    {
+                      title: 'Etes-vous sûr(e)s?',
+                      text: 'Vous êtes sur le point de spprimer l\'image!',
+                      type:'warning',
+                      showCancelButton:true,
+                      confirmButtonText: 'SUPPRIMER',
+                      cancelButtonText:'Annuler',
+                      showCloseButton:true,
+                      cancelButtonClass:'btn btn-md btn-default',
+                      confirmButtonClass:'btn btn-md btn-warning'
+                    }" [ngbTooltip]=" 'Supprimer'" (confirm)="supprimerImage(img.key)"
+                  (cancel)="declineDialog.show()"><i class="ion ion-md-trash"></i></button>
+              </div>
+              <a href="javascript:void(0)" class="img-thumbnail img-thumbnail-zoom-in" style="border-radius:4px;">
+                <img [src]="img.value ? img.value : ''" alt="" class="rounded img-fluid"
+                  style="width: 22rem;height:20rem;">
+              </a>
+            </ng-template>
+            <br>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="card-footer text-muted" style="text-align:right;">
+          <app-button [textLabel]="'Enregistrer'" [type]="'submit'" [formGroup]="champignonForm"
+            [classButton]="'btn btn-success btn-md'"></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

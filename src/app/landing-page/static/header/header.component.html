@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top pt-lg-4" style="background:rgba(0, 0, 0, 0.611764705882353);">
+  <div class="container-fluid">
+    <a [routerLink]="['/']" class="navbar-brand w-lg-100 text-large font-weight-bolder line-height-1 py-3 mr-0"><img
+      src="../../assets/siteweb/Img/dark.svg" style="width: 206px;
+            margin-top: -20px;">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".header-13">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="header-13 navbar-collapse collapse flex-shrink-0">
+      <div class="navbar-nav">
+        <a class="ml-4 nav-item nav-link active menu-link" [routerLink]="['/']" fragment="presentation" >Qui sommes-nous ? </a>
+        <a class="nav-item nav-link menu-link" [routerLink]="['/']" fragment="services">Notre accompagnement </a>
+        <a class="nav-item nav-link menu-link" [routerLink]="['/']" fragment="tarifs">Nos forfaits </a>
+        <a class="nav-item nav-link menu-link" [routerLink]="['/']" fragment="telecharger">Télécharger </a>
+        <a class="nav-item nav-link menu-link" [routerLink]="['/contact']">Contactez-nous</a>
+      </div>
+    </div>
+
+    <div class="header-13 navbar-collapse collapse justify-content-lg-end w-lg-100">
+      <div class="nav navbar-nav align-items-lg-center" style="">
+        <button type="button" class="btn btn-round btn-sm btn-success" [routerLink]="['/Inscrire']"
+                style="background-color:#EC1936"><span class="ion ion-ios-people"></span>&nbsp;&nbsp;Version Gratuite
+        </button>
+        <a class="btn btn-round btn-success btn-sm btn-round px-3 ml-lg-4" [routerLink]="['/login']"> <span
+          class="ion ion-ios-unlock"></span> Connexion</a>
+      </div>
+    </div>
+  </div>
+</nav>
+

@@ -1,0 +1,126 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <input type="text" class="form-control form-control-md" [(ngModel)]="filterVal"
+                       (input)="currentPage=1; update();"
+                       placeholder="Rechercher">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <button class="btn btn-md btn-success" [disabled]="!isValidChecked()"
+                    [swal]="{
+                        title:'Etes-vous sur(e)?',
+                        text:'Confimer que l\'action a bien été réalisée.',
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Valider',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}"
+                    ngbTooltip="Selectionner puis valider l'action"
+                    (confirm)="onChangeGroupMode()"> Changer mode
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered card-table">
+          <thead>
+          <tr>
+            <th class="align-middle">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input is-valid" [checked]="selectAllStatus"
+                       (change)="selectAllStatus = !selectAllStatus; selectInvAll();">
+                <span class="custom-control-label"></span>
+              </label>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="min-width: 8rem">
+              Groupe<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="min-width: 8rem">
+              Accès<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="min-width: 4rem">
+              Licence<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="min-width: 4rem">
+              Forfait<i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap cursor-pointer" style="min-width: 4rem">
+              Durée<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="max-width: 6rem">
+              Date Abonnement<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer" style="max-width: 6rem">
+              Date fin<i class="ion text-muted ml-2"></i>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let groupe of groupes">
+            <td class="align-middle">
+
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" [checked]="groupe.selected" (change)="selectInv(groupe)"
+                       class="custom-control-input is-valid">
+                <span class="custom-control-label"></span>
+              </label>
+            </td>
+            <td class="align-middle"><span
+              [class]="'mr-1 ' + (groupeService.readyChangeForfait(groupe) > 2 ?
+                                           '' : groupeService.readyChangeForfait(groupe) == 0 ?
+                                           'forfait-style-warning' : groupeService.readyChangeForfait(groupe) < 0 ? 'forfait-style-error' : '')"></span> {{groupe.name | lowercase}}
+            </td>
+            <td class="align-middle">{{appService.getDisplayName(groupe.groupeType, groupeTypes)}}</td>
+            <td class="align-middle">{{groupe.licence}}</td>
+            <td class="align-middle">{{groupe.forfait ? groupe.forfait.name : ''}}</td>
+            <td
+              class="align-middle">{{groupe.forfait == null ? '' : forfaitDuration(groupe.forfait.codeForfait) === 'GRATUIT' ?
+              forfaitDuration(groupe.forfait.codeForfait) : forfaitDuration(groupe.forfait.codeForfait)}}
+            </td>
+
+            <td
+              class="align-middle">{{groupe.dateSubscribed ? (groupe.dateSubscribed | date:'dd/MM/yyyy') : ''}}</td>
+            <td
+              class="align-middle">{{groupe.dateEcheance ? (groupe.dateEcheance | date:'dd/MM/yyyy') : ''}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- / Table -->
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            (pageChange)="update()" size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+
+    </div>
+  </div>
+
+</div>

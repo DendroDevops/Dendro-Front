@@ -1,0 +1,26 @@
+<div class="row" *ngIf="champignonsList?.datas">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <app-filter-table (onFilter)="filter($event)"></app-filter-table>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data [COLUMNS]="columns" [DATA]="this.champignonsList.datas" [deletable]="true" [editable]="true"
+        (editClick)="show($event)" (deleteClick)="delete($event)">
+      </app-table-data>
+      <!-- / Table -->
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <app-total-page [dataList]="champignonsList" (loadEvent)="update($event)"></app-total-page>
+      </div>
+      <!--/ Pagination -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,314 @@
+<div class="row" *ngIf="list" [@moveInUp]="state">
+  <div class="col-md" *ngIf="this.appService.getGroupe == 'DENDROMAP'">
+    <div class="card" style="border:1px solid #02BC77">
+      <!-- Table controls -->
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col">
+            Page: &nbsp;
+            <select [(ngModel)]="perPage" (change)="update()"
+                    class="custom-select custom-select-sm d-inline-block w-auto">
+              <option *ngFor="let limit of [10, 20, 30, 40, 50]">{{limit}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="text" [(ngModel)]="filterVal" (input)="currentPage = 1; update()"
+                   class="form-control form-control-sm d-inline-block w-auto float-sm-right" placeholder="Recherche...">
+          </div>
+        </div>
+
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered card-table">
+          <thead>
+          <tr class="text-center">
+            <th class="text-nowrap" style="min-width: 10rem">
+              GROUPE <i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap" style="min-width: 10rem">FORFAIT</th>
+            <th class="text-nowrap" style="min-width: 10rem">DATE ABONNEMENT</th>
+            <th class="text-nowrap" style="min-width: 10rem">DATE FIN</th>
+
+            <th class="text-nowrap cursor-pointer" style="min-width: 12rem">
+              NOM UTILISATEUR<i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap cursor-pointer" style="min-width: 14rem">
+              EMAIL <i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap cursor-pointer" style="min-width: 10rem">
+              PROFIL <i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap cursor-pointer" style="min-width: 10rem">
+              COMPTE VERIFIE <i class="ion text-muted ml-2"></i>
+            </th>
+
+            <th class="text-nowrap cursor-pointer">
+              DATE CREATION<i class="ion text-muted ml-2"></i>
+            </th>
+            <th class="text-nowrap cursor-pointer">
+              STATUT<i class="ion text-muted ml-2"></i>
+            </th>
+            <th></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let data of datas" (dblclick)="showUser(data.id)">
+            <td class="align-middle"> {{data.groupe.name | lowercase}}</td>
+
+            <td class="align-middle"> {{data.groupe.forfait && data.groupe.forfait.name}} </td>
+            <td
+              class="align-middle"> {{data.groupe.dateSubscribed ? (data.groupe.dateSubscribed | date:'dd/MM/yyyy') : ''}}</td>
+            <td
+              class="align-middle">{{data.groupe.dateEcheance ? (data.groupe.dateEcheance | date:'dd/MM/yyyy') : ''}}</td>
+            <td class="align-middle">{{data.username}}</td>
+            <td class="align-middle">{{data.email}}</td>
+            <td class="align-middle">{{data.profil.name}}</td>
+            <td class="align-middle text-center">
+                                    <span *ngIf="data.emailActive">
+                                            <i
+                                              class="ion ion-ios-checkmark-circle text-success text-large  align-middle mr-2"></i>
+                                    </span>
+              <span *ngIf="!data.emailActive">
+                <i class="ion ion-ios-close-circle text-danger text-large align-middle mr-2"></i></span>
+            </td>
+            <td class="align-middle">{{data.createdAt | date: 'dd/MM/yyyy'}}</td>
+            <td class="text-center">
+
+              <label class="switcher switcher-square  switcher-success">
+                <input type="checkbox" class="switcher-input" [(ngModel)]="data.isActive">
+                <span class="switcher-indicator" style="cursor: pointer;"
+                      [swal]="{title: appService.messageDelete.title,
+                                    text: 'Vous êtes sur le point de ' + (data.isActive ? 'désactiver' : 'activer') + ' un utilisateur!',
+                                    type:'warning',
+                                    showCancelButton:true,
+                                    confirmButtonText: data.isActive ? 'DESACTIVER' : 'ACTIVER',
+                                    cancelButtonText:'Annuler',
+                                    showCloseButton:true,
+                                    cancelButtonClass:'btn btn-md btn-default',
+                                    confirmButtonClass:'btn btn-md btn-warning'}"
+                      [ngbTooltip]="!data.isActive ? 'Activer' : 'Désactiver'"
+                      (confirm)="DesactiveOrActive(data)" (cancel)="declineDialog.show()">
+                  <span class="switcher-yes"></span>
+                  <span class="switcher-no"></span>
+                </span>
+              </label>
+
+            </td>
+
+            <td class="text-center text-nowrap align-middle">
+              <a (click)="showUser(data.id)" class="btn btn-default btn-xs icon-btn md-btn-flat"
+                 ngbTooltip="Modifier"><i
+                class="ion ion-md-eye"></i></a>
+              <button
+                [swal]="{title:'Etes-vous sûr(e)?',
+                                    text:'Vous êtes sur le point de supprimer un utilisateur!',
+                                    type:'warning',
+                                    showCancelButton:true,
+                                    confirmButtonText:'Valider',
+                                    cancelButtonText:'Annuler',
+                                    showCloseButton:true,
+                                    cancelButtonClass:'btn btn-md btn-default',
+                                    confirmButtonClass:'btn btn-md btn-warning'}"
+                ngbTooltip="Supprimer" style="cursor: pointer;"
+                (confirm)="delete(data.id)" (cancel)="declineDialog.show()"
+                class="btn btn-default btn-xs icon-btn md-btn-flat">
+                <i class="ion ion-md-close"></i>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- / Table -->
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            (pageChange)="update()" size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+    </div>
+  </div>
+  <div class="col-md" *ngIf="this.appService.getGroupe != 'DENDROMAP'">
+
+    <div class="d-flex flex-wrap justify-content-between ui-bordered px-3 pt-3 mb-4"
+         style="border-radius: 4px;border: 1px solid #02BC77">
+      <!-- View toggle -->
+      <div class="btn-group btn-group-toggle mb-3" name="contacts-view">
+        <label style="font-size:1.2rem;font-weight: bold; margin-top:1rem;" class="d-none d-sm-block">
+          LISTE UTILISATEUR
+        </label>
+
+      </div>
+      <!-- / View toggle -->
+      <input type="text" class="form-control mb-3 col-xs-12 col-sm-6" placeholder="Recherche...">
+    </div>
+
+    <div class="row">
+      <div *ngFor="let data of originalDatas" class="col-sm-4 col-xs-12">
+        <div [class]="data.emailActive? 'card border-green mb-4' : 'card border-red mb-4'">
+          <div class="card-body">
+
+
+            <div class="contact-content text-center">
+              <img
+                [src]="data.img ? appService.urlBase + 'images/' + data.img : this.appService.default_img"
+                class="contact-content-img rounded-circle" width="100" alt="">
+
+              <div class="contact-content-about">
+                <h5 class="contact-content-name mb-1"><a href="javascript:void(0)" class="text-dark">{{data.prenom}}&nbsp;{{data.name}} </a>
+                </h5>
+                <h5 class="contact-content-name mb-1"><a href="javascript:void(0)" class="text-dark">{{data.email}}</a>
+                </h5>
+
+                <div class="contact-content-user text-muted small mb-2">@{{data.username}}</div>
+
+                <div class="small">
+                  <div>{{ (data.profil.name != 'MAIRIE') ? data.profil.name : 'MANAGER'}}</div>
+                </div>
+                <hr class="border-light">
+                <div>
+                  <button type="button" (click)="showUser(data.id)" class="btn icon-btn btn-sm btn-outline-success"
+                          ngbTooltip="Detail">
+                    <span class="lnr lnr-eye"></span>
+                  </button>&nbsp;&nbsp;
+                  <button class="btn icon-btn btn-sm btn-outline-danger"
+                          [swal]="{title:'Etes-vous sûr(e)?',
+                                        text:'Vous êtes sur le point de supprimer cet utilisateur!',
+                                        type:'warning',
+                                        showCancelButton:true,
+                                        confirmButtonText:'Valider',
+                                        cancelButtonText:'Annuler',
+                                        showCloseButton:true,
+                                        cancelButtonClass:'btn btn-md btn-default',
+                                        confirmButtonClass:'btn btn-md btn-success'}"
+                          ngbTooltip="Supprimer"
+                          (confirm)="delete(data.id)" (cancel)="declineDialog.show()">
+                    <span class="lnr lnr-trash"></span>
+                  </button>
+                  &nbsp;&nbsp;
+                  <span class="text-lighter">|</span> &nbsp;&nbsp;
+                  <button type="button" style="cursor: pointer;"
+                          [swal]="{title: 'Etes-vous sûr(e)?',
+                                    text: 'Vous êtes sur le point de ' + (data.isActive ? 'désactiver' : 'activer') + ' un utilisateur!',
+                                    type:'warning',
+                                    showCancelButton:true,
+                                    confirmButtonText: data.isActive ? 'DESACTIVER' : 'ACTIVER',
+                                    cancelButtonText:'Annuler',
+                                    showCloseButton:true,
+                                    cancelButtonClass:'btn btn-md btn-default',
+                                    confirmButtonClass:'btn btn-md btn-warning'}"
+                          (confirm)="DesactiveOrActive(data)" (cancel)="declineDialog.show()"
+                          [class]="data.isActive? 'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger'"
+                          [ngbTooltip]="!data.isActive ? 'Activer' : 'Désactiver'">
+                    {{data.isActive ? 'ACTIF' : 'INACTIF'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!list" [@moveInUp]="state">
+  <div class="col-md">
+    <form [formGroup]="userForm" (ngSubmit)="onAdd()">
+      <div class="card mb-3" style="border:1px solid #02BC77">
+        <h4 class="card-header text-center">
+          AJOUT UTILISATEUR
+        </h4>
+
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-sm-12">
+              <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Nom d\'utilisateur *'"
+                                   [formName]="'username'"
+                                   [errorText]="'Pseudo doit avoir plus de 2 caractères'"></app-text-input-form>
+            </div>
+            <div class="col-md-12">
+              <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Email *'"
+                                   [formName]="'email'"
+                                   [errorText]="'Saisir un email valide'"></app-text-input-form>
+            </div>
+
+            <div class="col-md-6">
+              <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Mot de passe *'"
+                                   [formName]="'password'" [type]="'password'"
+                                   [errorText]="'Respectez le format (minimum) : 8 caractères, 1 majuscule, 1 caractère spécial et 1 nombre.'"></app-text-input-form>
+            </div>
+
+            <div class="col-md-6">
+              <app-text-input-form [textFormGroup]="userForm" [textLabel]="'Confirmation Mot de Passe *'"
+                                   [formName]="'passwordConfirm'" [type]="'password'"
+                                   [errorText]="'Le mot de passe n\'est pas conforme'"></app-text-input-form>
+
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6" *ngIf="displayDendro">
+              <app-select-input-form
+                [selectFormGroup]="userForm"
+                [textLabel]="'Groupe *'"
+                [formName]="'groupe'"
+                (selectEvent)="onProfilGroupe()"
+                [DATA_TAB]="groupeOptions"
+                [isMultiple]="false">
+              </app-select-input-form>
+            </div>
+            <div class="col-md-6">
+              <app-select-input-form
+                [selectFormGroup]="userForm"
+                [textLabel]="'Profil *'"
+                [formName]="'profil'"
+                (selectEvent)="onProfilGroupe()"
+                [DATA_TAB]="profilsOptions"
+                [isMultiple]="false">
+              </app-select-input-form>
+            </div>
+
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="card-footer text-muted" style="text-align:right;">
+          <app-button [textLabel]="'Ajouter'" [type]="'submit'" [formGroup]="userForm"
+                      [classButton]="'btn btn-success btn-md'"></app-button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md">
+    <app-button-float
+      [list]="list"
+      (clickBtn)="this.list = $event">
+    </app-button-float>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

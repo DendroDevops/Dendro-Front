@@ -1,0 +1,53 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md" *ngIf="profil">
+    <form [formGroup]="profilForm" (ngSubmit)="update()">
+      <div class="card mb-3">
+        <h4 class="card-header text-center">
+          <i class="ion ion-md-arrow-back mr-0 float-left" style="cursor: pointer; font-size:1.7rem;"
+             (click)="this.appService.goBack()" ngbTooltip="Retour"></i> MODIFICATION PROFIL
+        </h4>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <app-text-input-form [textFormGroup]="profilForm" [textLabel]="'Profil *'"
+                                   [formName]="'name'" [errorText]="'Champs obligatoire'"></app-text-input-form>
+            </div>
+            <br>
+
+            <div class="form-group col-md-6">
+              <app-select-input-form
+                [selectFormGroup]="profilForm"
+                [textLabel]="'Droit *'"
+                [formName]="'droit'"
+                [DATA_TAB]="droitOptions"
+                [isMultiple]="false">
+              </app-select-input-form>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <br>
+              <br>
+              <div class="custom-controls-stacked ml-3">
+                <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                       *ngFor="let userGroup of groupeTypes">
+                  <input name="groupeType" type="radio" [value]="userGroup.name"
+                         formControlName="groupeType"
+                         class="custom-control-input">
+                  <span class="custom-control-label">{{userGroup.displayName}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-100"></div>
+
+        <div class="card-footer text-muted" style="text-align:right;">
+          <app-button [textLabel]="'Modifier'" [type]="'submit'" [formGroup]="profilForm"
+                      [classButton]="'btn btn-success btn-md'"></app-button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>

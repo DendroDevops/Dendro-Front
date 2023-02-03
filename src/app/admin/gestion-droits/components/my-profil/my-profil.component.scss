@@ -1,0 +1,36 @@
+.list-group-item {
+  outline: 0;
+  cursor: pointer;
+}
+
+// Turn on styles encapsulation
+$ngx-chips-encapsulated: true;
+@import '../../../../../vendor/libs/ngx-chips/ngx-chips';
+
+.sk-primary.sk-chasing-dots .sk-child, .sk-primary.sk-circle .sk-child:before, .sk-primary.sk-cube-grid .sk-cube, .sk-primary.sk-double-bounce .sk-child, .sk-primary.sk-fading-circle .sk-circle:before, .sk-primary.sk-folding-cube .sk-cube:before, .sk-primary.sk-rotating-plane, .sk-primary.sk-spinner-pulse, .sk-primary.sk-three-bounce .sk-child, .sk-primary.sk-wandering-cubes .sk-cube, .sk-primary.sk-wave .sk-rect {
+  background-color: #02BC77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.card {
+  border: 1px solid #02BC77;
+  border-radius: 4px;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+  border-color: #02BC77;
+  background-color: #02BC77;
+}
+
+.custom-control.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before,
+.custom-control.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #02BC77;
+}
+
+.custom-control.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  border-color: #02BC77;
+}
+

@@ -1,0 +1,66 @@
+.sk-primary.sk-chasing-dots .sk-child, .sk-primary.sk-circle .sk-child:before, .sk-primary.sk-cube-grid .sk-cube, .sk-primary.sk-double-bounce .sk-child, .sk-primary.sk-fading-circle .sk-circle:before, .sk-primary.sk-folding-cube .sk-cube:before, .sk-primary.sk-rotating-plane, .sk-primary.sk-spinner-pulse, .sk-primary.sk-three-bounce .sk-child, .sk-primary.sk-wandering-cubes .sk-cube, .sk-primary.sk-wave .sk-rect {
+  background-color: #02BC77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.title-fiche {
+  border: 1px solid white;
+  border-radius: 2px;
+  color: white;
+  background-color: #02BC77;
+}
+
+.title-fiche-gray {
+  border: 1px solid white;
+  border-radius: 2px;
+  color: white;
+  background-color: gray;
+}
+
+.title-second {
+  border: 1px solid white;
+  border-radius: 2px;
+  color: gray;
+  background-color: #02BC77;
+}
+
+.bordure_black_gauche {
+  padding-left: 12px;
+  border-left: 1px solid black;
+  min-height: 6rem;
+}
+
+.img-san {
+  width: 13rem !important;
+  height: 7rem !important;
+}
+
+.img-san-tronc {
+  width: 13rem !important;
+  height: 5rem !important;
+}
+
+.img-san-racine {
+  width: 13rem !important;
+  height: 3rem !important;
+}
+
+.risque-color-black {
+  background-color: #000 !important;
+}
+
+.risque-color-green {
+  background-color: #77a701 !important;
+}
+
+.risque-color-yellow {
+  background-color: #ffef3c !important;
+}
+
+.risque-color-red {
+  background-color: #EC1936 !important;
+}
+

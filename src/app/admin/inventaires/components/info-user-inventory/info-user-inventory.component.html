@@ -1,0 +1,52 @@
+<div class="card mb-4">
+  <div class="card-body" style="padding:0">
+    <div class="text-center">
+      <img *ngIf="this.isImgUrl()" [src]="this.imgFileNameUrl+ '?p='+ current"
+           style="width:100%;height:15rem;background:#fafafa; object-fit: contain"
+           class="img-responsive" alt="">
+    </div>
+  </div>
+  <hr class="border-light m-0">
+  <div class="card-body">
+    <h4
+      class="mb-0"> {{data.espece.genre}} {{data.espece.name}} {{data.espece.cultivar}}
+      <small
+        *ngIf="!this.isEssence()"> <span class="badge badge-danger" style="font-size : 16px;"
+                                         *ngIf="!isFinished"> {{!isFinished ? 'Brouillon' : ''}}</span></small>
+    </h4>
+    <br>
+    <p *ngIf="data.critere.length != 0 ">Arbre remarquable </p>
+    <ul class="list-group p-0">
+      <li class="list-group-item d-flex justify-content-between align-items-center">Nombre de sujets
+        présents
+        <span class="badge badge-default">1</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">Hauteur moyenne
+        <span class="badge badge-default">{{data.hauteur}} m</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">Diamètre moyen
+        <span class="badge badge-default">{{data.diametre}} cm</span>
+      </li>
+    </ul>
+    <br>
+    <p *ngIf="!this.isEssence()">
+      Mis à jour
+      le {{updatedAt ? (updatedAt | date:'dd/MM/yyyy') : (createdAt | date:'dd/MM/yyyy')}}
+    </p>
+
+  </div>
+
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-sm-4">
+        <app-button-show-page [backButton]="true" [title]="'RETOUR'">
+        </app-button-show-page>
+      </div>
+      <div class="col-sm-8">
+        <app-button-show-page [urlRoutePage]="urlRoutePage"
+                              [title]="textLabelBtnShow" [isVisiteurConfig]="isVisiteurConfig">
+        </app-button-show-page>
+      </div>
+    </div>
+  </div>
+</div>

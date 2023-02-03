@@ -1,0 +1,15 @@
+<div *ngIf="!list" [@moveInUp]="state">
+  <app-add-champignons (visibleSpinner)="visibleSpinner= $event" (list)="afterAdd($event);"></app-add-champignons>
+</div>
+
+<div *ngIf="list" [@moveInUp]="state">
+  <app-list-champignons (visibleSpinner)="visibleSpinner= $event"></app-list-champignons>
+</div>
+
+<app-button-float
+  [list]="list"
+  (clickBtn)="list = $event">
+</app-button-float>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

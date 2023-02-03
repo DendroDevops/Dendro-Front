@@ -1,0 +1,353 @@
+<div class="authentication-wrapper authentication-3 px-4"
+     style="background-image: url('../../../../assets/static/img/Background.png');">
+  <div class="authentication-inner">
+    <!-- Side container -->
+    <!-- Do not display the container on extra small, small and medium screens -->
+    <div class="d-none d-lg-flex col-lg-offset-1 col-lg-6 align-items-center ui-bg-cover  p-3">
+      <div class="ui-bg-overlay bg-dark opacity-50"></div>
+      <!-- Text -->
+      <div class="w-100 text-white px-5  text-center">
+        <h1 class="display-3 mb-4">
+          <i class="lnr lnr-cloud-download text-success text-big align-middle"></i>&nbsp;
+          <span class="align-middle">Télécharger</span>
+        </h1>
+
+        <p class="lead font-weight-light py-4">
+            <span class="text-big">
+                Dendromap<sub>®</sub> est disponible sur les plateformes mobiles ios et android.
+                Choisissez la version adaptée à votre matériel.<br><br>
+                Créez d’abord un identifiant sur notre site pour pouvoir vous connecter sur l’application.
+            </span>
+        </p>
+
+        <a href="" class="text-transform-none text-left m-3">
+          <img src="../../../../assets/static/download-apple.svg" style="width: 12rem;" alt="">
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.arbocens.dendromap"
+           class="text-transform-none text-left m-3">
+          <img src="../../../../assets/static/download-android.png" style="width: 14rem;" alt="">
+        </a>
+
+      </div>
+      <!-- /.Text -->
+    </div>
+    <!-- / Side container -->
+    <!-- Form container -->
+    <div class="col-lg-8 col-xs-12 col-xs-12 d-lg-flex p-3 align-items-center" [@moveInUp]="state">
+      <div class="card">
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+          <div class="card-header">
+            <h5 class="card-header-title text-center">Inscription</h5>
+            <!--          <img class="float-sm-center" src="../../../assets/siteweb/Img/Logo/white.svg" width="50" alt="">-->
+          </div>
+
+          <div class="mx-4 error-server" *ngIf="errorMessage.show" [@fallIn]="state">
+            {{errorMessage.message}}
+          </div>
+
+          <div class="mx-4 success-server" *ngIf="successMessage.show" [@fallIn]="state">
+            {{successMessage.message}}
+          </div>
+
+          <div *ngIf="step1Visible" style="max-width: 650px;" class="card-body col-xs-12 w-100 p-4 p-md-4 mx-auto">
+            <h5 class="text-center font-weight-normal mb-4">Informations utilisateur</h5>
+            <div class="nav-tabs-top mx-auto" style="max-width: 37rem;">
+              <div class="row">
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <input
+                    [class]="signUpForm.get('username').errors && signUpForm.controls.username.touched ? 'form-control is-invalid' : 'form-control is-valid'"
+                    formControlName="username" name="username"
+                    placeholder="Nom d'utilisateur *" type="text">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('username').errors && signUpForm.controls.username.touched"> Champs
+                    obligatoire (minimum 3 caractères)
+                  </small>
+                </div>
+                <div class=" col-sm-12 col-xs-12 form-group">
+                  <input
+                    [class]="signUpForm.get('email').errors && signUpForm.controls.email.touched ? 'form-control is-invalid' : ' form-control is-valid'"
+                    formControlName="email" name="email"
+                    placeholder="Email *" type="text">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('email').errors && signUpForm.controls.email.touched">Email invalide
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <input
+                    [class]="(signUpForm.get('password').errors && signUpForm.controls.password.touched) ? 'form-control is-invalid' : ' form-control is-valid'"
+                    formControlName="password" name="password"
+                    placeholder="Nouveau mot de passe *" type="password">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('password').errors && signUpForm.controls.password.touched">
+                    Respectez le format (minimum) : <br>
+                    8 caractères, 1 majuscule, 1 caractère spécial et 1 nombre.
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <input
+                    [class]="signUpForm.get('passwordConfirm').errors && signUpForm.controls.passwordConfirm.touched ? 'form-control is-invalid' : ' form-control is-valid'"
+                    formControlName="passwordConfirm"
+                    name="passwordConfirm" placeholder="Confirmation mot de passe *" type="password">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('passwordConfirm').errors?.MatchPassword && signUpForm.controls.passwordConfirm.touched">
+                    Mot de passe n'est pas conforme
+                  </small>
+                </div>
+                <div class="col-sm-5 float-sm-left design-bloc-tarif">
+                  <label> <b>FORFAIT FLEX </b></label>
+                  <p style="text-align: justify; font-size: 0.7rem;">Bénéficiez de la version gratuite de Dendromap*
+                    pour
+                    recenser et diagnostiquer l'ensemble de vos arbres et espaces verts sur Google Map (sans accès
+                    aux outils de gestion quotidienne).</p>
+                  <hr>
+                  <div class="row switchers-stacked">
+                    <div class="demo-inline-spacing">
+                      <div class="col-sm-6">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'GRATUIT'" formControlName="forfait" class="switcher-input"
+                                 name="forfait" checked>
+                          <span class="switcher-indicator">
+                                                      <span class="switcher-yes"></span>
+                                                      <span class="switcher-no"></span>
+                                                      </span>
+                          <span class="switcher-label"><strong>Gratuit</strong></span>
+                        </label>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5 col-xs-12 design-bloc-tarif">
+                  <label> <b>FORFAIT AGILE </b></label>
+                  <p style="text-align: justify; font-size: 0.7rem; margin-bottom: 30px;">Anticipez les travaux,
+                    optimisez
+                    la gestion de vos
+                    espaces
+                    verts,
+                    calculez
+                    leurs valeurs intrinsèques et éditez des rapports avec la version complète de Dendromap*.</p>
+                  <hr>
+                  <div class="row switchers-stacked">
+                    <div class="demo-inline-spacing">
+                      <div class="col-sm-6">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'12M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait"
+                                 checked>
+                          <span class="switcher-indicator">
+                                                      <span class="switcher-yes"></span>
+                                                      <span class="switcher-no"></span>
+                                                      </span>
+                          <span class="switcher-label"><strong>75</strong>&nbsp;€&nbsp;T.T.C.&nbsp;/mois&nbsp;pendant&nbsp;12&nbsp;mois</span>
+                        </label>
+                      </div>
+                      <br>
+                      <div class="col-sm-6">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'6M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait">
+                          <span class="switcher-indicator">
+                                <span class="switcher-yes"></span>
+                                <span class="switcher-no"></span>
+                              </span>
+                          <span class="switcher-label"><strong>99</strong>&nbsp;€&nbsp;T.T.C.&nbsp;/mois&nbsp;pendant&nbsp;6&nbsp;mois</span>
+                        </label>
+                      </div>
+                      <br>
+                      <div class="col-sm-6">
+                        <label class="switcher switcher-success">
+                          <input type="radio" [value]="'1M'" formControlName="forfait" class="switcher-input"
+                                 name="forfait" checked>
+                          <span class="switcher-indicator">
+                                <span class="switcher-yes"></span>
+                                <span class="switcher-no"></span>
+                              </span>
+                          <span class="switcher-label"><strong>120</strong>&nbsp;€&nbsp;T.T.C.&nbsp;/mois&nbsp;pendant&nbsp;1&nbsp;mois </span>
+                          <span class="switcher-label" style="color:red;">&nbsp;Avec&nbsp;essai&nbsp;gratuit&nbsp;de&nbsp;30&nbsp;jours </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <label for="cguCgv">
+                    <input type="checkbox" id="cguCgv" name="cguCgv" formControlName="cguCgv" required>
+                    J’accepte sans réserve les <a target="_blank"
+                                                  href="../../../../assets/static/cgu-cgv_site%20web.pdf">CGV-CGU</a> du
+                    site Dendromap®
+                  </label>
+                  <br>
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('cguCgv').errors && signUpForm.controls.cguCgv.touched">Veuillez
+                    accepter les conditions
+                    d'utilisation
+                  </small>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div *ngIf="step2Visible && this.valueForfait != 'GRATUIT'"
+               class="card-body col-xs-12  w-100 p-4 p-md-5 mx-auto" style="max-width: 650px;">
+
+            <h5 class="text-center font-weight-normal mb-4">Ajouter une adresse de facturation</h5>
+
+            <div class="nav-tabs-top mx-auto" style="max-width: 37rem;">
+              <div class="row">
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="name">Nom et prénom</label>
+                  <input formControlName="name" name="name" type="text" class="is-valid form-control" id="name"
+                         placeholder="Nom Prénom*">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('name').errors && signUpForm.controls.name.touched">Champ invalide
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="address2">Société
+                  </label>
+                  <input formControlName="address2" name="address2" type="text" class="is-valid form-control"
+                         id="address2"
+                         placeholder="Société">
+                </div>
+
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="address">Adresse</label>
+                  <input formControlName="address" name="address" type="text" class="is-valid form-control" id="address"
+                         placeholder="Adresse *">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('address').errors && signUpForm.controls.address.touched">Adresse
+                    invalide
+                  </small>
+                </div>
+
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="zipCode">Code postal</label>
+                  <input formControlName="zipCode" name="zipCode" type="tel" id="zipCode"
+                         class="form-control is-valid" placeholder="Code Postal *" (change)="onChangeZipCode()">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('zipCode').errors && signUpForm.controls.zipCode.touched">Code postal
+                    invalide
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="city">Commune</label>
+                  <select formControlName="city" name="city" id="city"
+                          class="form-control is-valid custom-select">
+                    <option *ngFor="let city of cityList"
+                            value="{{ city.nomCommune }}">{{ city.nomCommune }}</option>
+                  </select>
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('city').errors && signUpForm.controls.city.touched">Commune invalide
+                  </small>
+                </div>
+
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end" for="phoneNumber">Téléphone</label>
+                  <input formControlName="phoneNumber" name="phoneNumber" type="tel" class="is-valid form-control"
+                         id="phoneNumber"
+                         placeholder="0102030405 *">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('phoneNumber').errors && signUpForm.controls.phoneNumber.touched">N° de
+                    téléphone invalide
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="step3Visible" class="card-body col-xs-12  w-100 p-4 p-md-5 mx-auto" style="max-width: 650px;">
+            <div class="bloc-data" *ngIf="this.signUpForm.value.forfait == '1M'">
+              Vous ne serez pas prélevé pendant la période d’essai de 30 jours.
+            </div>
+            <h5 class="text-center font-weight-normal mb-4">Ajouter une carte de paiement</h5>
+
+            <div class="nav-tabs-top mx-auto" style="max-width: 37rem;">
+              <div class="row">
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <label class="d-flex justify-content-between align-items-end">
+                    <span class="form-label mb-0">Numéro de la carte</span>
+                    <img class="d-lg" src="../../../../assets/siteweb/payment/Visa-light.png"
+                         style="margin-bottom: -0.8rem;width: 6rem;" alt>
+                    <img class="d-lg" src="../../../../assets/siteweb/payment/MasterCard-light.png"
+                         style="margin-left: -11rem;margin-bottom: -0.5rem;width: 5rem;" alt>
+                    <img class="d-lg" src="../../../../assets/siteweb/payment/logo-cb.png"
+                         style="margin-left: -9rem; width:3rem"
+                         alt>
+                  </label>
+                  <input formControlName="ccNumber" class="is-valid form-control"
+                         [textMask]="{mask: cardMaskFunction, guide: false, showMask: true}" type="text"
+                         placeholder="XXXX-XXXX-XXXX-XXXX">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('ccNumber').errors && signUpForm.controls.ccNumber.touched">Numero de
+                    carte invalide
+                  </small>
+                </div>
+                <div class="col-sm-12 col-xs-12 form-group">
+                  <label class="form-label">Nom du titulaire de la carte</label>
+                  <input formControlName="nameCard" name="nameCard" type="text" class="is-valid form-control"
+                         placeholder="Noms et prénoms">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('nameCard').errors && signUpForm.controls.nameCard.touched">Information
+                    invalide
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12 form-row">
+                  <label class="form-label">Date d'expiration</label>
+                  <input formControlName="ccExp" name="ccExp" type="text"
+                         class="form-control is-valid" placeholder="MM/YY">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('ccExp').errors && signUpForm.controls.ccExp.touched">Date d'expiration
+                    invalide
+                  </small>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <label class="form-label">CVV</label>
+                  <input formControlName="ccCvc" name="ccCvc" type="text"
+                         class="form-control is-valid"
+                         placeholder="XXX">
+                  <small style="color:red;font-size:0.9em; font-weight:bold"
+                         *ngIf="signUpForm.get('ccCvc').errors && signUpForm.controls.ccCvc.touched">Code secret
+                    invalide
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer text-center py-4">
+
+            <button *ngIf="!step1Visible" class="btn btn-lg btn-default mb-3"
+                    (click)="previous()">
+              &nbsp;Precedent
+            </button>&nbsp; &nbsp;
+            <button class="btn btn-lg btn-success mb-3"
+                    [type]="(signUpForm.invalid && valueForfait !== 'GRATUIT') || (signUpForm.invalid && step2Visible) ? 'button' : 'submit'"
+                    (click)="next()" [disabled]="isDisabled()">
+              {{ (signUpForm.invalid && valueForfait !== 'GRATUIT') || (signUpForm.valid && step2Visible) ? 'Suivant' : 'Souscrire' }}&nbsp;→
+            </button>
+
+            <div class="text-center text-muted">
+              Déjà membre ? <a href="javascript:void(0)" routerLink="/login">Se connecter</a>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <!-- / Form container -->
+  </div>
+</div>
+
+<!-- SPINNER -->
+<div class="app-splash-screen" *ngIf="visibleSpinner">
+  <div class="block-ui-template">
+    <div class="sk-folding-cube sk-primary">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+    <h5 class="text-center mb-0">CHARGEMENT...</h5>
+  </div>
+</div>
+<!-- FIN SPINNER -->

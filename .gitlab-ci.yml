@@ -1,0 +1,39 @@
+stages:
+  - build
+  - package
+#  - deploy
+build:
+  stage: build
+  tags:
+    - angular
+    - dendromapfront
+    - node
+  image: node:12
+  only:
+    - develop
+  script:
+    - rm -rf package-lock.json node_modules
+    - npm cache clean --force
+    - npm install node-sass --unsafe-perm
+    - npm install
+    - npm run prod
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 2 hours
+  cache:
+    paths:
+      - node_modules/
+docker-build:
+  # official docker image
+  image: docker:stable
+  stage: package
+  services:
+    - docker:dind
+  only:
+    - develop
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"

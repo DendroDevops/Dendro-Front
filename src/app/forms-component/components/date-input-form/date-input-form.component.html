@@ -1,0 +1,18 @@
+<div class="form-group" [formGroup]="dateEcheanceForm">
+  <label>{{textLabel}}</label>
+  <div class="input-group">
+    <input [class]="(dateEcheanceForm.get(formName).errors && dateEcheanceForm.get(formName).touched) ?
+    'form-control is-invalid' : 'form-control is-valid'" placeholder="jj/mm/aaaa" name="dp"
+           ngbDatepicker
+           [formControlName]="formName"
+           [displayMonths]="displayMonths"
+           [navigation]="'select'"
+           [disabled]="disabled"
+           #d="ngbDatepicker" [placement]="placement">
+    <div class="input-group-append">
+      <button class="input-group-text" [disabled]="disabled" (click)="d.toggle()" type="button">
+        <span class="ion ion-md-calendar" style="cursor: pointer;"></span>
+      </button>
+    </div>
+  </div>
+</div>

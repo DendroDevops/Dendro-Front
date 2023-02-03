@@ -1,0 +1,12 @@
+<div class="form-group" [formGroup]="selectFormGroup">
+  <label class="form-label">{{textLabel}}</label>
+  <ng-select class="ng-select-success is-valid"
+             (ngModelChange)="isValueChange()"
+             placeholder="Sélectionner une donnée"
+             [allowClear]="true"
+             [disabled]="disabled"
+             [multiple]="isMultiple"
+             [options]="DATA_TAB"
+             [formControlName]="formName">
+  </ng-select>
+</div>

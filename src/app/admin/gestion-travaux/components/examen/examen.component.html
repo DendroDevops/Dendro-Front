@@ -1,0 +1,79 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card" style="border:1px solid #02BC77">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <app-filter-table [placeholder]="'Rechercher par genre ou adresse'"
+                                  (onFilter)="update($event)"></app-filter-table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <button class="btn btn-md btn-success" *ngIf="!authService.isVisiteur()"
+                    [swal]="{
+                        title:'Etes-vous sur(e)?',
+                        text:'Confimer que l\'action a bien été réalisée.',
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Valider',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}"
+                    ngbTooltip="Selectionner puis valider l'action"
+                    (confirm)="effectuerTravaux()"> Action réalisée
+            </button>
+            <app-export-button [typeData]="'TRAVAUX'" [dataSelected]="this.datas"
+                               [titleFile]="'Dendromap_Examen'"></app-export-button>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-custom-table-work
+        [COLUMNS]="columns"
+        [DATA]="datas"
+        [deletable]="false"
+        [editable]="false"
+        [showAble]="true"
+        (selectAll)="selectInvAll($event)"
+        (selectOne)="selectOne($event)"
+        [selectAllStatus]="selectAllStatus"
+        [isDblClick]="true"
+        (dbclick)="show($event)"
+        (showClick)="show($event)"
+        (sortClick)="setSort($event)"
+        [titleModal]="'TRAVAUX'"
+      >
+      </app-custom-table-work>
+      <!-- / Table -->
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted"> Total : {{ totalItems }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [maxSize]="20" [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            (pageChange)="update(this.nameEspece)" size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0">
+            </ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+
+    </div>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

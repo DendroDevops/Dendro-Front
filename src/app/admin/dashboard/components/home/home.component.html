@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-md-8">
+    <!-- Traffic sources -->
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card mb-4">
+          <h6 class="card-header with-elements">
+            <div class="card-header-title text-default" style="cursor: pointer;" [routerLink]="['/admin/inventaires']">
+              Inventaires
+            </div>
+            <div class="card-header-elements ml-auto">
+              <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+                <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                        ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="printPieChart('CURRENT')">En cours</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="printPieChart('LAST_MONTH')">Mois
+                    dernier</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="printPieChart('LAST_SIX_MONTH')">6
+                    mois</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="printPieChart('LAST_YEAR')">1 an</a>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                     (click)="open(defaultModal); getBlocIdentity('BLOC_PIE_CHART')"> Personnaliser </a>
+                </div>
+              </div>
+            </div>
+          </h6>
+          <ng-template #defaultModal let-c="close" let-d="dismiss">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                Choisir une période
+              </h5>
+              <button type="button" class="close" (click)="d('Cross click')">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+              <div class="demo-vertical-spacing mt-4">
+                <ngb-datepicker #dp ngModel (ngModelChange)="onDateChange($event)" [displayMonths]="2"
+                                [dayTemplate]="t">
+                </ngb-datepicker>
+
+                <ng-template #t let-date="date" let-focused="focused">
+                  <div class="ngb-range-day"
+                       [ngClass]="{ 'bg-success text-white': isFrom(date) || isTo(date), 'bg-light ngb-in-range': isHovered(date) || isInside(date) }"
+                       (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                    {{ date.day }}
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="c('Close click')">Fermer</button>
+              <button type="button" class="btn btn-success" (click)="personalValid(); c('Close click')">Valider</button>
+            </div>
+          </ng-template>
+
+          <div class="card-body">
+            <highcharts-chart
+              [Highcharts]="Highcharts"
+              [options]="chartOptions"
+              [constructorType]="chartConstructor"
+              [(update)]="updateFlag"
+              style="width: 100%; height: 305px; display: block;">
+            </highcharts-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="card mb-4">
+          <h6 class="card-header with-elements">
+            <div class="card-header-title text-default" style="cursor: pointer;" [routerLink]="['/admin/inventaires']">
+              Valeur Estimative
+            </div>
+            <div class="card-header-elements ml-auto">
+              <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+                <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                        ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getValEstimative('CURRENT')">En cours</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getValEstimative('LAST_MONTH')">Mois
+                    dernier</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getValEstimative('LAST_SIX_MONTH')">6
+                    mois</a>
+
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getValEstimative('LAST_YEAR')">1 an</a>
+
+                  <a class="dropdown-item" href="javascript:void(0)"
+                     (click)="open(defaultModal); getBlocIdentity('BLOC_VAL_ESTIMATE')"> Personnaliser </a>
+                </div>
+              </div>
+            </div>
+          </h6>
+          <div
+            class="card-body text-center text-xlarge py-3">{{totalBeva | currency:'EUR': 'symbol':'3.2':'fr'}}</div>
+        </div>
+
+        <div class="card mb-4">
+          <h6 class="card-header with-elements">
+            <div class="card-header-title text-default" style="cursor: pointer;"
+                 [routerLink]="['/admin/saisie-valide']">Saisies à valider
+            </div>
+            <div class="card-header-elements ml-auto">
+              <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+                <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                        ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getSaisieValid()">En cours</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getSaisieValid('LAST_MONTH')">Mois
+                    dernier</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getSaisieValid('LAST_SIX_MONTH')">6
+                    mois</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getSaisieValid('LAST_YEAR')">1 an</a>
+                  <a class="dropdown-item" href="javascript:void(0)"
+                     (click)="open(defaultModal); getBlocIdentity('BLOC_VALID_SAISIE')"> Personnaliser </a>
+                </div>
+              </div>
+            </div>
+          </h6>
+          <div class="card-body text-center text-xlarge py-3">{{totalSaisieValid}}</div>
+        </div>
+        <div class="card mb-4">
+          <h6 class="card-header with-elements">
+            <div class="card-header-title text-default" style="cursor: pointer;" [routerLink]="['/admin/plantations']">
+              Nouvelle implantation
+            </div>
+            <div class="card-header-elements ml-auto">
+              <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+                <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                        ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getPlantation()">En cours</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getPlantation('LAST_MONTH')">Mois
+                    dernier</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getPlantation('LAST_SIX_MONTH')">6
+                    mois</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getPlantation('LAST_YEAR')">1 an</a>
+
+                  <a class="dropdown-item" href="javascript:void(0)"
+                     (click)="open(defaultModal); getBlocIdentity('BLOC_NEW_PLANT')"> Personnaliser </a>
+                </div>
+              </div>
+            </div>
+          </h6>
+          <div class="card-body text-center  text-xlarge py-3">{{totalPlantation}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- / Traffic sources -->
+  </div>
+  <div class="col-md-4">
+    <!-- Latest events -->
+    <div class="card mb-4" style="border: 1px solid red;line-height: 2.7;">
+      <h6 class="card-header with-elements">
+        <div class="card-header-title text-danger" style="cursor: pointer;"
+             [routerLink]="['/admin/gestion-travaux/alerte']">
+          Alertes du mois
+        </div>
+
+      </h6>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item py-3">
+          <div class="badge badge-success float-right">{{countWorkType}}</div>
+          <div class="font-weight-semibold">Interventions</div>
+        </li>
+        <li class="list-group-item py-3">
+          <div class="badge badge-success float-right">{{examenComplementaire}}</div>
+          <div class="font-weight-semibold"> Examen complémentaire</div>
+        </li>
+        <li class="list-group-item py-3">
+          <div class="badge badge-danger float-right">{{countAbattage}}</div>
+          <div class="font-weight-semibold">Abattages</div>
+        </li>
+      </ul>
+    </div>
+    <!-- / Latest events -->
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <h6 class="card-header with-elements">
+            <div class="card-header-title text-default" style="cursor: pointer;">DT/DICT
+            </div>
+            <div class="card-header-elements ml-auto">
+              <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+                <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                        ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getDict()">En cours</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getDict('LAST_MONTH')">Mois
+                    dernier</a>
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getDict('LAST_SIX_MONTH')">6 mois</a>
+
+                  <a class="dropdown-item" href="javascript:void(0)" (click)="getDict('LAST_YEAR')">1 an</a>
+
+                  <a class="dropdown-item" href="javascript:void(0)"
+                     (click)="open(defaultModal); getBlocIdentity('BLOC_DICT')"> Personnaliser </a>
+                </div>
+              </div>
+            </div>
+          </h6>
+          <div class="card-body text-center  text-xlarge py-3">{{totalDICT}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-xs-12">
+    <!-- CHART MODULE  -->
+    <div class="card mb-4" style="border: 1px solid #02BC77">
+      <h6 class="card-header with-elements">
+        <div class="card-header-title text-default" [routerLink]="['/admin/gestion-travaux']">Travaux à réaliser
+          ({{year}})
+        </div>
+        <div class="card-header-elements ml-auto">
+          <div ngbDropdown placement="bottom-right" class="d-inline-flex">
+            <button type="button" class="btn btn-outline-success btn-xs icon-btn borderless hide-arrow"
+                    ngbDropdownToggle><i class="ion ion-md-more"></i></button>
+            <div ngbDropdownMenu class="dropdown-menu-right">
+              <a class="dropdown-item" href="javascript:void(0)" (click)="printBarChart('CURRENT')">En cours</a>
+              <a class="dropdown-item" href="javascript:void(0)" (click)="printBarChart('LAST_YEAR')">1 an</a>
+            </div>
+          </div>
+        </div>
+      </h6>
+      <div class="card-body">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="optionsBar"
+          style="width: 100%; height: 400px; display: block;">
+        </highcharts-chart>
+      </div>
+    </div>
+  </div>
+
+</div>
+

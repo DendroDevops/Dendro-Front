@@ -1,0 +1,122 @@
+<!-- TRUE VERSION -->
+<div class="row" *ngIf="!list" [@moveInUp]="state">
+
+  <div class="col-md">
+    <form [formGroup]="profilForm" (ngSubmit)="add()">
+      <div class="card mb-3">
+
+        <h4 class="card-header text-center">
+          AJOUT PROFIL
+        </h4>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-md-12">
+              <app-text-input-form [textFormGroup]="profilForm" [textLabel]="'Profil *'"
+                                   [formName]="'name'"
+                                   [errorText]="'Champs obligatoire'">
+              </app-text-input-form>
+            </div>
+            <br>
+
+            <div class="form-group col-md-6">
+              <app-select-input-form
+                [selectFormGroup]="profilForm"
+                [textLabel]="'Droit *'"
+                [formName]="'droit'"
+                [DATA_TAB]="droitOptions"
+                [isMultiple]="false">
+              </app-select-input-form>
+            </div>
+
+            <div class="pl-5 form-group col-sm-6">
+              <br>
+              <br>
+              <div class="custom-controls-stacked">
+                <label class="custom-control custom-radio" style="display: inline;margin-right: 3rem;"
+                       *ngFor="let userGroup of groupeTypes">
+                  <input name="groupeType" type="radio" [value]="userGroup.name"
+                         formControlName="groupeType"
+                         class="custom-control-input">
+                  <span class="custom-control-label">{{userGroup.displayName}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="w-100"></div>
+        <div class="card-footer text-muted" style="text-align:right;">
+          <app-button [textLabel]="'Ajouter'" [type]="'submit'" [formGroup]="profilForm"
+                      [classButton]="'btn btn-success btn-md'"></app-button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</div>
+
+<br>
+<div class="row" *ngIf="list" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card">
+      <!-- Table controls -->
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col">
+            Page: &nbsp;
+            <select [(ngModel)]="perPage" (change)="update()"
+                    class="custom-select custom-select-sm d-inline-block w-auto">
+              <option *ngFor="let limit of [10, 20, 30, 40, 50]">{{limit}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="text" [(ngModel)]="filterVal" (input)="currentPage = 1; update()"
+                   class="form-control form-control-sm d-inline-block w-auto float-sm-right" placeholder="Recherche...">
+          </div>
+        </div>
+
+      </div>
+      <!-- / Table controls -->
+
+      <!-- Table -->
+      <hr class="border-light m-0">
+
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="profils"
+        [deletable]="true"
+        [editable]="true"
+        (editClick)="showUser($event)"
+        (deleteClick)="delete($event)"
+      >
+      </app-table-data>
+
+      <!-- Pagination -->
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted" *ngIf="totalItems">Page {{ currentPage }} of {{ totalPages }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            (pageChange)="update()" size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0"></ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+    </div>
+  </div>
+</div>
+<br>
+<app-button-float
+  [list]="list"
+  (clickBtn)="this.list = $event">
+</app-button-float>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

@@ -1,0 +1,35 @@
+.sk-primary.sk-chasing-dots .sk-child, .sk-primary.sk-circle .sk-child:before, .sk-primary.sk-cube-grid .sk-cube, .sk-primary.sk-double-bounce .sk-child, .sk-primary.sk-fading-circle .sk-circle:before, .sk-primary.sk-folding-cube .sk-cube:before, .sk-primary.sk-rotating-plane, .sk-primary.sk-spinner-pulse, .sk-primary.sk-three-bounce .sk-child, .sk-primary.sk-wandering-cubes .sk-cube, .sk-primary.sk-wave .sk-rect {
+  background-color: #02BC77;
+}
+
+.sk-folding-cube .sk-cube:before {
+  background-color: #ccc;
+}
+
+.b-inscription {
+  border: 1px solid #02BC77;
+  border-radius: 4px;
+}
+
+sub {
+  bottom: 0.45em;
+}
+
+.design-bloc-tarif {
+  background-color: #1eeb7452;
+  text-align: center;
+  margin: 1rem;
+  padding: 15px;
+  max-width: 19rem;
+  border-radius: 5px;
+  box-shadow: 1px 0px 0px 3px #0000001a;
+}
+
+.bloc-data {
+  border: 1px solid #02BC77;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #02BC77;
+  padding: 7px;
+  margin: 13px 0 13px 0;
+}

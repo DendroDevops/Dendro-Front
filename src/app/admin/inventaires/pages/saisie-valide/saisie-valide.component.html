@@ -1,0 +1,71 @@
+<div class="row" [@moveInUp]="state">
+  <div class="col-md">
+    <div class="card" style="border:1px solid #02BC77">
+      <!-- Table controls -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <app-filter-table [placeholder]="'Rechercher par genre ou adresse'"
+                                  (onFilter)="update($event)"></app-filter-table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <button class="btn btn-md btn-success"
+                    [swal]="{title:'Etes-vous sur(e)?',
+                        text:'Valider un ou plusieurs inventaire(s)',
+                        type:'warning',
+                        showCancelButton:true,
+                        confirmButtonText:'Valider',
+                        cancelButtonText:'Annuler',
+                        showCloseButton:true,
+                        cancelButtonClass:'btn btn-md btn-default',
+                        confirmButtonClass:'btn btn-md btn-warning'}"
+                    ngbTooltip="Valider Inventaire"
+                    (confirm)="validInventaire()"> VALIDER INVENTAIRE
+            </button>
+
+            <app-button-delete [data]="this.originalDatas" (deleteClick)="isDeletedInv($event)"></app-button-delete>
+            <app-export-button [dataSelected]="this.datas" [typeData]="'INVENTORY'"
+                               [titleFile]="'Dendromap_Saisie_A_Valide_extraction'"></app-export-button>
+          </div>
+        </div>
+      </div>
+      <!-- / Table controls -->
+      <!-- Table -->
+      <hr class="border-light m-0">
+      <app-table-data
+        [COLUMNS]="columns"
+        [DATA]="datas"
+        [deletable]="false"
+        [editable]="false"
+        (selectAll)="selectInvAll($event)"
+        (selectOne)="selectOne($event)"
+        [selectAllStatus]="selectAllStatus"
+        [isDblClick]="true"
+        (dbclick)="show($event)"
+      >
+      </app-table-data>
+      <div class="card-body py-0">
+        <div class="row">
+          <div class="col-sm text-sm-left text-center pt-3">
+            <span class="text-muted"> Total : {{ totalItems }}</span>
+          </div>
+          <div class="col-sm pt-3">
+            <ngb-pagination [maxSize]="20" [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage"
+                            (pageChange)="update(this.nameEspece)" size="sm"
+                            class="d-flex justify-content-center justify-content-sm-end m-0">
+            </ngb-pagination>
+          </div>
+        </div>
+
+      </div>
+      <!--/ Pagination -->
+    </div>
+  </div>
+</div>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

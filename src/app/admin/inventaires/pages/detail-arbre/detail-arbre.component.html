@@ -1,0 +1,735 @@
+<div class="detail-arbre" *ngIf="inventaire?.arbre">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="media align-items-center py-3 mb-3">
+        <img
+          [src]="inventaire?.user.img ? appService.urlBase + 'images/' + inventaire.user.img : this.appService.default_img"
+          class="d-block" width="80" height="80" style="border-radius: 3px;" alt="">
+
+        <div class="media-body ml-4">
+          <h4 class="font-weight-bold mb-0">{{inventaire?.user.username}}</h4>
+          <div class="text-muted mb-2">{{inventaire?.user.email}}</div>
+          <a href="javascript:void(0)" class="badge badge-success">{{inventaire?.user.profil}}</a>&nbsp;
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="float-sm-right align-items-center py-3 mb-3">
+        <button *ngIf="detailVisible && !authService.isVisiteur()" class="btn btn-success btn-md" ngbTooltip="Dupliquer"
+                [swal]="{title:'Etes-vous sûre de vouloir dupliquer cet inventaire ?',
+              text:'',
+              type:'warning',
+              showCancelButton:true,
+              confirmButtonText:'Dupliquer',
+              cancelButtonText:'Annuler',
+              showCloseButton:true,
+              cancelButtonClass:'btn btn-md btn-default',
+              confirmButtonClass:'btn btn-md btn-warning'}"
+                (confirm)="changeCoord()"
+                (cancel)="declineDialog.show()">
+          <span class="ion ion-md-copy"></span> Dupliquer
+        </button>
+        <button class="btn btn-success btn-md" *ngIf="!detailVisible" (click)="changeCoord()">Detail Inventaire</button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Side info -->
+      <app-info-user-inventory
+        [urlRoutePage]="'/admin/inventaires/modifier/' + inventaire.id"
+        [data]="this.inventaire.arbre"
+        [isFinished]="this.inventaire.isFinished"
+        [createdAt]="this.inventaire.createdAt"
+        [updatedAt]="this.inventaire.updatedAt"
+        [textLabelBtnShow]="'MODIFIER'"
+        [isVisiteurConfig]="true"
+        [typeInventory]="inventaire.type">
+      </app-info-user-inventory>
+      <!-- / Side info -->
+    </div>
+    <!--  -->
+    <div *ngIf="detailVisible" class="col-md-9" [@moveInUp]="state">
+      <ngb-tabset class="nav-tabs-top mb-4">
+        <ngb-tab title="Identification">
+          <ng-template ngbTabContent>
+            <div class="card-body">
+              <h5 class="text-center"> Essence</h5>
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <ul class="list-group p-0">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Genre
+                      <span class="badge badge-default">{{inventaire.arbre.espece.genre}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Espèce
+                      <span class="badge badge-default">{{inventaire.arbre.espece.name}} </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        *ngIf="inventaire.arbre.espece.cultivar">Cultivar
+                      <span class="badge badge-default">{{inventaire.arbre.espece.cultivar}}</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Nom français
+                      <span class="badge badge-default">{{inventaire.arbre.espece.nomFr}}</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Feuillu/ Résineux
+                      <span
+                        class="badge badge-default">{{inventaire.arbre.espece.categorie === 'R' ? 'Résineux' : 'Feuillu'}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Tarif
+                      <span
+                        class="badge badge-default">{{inventaire.arbre.espece.tarif}}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <ul class="list-group p-0 ">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Identification
+                      <span class="badge badge-default">{{inventaire.arbre.numSujet}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Code site
+                      <span class="badge badge-default">{{inventaire.arbre.codeSite}}</span>
+                    </li>
+                  </ul>
+
+                  <ul class="list-group p-0">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Hauteur
+                      <span class="badge badge-default">{{inventaire.arbre.hauteur}} m</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Diamètre
+                      <span class="badge badge-default">{{inventaire.arbre.diametre}} cm</span>
+                    </li>
+                  </ul>
+                  <ul class="list-group p-0">
+                    <h5 class="my-3">Adresse</h5>
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center">{{inventaire.arbre.address}}
+                    </li>
+                  </ul>
+
+                  <ul class="list-group p-0">
+                    <h5 class="my-3">Ville</h5>
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center">{{inventaire.arbre.ville}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5> Images</h5>
+                  <div class="row">
+                    <div class="col-sm-4 col-xs-12">
+                      <img *ngIf="inventaire?.arbre.imgUrl.img1"
+                           [src]="inventaire?.arbre.imgUrl ? urlBaseArbre + inventaire.arbre.imgUrl?.img1 + '?p='+ current : ''"
+                           style="width:100%;height:15rem;background:black;"
+                           class="img-responsive" alt="">
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                      <img *ngIf="inventaire.arbre.imgUrl.img2"
+                           [src]="inventaire?.arbre.imgUrl ? urlBaseArbre + inventaire.arbre.imgUrl?.img2 + '?p='+ current : ''"
+                           style="width:100%;height:15rem;background:black;"
+                           class="img-responsive" alt="">
+                    </div>
+                    <div class="col-sm-4 col-xs-12">
+                      <img *ngIf="inventaire.arbre.imgUrl.img3"
+                           [src]="inventaire?.arbre.imgUrl ? urlBaseArbre + inventaire.arbre.imgUrl?.img3 + '?p='+ current : ''"
+                           style="width:100%;border-radius: 3px;height:15rem;background:black;"
+                           class="img-responsive" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Caractéristiques">
+          <ng-template ngbTabContent>
+            <div class="card-body">
+
+              <h5 class="my-3"> Au pied de l'arbre</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height:2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let caract of inventaire.arbre.caractPied">{{caract}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.caractPiedOther">{{inventaire.arbre.caractPiedOther}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Tronc</h5>
+
+              <ul class="list-group p-0">
+                <li style="min-height:2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.caractTronc">
+                  {{inventaire.arbre.caractTronc}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre?.caractTroncMultiples"> Tronc multiple
+                  <span class="badge badge-default">{{inventaire.arbre?.caractTroncMultiples}}</span>
+                </li>
+              </ul>
+              <h5 class="my-3"> Port de l'arbre</h5>
+
+              <ul class="list-group p-0">
+                <li style="min-height:2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.portArbre}}
+                </li>
+              </ul>
+              <h5 class="my-3">Stade de développement</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height:2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.stadeDev}}
+                </li>
+              </ul>
+              <h5 class="my-3"> Critère remarquable</h5>
+
+              <ul class="list-group p-0" *ngIf="inventaire.arbre.critere.length !== 0">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let critere of inventaire.arbre.critere">
+                  {{critere}}
+                </li>
+                <li style="min-height: 2.5em;" *ngIf="inventaire.arbre.critereOther"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.critereOther}}
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Etat sanitaire">
+          <ng-template ngbTabContent>
+            <div class="card-body">
+              <h5> Système racinaire, collet</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanCollet of inventaire.arbre.etatSanCollet">
+                  {{etatSanCollet}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanColletOther">
+                  {{inventaire.arbre.etatSanColletOther}}
+                </li>
+              </ul>
+              <ul class="list-group p-0"
+                  *ngIf="inventaire.arbre.etatSanColletChampignons.length !== 0 || inventaire.arbre.etatSanColletChampignonsAutres">
+                <h5 class="my-3" style="font-size:0.8rem;"><i> Champignons lignivores</i></h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanColletChampignons of inventaire.arbre.etatSanColletChampignons">
+                  {{etatSanColletChampignons.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanColletChampignonsAutres">
+                  {{inventaire.arbre.etatSanColletChampignonsAutres}}
+                </li>
+              </ul>
+              <ul class="list-group p-0" *ngIf="inventaire.arbre.etatSanColletCavite">
+                <br>
+                <h5 style="font-size:0.8rem;"><i> Cavité </i></h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.etatSanColletCavite}}
+                </li>
+              </ul>
+              <h5 class="my-3"> Tronc</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanTronc of inventaire.arbre.etatSanTronc">
+                  {{etatSanTronc}}
+                </li>
+                <li *ngIf="inventaire.arbre.etatSanTroncOther"
+                    class="list-group-item d-flex justify-content-between align-items-center"> {{inventaire.arbre.etatSanTroncOther}}
+                </li>
+              </ul>
+              <ul class="list-group p-0"
+                  *ngIf="inventaire.arbre.etatSanTroncChampignons.length !== 0 || inventaire.arbre.etatSanTroncChampignonsAutres">
+                <h5 class="my-3" style="font-size:0.8rem;"><i> Champignons lignivore </i></h5>
+
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanTroncChampignons of inventaire.arbre.etatSanTroncChampignons">
+                  {{etatSanTroncChampignons.name}}
+                </li>
+
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanTroncChampignonsAutres">
+                  {{inventaire.arbre.etatSanTroncChampignonsAutres}}
+                </li>
+              </ul>
+
+              <ul class="list-group p-0"
+                  *ngIf="inventaire.arbre.etatSanTroncNuisibles.length !== 0 || inventaire.arbre.etatSanTroncNuisiblesAutres">
+                <h5 class="my-3" style="font-size:0.8rem;"><i> Parasites, nuisibles </i></h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanTroncParasites of inventaire.arbre.etatSanTroncNuisibles">
+                  {{etatSanTroncParasites.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanTroncNuisiblesAutres">
+                  {{inventaire.arbre.etatSanTroncNuisiblesAutres}}
+                </li>
+              </ul>
+
+              <ul class="list-group p-0" *ngIf="inventaire.arbre.etatSanTroncCavite">
+                <h5 class="my-3" style="font-size:0.8rem;"><i> Cavité </i></h5>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center"> {{inventaire.arbre.etatSanTroncCavite}}
+                </li>
+              </ul>
+              <ul *ngIf="inventaire.arbre.etatSanTroncCorpsEtranger" class="list-group p-0">
+                <h5 class="my-3" style="font-size:0.8rem;"> Corps étranger, précisez : </h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.etatSanTroncCorpsEtranger}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Houppier</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanHouppier of inventaire.arbre.etatSanHouppier">
+                  {{etatSanHouppier}}
+                </li>
+                <li *ngIf="inventaire.arbre.etatSanHouppierOther"
+                    class="list-group-item d-flex justify-content-between align-items-center"> {{inventaire.arbre.etatSanHouppierOther}}
+                </li>
+              </ul>
+              <ul class="list-group p-0"
+                  *ngIf="inventaire.arbre.etatSanHouppierChampignons.length !== 0 || inventaire.arbre.etatSanHouppierChampignonsAutres">
+
+                <h5 class="my-3" style="font-size:0.8rem;"><i> Champignons </i></h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanHouppierChampignons of inventaire.arbre.etatSanHouppierChampignons">
+                  {{etatSanHouppierChampignons.name}}
+                </li>
+
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanHouppierChampignonsAutres">
+                  {{inventaire.arbre.etatSanHouppierChampignonsAutres}}
+                </li>
+              </ul>
+              <ul class="list-group p-0"
+                  *ngIf="inventaire.arbre.etatSanHouppierNuisibles.length !== 0 || inventaire.arbre.etatSanHouppierOther">
+                <h5 class="my-3" style="font-size:0.8rem;"> Parasites, nuisibles</h5>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanHouppierParasite of inventaire.arbre.etatSanHouppierNuisibles">
+                  {{etatSanHouppierParasite.name}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanHouppierNuisiblesAutres">
+                  {{inventaire.arbre.etatSanHouppierNuisiblesAutres}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Etat physiologique</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let etatSanGeneral of inventaire.arbre.etatSanGeneral">
+                  {{etatSanGeneral}}
+                </li>
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.etatSanGeneralOther">
+                  {{inventaire.arbre.etatSanGeneralOther}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Risque de rupture</h5>
+              <ul class="list-group p-0 ">
+                <ng-container *ngFor="let risque of inventaire.arbre.risque">
+                  <li *ngFor="let item of risque | keyvalue" class="list-group-item d-flex justify-content-between align-items-center">
+                    {{item.key | titlecase}}
+                    : {{getRisqueGnlDisplayName(inventaire?.arbre.risque ? item.value : '')}}
+                  </li>
+                </ng-container>
+                <!--
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Collet
+                  : {{getRisqueGnlDisplayName(inventaire?.arbre.risque ? inventaire.arbre.risque[0].collet : '')}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tronc
+                  : {{getRisqueGnlDisplayName(inventaire?.arbre.risque ? inventaire.arbre.risque[1].tronc : '')}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Houppier
+                  : {{getRisqueGnlDisplayName(inventaire?.arbre.risque ? inventaire.arbre.risque[2].houppier : '')}}
+                </li>
+               -->
+              </ul>
+
+              <h5 class="my-3"> Risque de rupture global</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;" *ngIf="inventaire.arbre.risqueGeneral === null">
+                </li>
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let risqueGeneral of inventaire.arbre.risqueGeneral">
+                  {{risqueGeneral}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.risqueGeneralOther">
+                  {{inventaire.arbre.risqueGeneralOther}}
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Environnement">
+          <ng-template ngbTabContent>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5> Implantation</h5>
+                  <ul class="list-group p-0">
+                    <li style="min-height: 2.5rem;"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                      {{inventaire.arbre.implantation}}
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-12">
+                  <h5 class="my-3"> Domaine</h5>
+                  <ul class="list-group p-0">
+                    <li style="min-height: 2.5rem;"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                      {{inventaire.arbre.domaine}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <h5 class="my-3">Cohabitation / proximité directe</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let pro of inventaire.arbre.proximite">{{pro}}
+                </li>
+
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.proximiteOther">
+                  {{inventaire.arbre.proximiteOther}}
+                </li>
+              </ul>
+
+              <h5 class="my-3">Demande de DICT</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let dict of inventaire.arbre.proximiteWithDict">{{dict}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.proximiteWithDict.length === 0">Non
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Nuisances constatées</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let nuisance of inventaire.arbre.nuisance">{{nuisance}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Fréquentation</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.tauxFreq}}
+                </li>
+              </ul>
+
+              <h5 class="my-3">Type de passage</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let typePassage of inventaire.arbre.typePassage">
+                  {{typePassage}}
+                </li>
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.typePassageOther">
+                  {{inventaire.arbre.typePassageOther}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Accessibilité</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5rem;"
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.accessibilite">
+                  {{inventaire.arbre.accessibilite}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.accessibiliteOther">
+                  {{inventaire.arbre.accessibiliteOther}}
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="TRAVAUX">
+          <ng-template ngbTabContent>
+            <div class="card-body" *ngIf="!inventaire.arbre.statusTravaux">
+              <div *ngIf="inventaire.arbre.abattage">
+                <h5> Abattage</h5>
+                <ul class="list-group p-0 ">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{inventaire.arbre.abattage}}
+                  </li>
+                </ul>
+              </div>
+
+              <div *ngIf="!inventaire.arbre.abattage">
+                <h5 class="my-3"> Système racinaire, collet</h5>
+                <ul class="list-group p-0"
+                    *ngIf="inventaire.arbre.travauxColletMultiple.length !== 0 || inventaire.arbre.travauxColletOther">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxColletMultiple of inventaire.arbre.travauxColletMultiple">
+                    {{travauxColletMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;" *ngIf="inventaire.arbre.travauxColletOther"
+                      class="list-group-item d-flex justify-content-between align-items-center">
+                    {{inventaire.arbre.travauxColletOther}}
+                  </li>
+                </ul>
+
+                <h5 class="my-3"> Tronc</h5>
+                <ul class="list-group p-0"
+                    *ngIf="inventaire.arbre.travauxTroncMultiple.length !== 0 || inventaire.arbre.travauxTroncOther">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxTroncMultiple of inventaire.arbre.travauxTroncMultiple">
+                    {{travauxTroncMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxTroncOther">{{inventaire.arbre.travauxTroncOther}}
+                  </li>
+                </ul>
+
+                <ul class="list-group p-0 " *ngIf="inventaire.arbre.travauxTroncProtection">
+                  <h5 class="my-3" style="font-size:0.8rem;"><i>Protection particulière, précisez :</i></h5>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxTroncProtection">{{inventaire.arbre.travauxTroncProtection}}
+                  </li>
+                </ul>
+
+                <h5 class="my-3"> Houppier</h5>
+                <ul class="list-group p-0">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxHouppierMultiple of inventaire.arbre.travauxHouppierMultiple">
+                    {{travauxHouppierMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxHouppierOther">{{inventaire.arbre.travauxHouppierOther}}
+                  </li>
+                </ul>
+              </div>
+
+              <h5 class="my-3">Date échéance</h5>
+
+              <ul class="list-group p-0">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.dateProVisite">
+                  <span class="badge badge-default">{{inventaire.arbre.dateProVisite}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngIf="inventaire.arbre.dateTravaux">
+                  {{inventaire.arbre.dateTravaux}}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.userEditedDateTravaux ? (inventaire.arbre.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-body" *ngIf="inventaire.arbre.statusTravaux">
+              <h5 class="text-center">Aucune activité renseignée </h5>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="VALEUR BEVA">
+          <ng-template ngbTabContent>
+            <div class="card-body">
+              <h5> Indice espèce</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.varietyGrade}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Indice de situation</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.locationIndex}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Indice sanitaire</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.healthIndex}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Indice esthétique</h5>
+              <ul class="list-group p-0">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.aestheticIndex}}
+                </li>
+              </ul>
+
+              <h5 class="my-3"> Valeur BEVA</h5>
+              <ul class="list-group p-0 ">
+                <li style="min-height: 2.5em;"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.beva}}
+                </li>
+              </ul>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Historique">
+          <ng-template ngbTabContent>
+            <div class="card-body" *ngIf="inventaire.arbre.statusTravaux">
+              <h5 class="text-center">Travaux
+                du {{inventaire.updatedAt ? (inventaire.updatedAt | date:'dd/MM/yyyy') : ''}}
+              </h5>
+              <div *ngIf="inventaire.arbre.abattage">
+                <h5 class="my-3"> Abattage</h5>
+                <ul class="list-group p-0 ">
+                  <li style="min-height: 2.5em;"
+                      class="list-group-item d-flex justify-content-between align-items-center">
+                    {{inventaire.arbre.abattage}}
+                  </li>
+                </ul>
+              </div>
+
+              <div *ngIf="!inventaire.arbre.abattage">
+                <h5 class="my-3"> Système racinaire, collet</h5>
+                <ul class="list-group p-0"
+                    *ngIf="inventaire.arbre.travauxColletMultiple.length !== 0 || inventaire.arbre.travauxColletOther">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxColletMultiple of inventaire.arbre.travauxColletMultiple">
+                    {{travauxColletMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center">
+                    {{inventaire.arbre.travauxColletOther}}
+                  </li>
+                </ul>
+                <h5 class="my-3"> Tronc</h5>
+                <ul class="list-group p-0" *ngIf="inventaire.arbre.travauxTroncMultiple.length !== 0">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxTroncMultiple of inventaire.arbre.travauxTroncMultiple">
+                    {{travauxTroncMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxTroncOther">{{inventaire.arbre.travauxTroncOther}}
+                  </li>
+                </ul>
+                <ul class="list-group p-0 " *ngIf="inventaire.arbre.travauxTroncProtection">
+                  <h5 class="my-3" style="font-size:0.8rem;"><i>Protection particulière, précisez :</i></h5>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxTroncProtection">{{inventaire.arbre.travauxTroncProtection}}
+                  </li>
+                </ul>
+
+                <h5 class="my-3"> Houppier</h5>
+                <ul class="list-group p-0"
+                    *ngIf="inventaire.arbre.travauxHouppierMultiple.length !== 0 || inventaire.arbre.travauxHouppierOther">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngFor="let travauxHouppierMultiple of inventaire.arbre.travauxHouppierMultiple">
+                    {{travauxHouppierMultiple}}
+                  </li>
+                  <li style="min-height: 2.5rem;"
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                      *ngIf="inventaire.arbre.travauxHouppierOther">{{inventaire.arbre.travauxHouppierOther}}
+                  </li>
+                </ul>
+              </div>
+              <h5 class="my-3">Date échéance initiale</h5>
+              <ul class="list-group p-0">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{inventaire.arbre.userEditedDateTravaux ? (inventaire.arbre.userEditedDateTravaux | date:'dd/MM/yyyy') : ''}}
+                </li>
+              </ul>
+            </div>
+            <div class="card-body" *ngIf="!inventaire.arbre.statusTravaux">
+              <h5 class="text-center">Aucun historique disponible </h5>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+    </div>
+
+    <!-- DUPLIQUER ELEMENT -->
+    <div class="col-md-9" *ngIf="!detailVisible">
+      <div class="col-md">
+        <div class="card m-1">
+          <div class="card-header">
+            <h4 class="float-sm-left">Positionner l'inventaire</h4>
+            <button class="float-sm-right btn btn-md btn-success" (click)="duplicateInv()">Enregistrer</button>
+          </div>
+          <div class="mx--3 mt--3 card-body">
+            <agm-map [fullscreenControl]='true' [latitude]="coord.lat" [longitude]="coord.long"
+                     [mapTypeControl]='true'
+                     [zoom]="zoom">
+              <agm-marker [latitude]="coord.lat" [markerDraggable]="true" [longitude]="coord.long"
+                          (dragEnd)="getCoord($event)" [zIndex]="15">
+              </agm-marker>
+
+              <div *ngFor="let inv of datas">
+                <agm-marker *ngIf="inv.arbre" [latitude]="inv.arbre.coord.lat"
+                            [iconUrl]='{"url": inv.isFinished ? iconTermine : iconBrouillon,"scaledSize": {"height": 30, "width": 40}}'
+                            [longitude]="inv.arbre.coord.long">
+                  <agm-info-window>
+
+                    <h4 class="mb-0"> {{inv.arbre.espece.genre}} &nbsp; {{inv.arbre.espece.name}}
+                      &nbsp; {{inv.arbre.espece.cultivar}} <br>
+                      <small *ngIf="!inv.isFinished" style="font-size : 16px;" class="text-danger"> Brouillon</small>
+                    </h4>
+                    <br>
+                    <p *ngIf="inv.arbre.critere">Arbre remarquable <br>
+                      <strong>Hauteur :</strong> {{inv.arbre.hauteur}} m,
+                      <strong> Diamètre : </strong>  {{inv.arbre.diametre}} cm
+                      <br>
+                      Mis à jour
+                      le {{inv.updatedAt ? (inv.updatedAt | date: 'dd/MM/yyy') : (inv.createdAt | date: 'dd/MM/yyy')}}
+                    </p>
+                    <button class="btn btn-block btn-xs btn-success" (click)="show(inv.id)"> Detail</button>
+                  </agm-info-window>
+                </agm-marker>
+
+              </div>
+
+            </agm-map>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->

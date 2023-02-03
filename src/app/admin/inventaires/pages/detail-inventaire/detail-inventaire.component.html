@@ -1,0 +1,153 @@
+<div class="row" *ngIf="inventaire">
+  <div class="col-sm-8">
+    <div class="media align-items-center py-3 mb-3">
+      <img
+        [src]="inventaire?.user.img ? appService.urlBase + 'images/' + inventaire.user.img : this.appService.default_img"
+        class="d-block" width="80" height="80" style="border-radius: 3px;" alt="">
+
+      <div class="media-body ml-4">
+        <h4 class="font-weight-bold mb-0">{{inventaire?.user.username}}</h4>
+        <div class="text-muted mb-2">{{inventaire?.user.email}}</div>
+        <a href="javascript:void(0)" class="badge badge-success">{{inventaire?.user.profil}}</a>&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="float-sm-right align-items-center py-3 mb-3">
+      <button *ngIf="!inventaire.arbre" (click)="addEssence(inventaire.id)"
+              class="btn btn-success btn-md mr-3"
+              ngbTooltip="Ajouter une nouvelle Essence">
+        <span class="ion ion-ios-add-circle"></span> Nouvelle Essence
+      </button>
+      <button *ngIf="inventaire.arbre && !authService.isVisiteur()"
+              class="btn btn-success btn-md mr-3" (click)="open(defaultModal, { windowClass: 'modal-lg animate' })"
+              ngbTooltip="Modifier l'adresse de l'inventaire">
+        <span class="ion ion-ios-map"></span> Repositionner
+      </button>
+      <button (click)="showPage(inventaire.id, '/admin/print-inventaire')" class="btn btn-success btn-md"
+              ngbTooltip="Imprimer en pdf">
+        <span class="ion ion-ios-print"></span> Imprimer
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #defaultModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      Repositionner l'arbre sur la carte<br>
+    </h5>
+    <button type="button" class="close" (click)="d('Cross click')"
+            ngbTooltip="Ne pas quitter sans avoir enrégistrer les modifications" placement="bottom">&times;
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="alert alert-warning" role="alert">
+      Aucune modification ne sera prise en compte si vous quittez sans appuyer sur le bouton "Enregistrer"
+    </div>
+    <div class="row">
+      <div class="col-sm-12 p-2 mb-2" style="border: 1px solid #02BC77; border-radius: 3px;">
+        <agm-map [fullscreenControl]='true' [latitude]="this.latUpdate"
+                 [longitude]="this.longUpdate" [mapTypeControl]='true'
+                 [zoom]="zoom" style="height: 500px;">
+          <agm-marker [latitude]="inventaire.arbre.coord.lat" [markerDraggable]="true"
+                      [longitude]="inventaire.arbre.coord.long"
+                      (dragEnd)="getCoord($event)">
+          </agm-marker>
+        </agm-map>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="address"> Adresse</label>
+        <input type="text" [(ngModel)]="address" id="address" (keyup)="isErrorAddress()" name="address"
+               class="form-control is-valid">
+        <small style="color:red;font-size:0.9em; font-weight:bold" *ngIf="addressError">Champ obligatoire</small>
+      </div>
+
+      <div class="col-sm-6 form-group">
+        <label for="ville"> Ville</label>
+        <input type="text" [(ngModel)]="ville" id="ville" (keyup)="isErrorVille()" name="ville"
+               class="form-control is-valid">
+        <small style="color:red;font-size:0.9em; font-weight:bold" *ngIf="villeError">Champ obligatoire</small>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="align-right">
+      <button (click)="onChangeCoord(); d('Cross click')" class="btn btn-success">Enregistrer</button>
+    </div>
+  </div>
+
+</ng-template>
+
+<div *ngIf="inventaire?.arbre">
+  <div class="row">
+    <div class="col-md-3">
+      <app-info-user-inventory
+        [urlRoutePage]="'/admin/inventaires/arbre/' + this.inventaire.id"
+        [data]="this.inventaire.arbre"
+        [isFinished]="this.inventaire.isFinished"
+        [createdAt]="this.inventaire.createdAt"
+        [updatedAt]="this.inventaire.updatedAt"
+        [textLabelBtnShow]="'DETAIL'"
+        [typeInventory]="inventaire.type">
+      </app-info-user-inventory>
+    </div>
+
+    <div class="col-md-9">
+      <div class="card mb-1">
+        <div class="card-body">
+          <agm-map [fullscreenControl]='true' [latitude]="inventaire.arbre.coord.lat"
+                   [longitude]="inventaire.arbre.coord.long" [mapTypeControl]='true'
+                   [zoom]="zoom">
+            <agm-marker *ngIf="inventaire.arbre" [latitude]="inventaire.arbre.coord.lat"
+                        [iconUrl]='{"url": inventaire.arbre.implantation === "En alignement" ? iconEnAlignement : (inventaire.isFinished ? iconTermine : iconBrouillon),"scaledSize": {"height": 50, "width": 50}}'
+                        [longitude]="inventaire.arbre.coord.long">
+            </agm-marker>
+          </agm-map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="inventaire?.epaysage">
+  <div class="row">
+    <div class="col-md-5">
+      <app-card-body-infos-epaysage
+        [epaysage]="this.inventaire.epaysage"
+        [isFinished]="this.inventaire.isFinished"
+        [typeInv]="this.inventaire.type"
+        [createdAt]="this.inventaire.createdAt"
+        [idInventaire]="this.inventaire.id"
+        [updatedAt]="this.inventaire.updatedAt">
+      </app-card-body-infos-epaysage>
+      <!-- Side info -->
+      <!-- / Side info -->
+    </div>
+    <!--  -->
+    <div class="col-md-7">
+      <div class="card mb-1">
+        <div class="card-body">
+          <agm-map [fullscreenControl]='true' [latitude]="lat" [longitude]="lng" [mapTypeControl]='true' [zoom]="zoom">
+            <agm-polygon [fillColor]="inventaire?.isFinished ? '' : fillcolor"
+                         [strokeColor]="inventaire.type === 'EBC'?  ebcStroke : eppStroke"
+                         [fillOpacity]="inventaire.isFinished ? 0.0 : 0.3"
+                         *ngIf="inventaire.epaysage"
+                         [paths]="inventaire.epaysage.coord"
+                         [clickable]="true">
+            </agm-polygon>
+          </agm-map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SPINNER -->
+<app-spinner [visible]="visibleSpinner"></app-spinner>
+<!-- FIN SPINNER -->
