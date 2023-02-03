@@ -24,7 +24,6 @@ jobs:
           tag_prefix: "v"
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
-          #patch_pattern: "bug:"
           version_format: "v${major}.${minor}.${patch}-prerelease${increment}"
           bump_each_commit: true
   
