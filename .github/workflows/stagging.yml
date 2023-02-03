@@ -24,7 +24,6 @@ jobs:
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
           version_format: "v${major}.${minor}.${patch}"
-          #-prerelease${increment}
           bump_each_commit: true
   
       -
