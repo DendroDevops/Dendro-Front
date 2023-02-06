@@ -3,9 +3,9 @@ we will use Github Actions to automate Continuous integration workflow:
 # Pipeline CI steps in the Dev env Pipeline name stagging.yml: 
 ## step 1 : Automate Image version v${major}.${minor}.${patch}:
  +  Commit message Pattern:
-     major_pattern: "BREAKING CHANGE:"--> commit message should starts with "BREAKING CHANGE:"
-     minor_pattern: "feat:"-->commit message should starts with "feat:"
-     patch_pattern: ""--> no Prefix demanded for bug fix
+    + major_pattern: "BREAKING CHANGE:"--> commit message should starts with "BREAKING CHANGE:"
+    + minor_pattern: "feat:"-->commit message should starts with "feat:"
+    + patch_pattern: ""--> no Prefix demanded for bug fix
  ## step 2 : Login to Docker Hub
  + add 2 secrets.ENV to connect to Docker Hub     
  ## step 3 : Build Image and publish to Docker Hub:
@@ -15,9 +15,9 @@ we will use Github Actions to automate Continuous integration workflow:
  ## In production.yml:
  ### Same Logic as Dev ENV: for the Images Version we will use Semantic Versioning to automate the images Tags
  +  Commit message Pattern:
-     major_pattern: "BREAKING CHANGE:"--> commit message should starts with "BREAKING CHANGE:"
-     minor_pattern: "feat:"-->commit message should starts with "feat:"
-     patch_pattern: ""--> no Prefix demanded for bugs
+     + major_pattern: "BREAKING CHANGE:"--> commit message should starts with "BREAKING CHANGE:"
+     + minor_pattern: "feat:"-->commit message should starts with "feat:"
+     + patch_pattern: ""--> no Prefix demanded for bugs
  ## step 2 : Login to Docker Hub
   + add 2 secrets.ENV to connect to Docker Hub     
  ## step 3 : Build Image and publish to Docker Hub:
