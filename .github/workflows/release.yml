@@ -1,11 +1,10 @@
 name: release
 on:
- pull_request:
+  push:
     branches:
-      - main
-    types: [closed]  
-
-
+      - "main"
+    tags:
+      - 'v*'
 env:
   REPO: dendrodevops/dendromapfront_prod
 

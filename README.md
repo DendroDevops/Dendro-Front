@@ -27,7 +27,7 @@ we will use Github Actions to automate Continuous integration workflow:
 ##  release.yml file:
   + we will create our final release and publish to Docker-Hub
 
-### Auto Deployment with Watchtower:
+## Auto Deployment with Watchtower:
  + We will config watchtower container to watch the running containers and check the images version changes in the docker-hub
  + Watchtower will check any changes of the images version and will automatic apply the new Images 
  + watchtower integration will be made in the Docker-compose file.
