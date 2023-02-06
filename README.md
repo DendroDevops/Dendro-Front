@@ -1,4 +1,4 @@
-# Create CI with Github Actions and Integrate WatchTower to automate Deployment in #
+# Create CI with Github Actions and Integrate WatchTower to automate Deployment in docker-compose file #
 we will use Github Actions to automate Continuous integration workflow:
 # Pipeline CI steps in the Dev env Pipeline name stagging.yml: 
 ## step 1 : Automate Image version v${major}.${minor}.${patch}:
