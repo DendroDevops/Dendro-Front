@@ -1,4 +1,3 @@
-
 # Stage 1: Building artifact
 FROM node:12.18.3-alpine3.9 as build
 WORKDIR /app
@@ -24,11 +23,6 @@ COPY --from=build /app/dist/angular-starter /var/www/html
 STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
-
-
-
-
-
 
 
 # FROM ubuntu:18.04
