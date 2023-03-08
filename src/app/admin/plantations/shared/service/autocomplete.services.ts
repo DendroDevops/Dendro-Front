@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable, Output} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
 import {MapService} from "../../../../shared/service/map.service";
 
@@ -11,10 +11,10 @@ export type GoogleResult = {
 
 @Injectable()
 
-export class AutocompleteService {
-
+export class AutocompleteServices {
+  @Output() setAddress: EventEmitter<any> = new EventEmitter();
   public data: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public autoCompleteService: any
+  public autoCompleteServices: any
   public currentData = this.data.asObservable();
 
   geocoder: any;
@@ -25,18 +25,19 @@ export class AutocompleteService {
 
   loadAutoCompleteService(): void {
     this.mapService.loadMapService().then(() => {
-      this.autoCompleteService = new google.maps.places.AutocompleteService();
+      this.autoCompleteServices = new google.maps.places.AutocompleteService();
     });
   }
 
   getPlacesPrediction(filter: string): Observable<any> {
-    return this.autoCompleteService.getPlacePredictions({
+    return this.autoCompleteServices.getPlacePredictions({
       input: filter
     }, (data: GoogleResult[]) => {
       if (data) {
         this.data.next(data);
       }
     });
+    
   }
-
+ 
 }

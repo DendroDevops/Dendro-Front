@@ -31,7 +31,7 @@ export class TravauxComponent implements OnInit {
   // DATA TABLE
   datas: any = [];
   originalDatas: any = [];
-
+  SelctedDatas: any = [];
   searchText: string;
   nameEspece = '';
 
@@ -76,9 +76,8 @@ export class TravauxComponent implements OnInit {
   }
 
   selectInvAll(event: any[]): void {
-    this.datas = event;
+    this.SelctedDatas = event;
   }
-
   selectOne(event): void {
     if (this.originalDatas.find((elt) => elt.id === event.id))
       this.originalDatas.find((elt) => elt.id === event.id).selected = event.selected;

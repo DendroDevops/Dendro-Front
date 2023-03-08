@@ -58,6 +58,7 @@ import {AgmJsMarkerClustererModule} from "@agm/js-marker-clusterer";
 import { PrintInventairesComponent } from './pages/print-inventaires/print-inventaires.component';
 import { PrintDetailsInventairesComponent } from './pages/print-details-inventaires/print-details-inventaires.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -108,7 +109,8 @@ import { PrintDetailsInventairesComponent } from './pages/print-details-inventai
     MarkerTreeComponent,
     AutoCompleteAddressComponent,
     PrintInventairesComponent,
-    PrintDetailsInventairesComponent
+    PrintDetailsInventairesComponent,
+   
   ],
   providers: [
     InventaireService,

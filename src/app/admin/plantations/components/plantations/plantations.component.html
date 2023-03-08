@@ -41,7 +41,11 @@
             </div>
 
             <div class="col-sm-6">
-              <h5 class="text-center">Positionner l’arbre</h5>
+              <!-- <h6 class="text-center">Positionner l’arbre</h6> -->
+              <div class="col-sm-12 mb-4">
+                <app-auto-complete-adresses [formName]="'address'"  [addressForm]="searchForm"  
+             (selectedCountry)="selectCountry($event)"  ></app-auto-complete-adresses>
+              </div> 
               <agm-map [fullscreenControl]='true' [latitude]="coord.lat" [longitude]="coord.long"
                        [mapTypeControl]='true'
                        [zoom]="zoom">

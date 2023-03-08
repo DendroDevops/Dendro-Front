@@ -40,7 +40,7 @@ export class InventairesComponent implements OnInit {
   nameEspece = '';
 
   selectAllStatus = false;
-
+  SelctedDatas: any = [];
   columns: ColumnInterface[] = [
     { name: 'check', isCheck: true, style: {}, isModelProperty: false, isVisible: true },
     { name: 'type', display: 'Type', style: {"min-width": "4rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true },
@@ -106,7 +106,6 @@ export class InventairesComponent implements OnInit {
     this.nameEspece = event;
     const data = this.filter(this.originalDatas);
     this.totalItems = data.length;
-
     this.datas = data;
   }
 
@@ -128,7 +127,7 @@ export class InventairesComponent implements OnInit {
   }
 
   selectInvAll(event: any[]): void {
-    this.datas = event;
+    this.SelctedDatas = event;
   }
 
   selectOne(event): void {

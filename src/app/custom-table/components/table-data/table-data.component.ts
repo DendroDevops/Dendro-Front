@@ -47,11 +47,12 @@ export class TableDataComponent implements OnInit {
   orderByColumns = new Map();
   orderByColumn = "";
   sortBy= "asc";
-
+  itemsInCurrentPage: any[] ;
   constructor(public appService: AppService, private modalService: NgbModal) {
   }
 
   ngOnInit() {
+ 
   }
 
   delete(id) {
@@ -71,11 +72,12 @@ export class TableDataComponent implements OnInit {
     }
 
   selectInvAll(): void {
-    this.selectAllStatus = !this.selectAllStatus
-    for (let d of this.DATA) {
+    this.itemsInCurrentPage = this.DATA.slice(this.sliceStart, this.sliceEnd );
+    for (let d of this.itemsInCurrentPage) {
       d.selected = !d.selected;
     }
-    this.selectAll.emit(this.DATA);
+    this.selectAll.emit(this.itemsInCurrentPage);
+   
   }
 
   checkOne(data: any): void {

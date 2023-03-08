@@ -1,12 +1,8 @@
-import { HttpHeaders } from "@angular/common/http";
-
 export const environment = {
   production: true,
-  baseUrl: 'https://dendromap.fr/api/',
-  headers :new HttpHeaders({
- 
-    'Content-Type':'undefined',
-    'Accept':'*/*'
-    
-  })
+  
 };
+
+export const baseUrl='https://test-dendromap.com/api/';
+export const headers='http://172.72.1.11:8895';
+

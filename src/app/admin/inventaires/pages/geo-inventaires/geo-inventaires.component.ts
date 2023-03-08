@@ -102,6 +102,8 @@ export class GeoInventairesComponent implements OnInit {
   }
 
   async search() {
+    console.log("this.searchForm.value.address");
+    console.log(this.searchForm.value.address);
     this.visibleSpinner = true;
     if (this.searchForm.value.address && (typeof this.searchForm.value.address === 'object')) { // address
       const latLng = await this.mapService.getLatLng(this.searchForm.value.address.place_id);
