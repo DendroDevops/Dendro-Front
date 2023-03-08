@@ -22,7 +22,7 @@ import { GestionTravauxService } from "../../shared/service/gestion-travaux.serv
 export class AlerteComponent implements OnInit {
   state: any;
   visibleSpinner = false;
-
+  SelctedDatas: any = [];
   // DATA TABLE
   datas: any = [];
   originalDatas: any = [];
@@ -68,10 +68,10 @@ export class AlerteComponent implements OnInit {
     this._router.navigate([`/admin/inventaires/${id}`]);
   }
 
+  
   selectInvAll(event: any[]): void {
-    this.datas = event;
+    this.SelctedDatas = event;
   }
-
   selectOne(event): void {
     if (this.originalDatas.find((elt) => elt.id === event.id))
       this.originalDatas.find((elt) => elt.id === event.id).selected = event.selected;

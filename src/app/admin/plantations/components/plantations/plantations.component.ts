@@ -7,9 +7,12 @@ import { CustomAlertService } from "../../../../customAlertService.service";
 import { fallIn, moveInUp } from '../../../../router.animations';
 import { ErrorMessage, SuccessMessage } from "../../../../shared/modele/error.interface";
 import { AuthService } from '../../../../shared/service/auth.service';
+import { MapService } from '../../../../shared/service/map.service';
 import { ExcelService } from "../../../gestion-travaux/shared/service/excel.service";
 import { Coordinate } from "../../../inventaires/shared/model/inventaire.interface";
+import { InventoryMapInterface } from '../../../inventaires/shared/model/InventoryMap.interface';
 import { EcheanceDateService } from "../../../inventaires/shared/service/echeance-date.service";
+import { InventaireService } from '../../../inventaires/shared/service/inventaire.service';
 import { Plantation } from "../../shared/model/plantation.interface";
 import { PlantationsSerializer } from "../../shared/serializer/plantations.serializer";
 import { PlantationService } from "../../shared/service/plantation.service";
@@ -29,11 +32,9 @@ const now = new Date();
   animations: [moveInUp(), fallIn()]
 })
 export class PlantationsComponent implements OnInit {
-
+  position = 'RADIUS';
   searchKeys = ['genre', 'address'];
-
   state: any;
-
   errorMessage: ErrorMessage;
   successMessage: SuccessMessage;
 
@@ -62,7 +63,7 @@ export class PlantationsComponent implements OnInit {
   // PICKER
   dateEcheance: string;
   plantGroup: FormGroup;
-
+  searchForm: FormGroup;
   columns: ColumnInterface[] = [
     { name: 'check', isCheck: true, style: {}, isModelProperty: false, isVisible: true },
     { name: 'type', display: 'Type', style: {"min-width": "10rem"}, isModelProperty: true, isVisible: true, isString: true, isSort: true },
@@ -85,7 +86,10 @@ export class PlantationsComponent implements OnInit {
     private _customAlertService: CustomAlertService,
     private _router: Router,
     private _excelService: ExcelService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private mapService: MapService,
+
+    private inventaireService: InventaireService,
   ) {
     this.errorMessage = {
       show: false,
@@ -97,12 +101,22 @@ export class PlantationsComponent implements OnInit {
       message: ''
     }
   }
-
-  ngOnInit() {
+  initgeoForm() {
+    this.searchForm = this._fb.group({
+      'espece': [''],
+      'codeSite': [''],
+      'arbreRemarquable': [''],
+      'isFinished': [false],
+      'address': ['']
+    });
+  }
+  async ngOnInit() {
     this.getPlantations();
     this.initForm();
+    this.initgeoForm();
+    await this.geoLocate();
   }
-
+ 
   initForm() {
     this.plantGroup = this._fb.group({
       'espece': ['', Validators.required],
@@ -112,7 +126,6 @@ export class PlantationsComponent implements OnInit {
       'countSubject': [1, Validators.required]
     })
   }
-
   onAdd() {
     // Echeance date modify && Id
     this.plantGroup.value.dateEcheance = EcheanceDateService.formatToServer(this.plantGroup.value.dateEcheance);
@@ -244,4 +257,39 @@ export class PlantationsComponent implements OnInit {
       this._customAlertService.toastAlert("Aucun inventaire associé", 'toast-center-center', 'error');
     }
   }
+ 
+  async search() {
+    this.visibleSpinner = true;
+    if (this.searchForm.value.address && (typeof this.searchForm.value.address === 'object')) { // address
+      const latLng = await this.mapService.getLatLng(this.searchForm.value.address.place_id);
+  
+      if (latLng.lat && latLng.lng) {
+        this.coord.lat = latLng.lat;
+        this.coord.long = latLng.lng;
+        this.zoom = 10;
+      }
+      this.visibleSpinner = false;
+      this.getInventoryPosition();
+      return;
+    }
+  }
+  getInventoryPosition(): void {
+    this.visibleSpinner = true;
+    this.position = 'RADIUS'
+    this.inventaireService.getInventoryByPosition(this.lat, this.lng, this.searchForm.value, this.position)
+      .subscribe((result: InventoryMapInterface[]) => {
+        this.datas = result;
+        this.visibleSpinner = false;
+        this.removeDataInventory();
+      }, () => {
+        this.visibleSpinner = false;
+      })
+  }
+  removeDataInventory() {
+    localStorage.removeItem('datasInventaire');
+  }
+  selectCountry(country: string) {
+    this.search();
+  }
+  
 }

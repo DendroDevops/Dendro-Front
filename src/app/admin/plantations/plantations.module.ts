@@ -16,14 +16,17 @@ import { ArbreSerializer } from "../inventaires/shared/serializer/arbre.serializ
 import { EssenceSerializer } from "../inventaires/shared/serializer/essence.serializer";
 import { InventaireSerializer } from "../inventaires/shared/serializer/inventaire.serializer";
 import { ArbreService } from "../inventaires/shared/service/arbre.service";
+
 import { BackButtonUrlService } from "../inventaires/shared/service/backButtonUrl.service";
 import { EssenceService } from "../inventaires/shared/service/essence.service";
 import { InventaireService } from "../inventaires/shared/service/inventaire.service";
 import { PlantationsComponent } from "./components/plantations/plantations.component";
 import { PlantationsRoutingModule } from "./plantations-routing.module";
+import { AutoCompleteAdressesComponent } from "./shared/auto-complete-adresses/auto-complete-adresses.component";
 import { FilterPlantAdrPipe } from "./shared/pipes/filter-plant-adr.pipe";
 import { FilterPlantNamePipe } from "./shared/pipes/filter-plant-name.pipe";
 import { PlantationsSerializer } from "./shared/serializer/plantations.serializer";
+import { AutocompleteServices } from "./shared/service/autocomplete.services";
 import { PlantationService } from "./shared/service/plantation.service";
 
 @NgModule({
@@ -46,11 +49,13 @@ import { PlantationService } from "./shared/service/plantation.service";
     UtilsModule,
     CustomTableModule,
     FilterTableModule
+    
   ],
   declarations: [
     PlantationsComponent,
     FilterPlantAdrPipe,
     FilterPlantNamePipe,
+    AutoCompleteAdressesComponent
   ],
   providers: [
     PlantationService,
@@ -65,7 +70,9 @@ import { PlantationService } from "./shared/service/plantation.service";
     MapService,
     InventaireSerializer,
     ArbreService,
-    ArbreSerializer
+    ArbreSerializer,   
+    AutocompleteServices,
+
   ]
 })
 export class PlantationsModule {

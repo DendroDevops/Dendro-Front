@@ -1,0 +1,18 @@
+<div class="form-group" [formGroup]="addressForm">
+    <label class="form-label" [for]="formName"> Adresse </label>
+    <input (keyup)="onSearch()"
+           [class]="(addressForm.get(formName).errors && addressForm.get(formName).touched) ?
+      'form-control is-invalid' : 'form-control is-valid'"
+           [id]="formName" placeholder="Saisir l'adresse Ex. 1 Avenue Paul..."
+           [formControlName]="formName"
+           [name]="formName" type="text"
+           id="typeahead-prevent-manual-entry"
+           [ngbTypeahead]="search"
+           [inputFormatter]="formatter"
+           [resultFormatter]="formatter"
+           [editable]='true'
+           (ngModelChange)="onSelectCountry($event)"
+           >
+  </div>
+  
+  
