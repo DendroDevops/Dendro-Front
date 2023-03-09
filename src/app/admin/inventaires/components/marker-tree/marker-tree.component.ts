@@ -18,8 +18,18 @@ export class MarkerTreeComponent implements OnInit {
 
   constructor(private router: Router, public inventaireSerializer: InventaireSerializer) {
   }
-
+  imageUrl:String;
   ngOnInit() {
+    if(this.inventory.isFinished && this.inventory.arbre.implantation.includes("En alignement")){
+      this.imageUrl=this.iconEnAlignement;
+    }
+    else if(this.inventory.isFinished && !this.inventory.arbre.implantation.includes("En alignement")){
+      this.imageUrl=this.iconTermine;
+    }
+    else{
+      this.imageUrl=this.iconBrouillon;
+    }
+    
   }
 
   show(id: number): void {

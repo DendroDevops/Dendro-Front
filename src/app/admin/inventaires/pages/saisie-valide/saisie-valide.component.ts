@@ -113,6 +113,7 @@ export class SaisieValideComponent implements OnInit {
         this.originalDatas = InventaireService.setDateInitTravaux(InventaireSerializer.arrayInventaireListoJson(data));
         this.datas = this.originalDatas;
         this.totalItems = this.originalDatas.length;
+        console.log(this.originalDatas);
       }, () => {
         this.visibleSpinner = true;
       });

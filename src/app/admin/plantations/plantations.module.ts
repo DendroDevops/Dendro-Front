@@ -42,8 +42,10 @@ import { PlantationService } from "./shared/service/plantation.service";
       cancelButtonClass: 'btn btn-lg btn-default'
     }),
     AgmCoreModule,
+   
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBtsQeeMq9e8CkZiTiUd-DsdIBrJaOek5A'
+      apiKey: 'AIzaSyBtsQeeMq9e8CkZiTiUd-DsdIBrJaOek5A',
+      libraries: ['places'],
     }),
     FormsComponentModule,
     UtilsModule,
