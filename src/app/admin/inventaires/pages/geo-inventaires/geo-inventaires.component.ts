@@ -102,8 +102,6 @@ export class GeoInventairesComponent implements OnInit {
   }
 
   async search() {
-    console.log("this.searchForm.value.address");
-    console.log(this.searchForm.value.address);
     this.visibleSpinner = true;
     if (this.searchForm.value.address && (typeof this.searchForm.value.address === 'object')) { // address
       const latLng = await this.mapService.getLatLng(this.searchForm.value.address.place_id);
@@ -126,6 +124,7 @@ export class GeoInventairesComponent implements OnInit {
   }
 
   open(content, options = {}, inventaire: InventoryMapInterface) {
+
     this.inventairePopUp = inventaire;
     this.modalService.open(content, options).result.then(() => {
     }, (reason) => {
@@ -155,6 +154,7 @@ export class GeoInventairesComponent implements OnInit {
   }
 
   isEssence(type: string): boolean {
+    
     return InventaireSerializer.isEB(type);
   }
 }

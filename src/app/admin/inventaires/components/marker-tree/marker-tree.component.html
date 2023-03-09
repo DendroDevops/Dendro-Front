@@ -1,7 +1,5 @@
-<agm-marker *ngIf="!this.isEssence(inventory.type)" [latitude]="inventory.coord.lat" [iconUrl]='{"url": !inventory.isFinished ? iconBrouillon
-: inventory?.arbre?.implantation?.includes("alignement")
-? iconEnAlignement
-: iconTermine, "scaledSize": {"height": 30, "width": 40}}' [longitude]="inventory.coord.long">
+<agm-marker *ngIf="!this.isEssence(inventory.type)" [latitude]="inventory.coord.lat" 
+[iconUrl]='{"url":imageUrl, "scaledSize": {"height": 30, "width": 40}}' [longitude]="inventory.coord.long">
 
   <agm-info-window>
     <h4 class="mb-0"> {{inventory.arbre.genre}}&nbsp;{{inventory.arbre.name}} {{inventory.arbre.cultivar}} <br>
@@ -18,3 +16,9 @@
     <button class="btn btn-block btn-xs btn-success" (click)="show(inventory.id)"> Detail</button>
   </agm-info-window>
 </agm-marker>
+
+<!-- inventory.arbre?.critere?.length == 0 ? iconBrouillon:
+inventory.isFinished ? iconTermine
+: inventory?.arbre?.implantation?.includes("alignement")
+? iconEnAlignement
+: iconTermine -->

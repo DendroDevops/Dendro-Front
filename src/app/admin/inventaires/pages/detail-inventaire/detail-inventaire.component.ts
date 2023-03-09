@@ -50,7 +50,7 @@ export class DetailInventaireComponent implements OnInit, OnDestroy {
 
   addressError = false;
   villeError = false;
-
+  imageUrl:String;
   unsubscribe$: Subject<boolean> = new Subject<boolean>()
 
   constructor(
@@ -70,6 +70,15 @@ export class DetailInventaireComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getOneInventaire();
     this.getRisqueGnlDisplayName('eleve');
+    if(this.inventaire.isFinished && this.inventaire.arbre.implantation.includes("En alignement")){
+      this.imageUrl=this.iconEnAlignement;
+    }
+    else if(this.inventaire.isFinished && !this.inventaire.arbre.implantation.includes("En alignement")){
+      this.imageUrl=this.iconTermine;
+    }
+    else{
+      this.imageUrl=this.iconBrouillon;
+    }
   }
 
   getOneInventaire() {

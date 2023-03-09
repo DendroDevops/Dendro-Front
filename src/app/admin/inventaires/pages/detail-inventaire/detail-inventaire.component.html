@@ -105,10 +105,9 @@
           <agm-map [fullscreenControl]='true' [latitude]="inventaire.arbre.coord.lat"
                    [longitude]="inventaire.arbre.coord.long" [mapTypeControl]='true'
                    [zoom]="zoom">
-                  <agm-marker *ngIf="inventaire.arbre" [latitude]="inventaire.arbre.coord.lat" [iconUrl]='{"url":   !inventaire.isFinished ? iconBrouillon
-                                                     : inventaire.arbre.implantation === "En alignement"
-                                                     ? iconEnAlignement
-                                                     : iconTermine, "scaledSize": {"height": 50, "width": 50}}'
+                  <agm-marker *ngIf="inventaire.arbre" [latitude]="inventaire.arbre.coord.lat" [iconUrl]='
+                                                          {"url": imageUrl
+                                                     , "scaledSize": {"height": 50, "width": 50}}'
                     [longitude]="inventaire.arbre.coord.long">
                   </agm-marker>
           </agm-map>
@@ -152,4 +151,7 @@
 </div>
 <!-- SPINNER -->
 <app-spinner [visible]="visibleSpinner"></app-spinner>
-<!-- FIN SPINNER -->
+<!-- /** !inventaire.isFinished ? iconBrouillon
+        : inventaire.arbre.implantation === "En alignement"
+        ? iconEnAlignement
+        : iconTermine  -->
