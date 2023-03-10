@@ -14,6 +14,7 @@ import {GestionTravauxService} from "../../../gestion-travaux/shared/service/ges
 import {InventaireService} from "../../../inventaires/shared/service/inventaire.service";
 import {InventaireSerializer} from "../../../inventaires/shared/serializer/inventaire.serializer";
 import { CARACT_TAB } from '../../../inventaires/shared/constant/woodArea.constant';
+import { DatePipe } from '@angular/common';
 
 
 // DATE && PICKER
@@ -40,7 +41,8 @@ const after = (one: NgbDateStruct, two: NgbDateStruct) =>
     '../../../../../vendor/libs/ngx-color-picker/ngx-color-picker.scss',
     '../../../../../vendor/libs/spinkit/spinkit.scss'
   ],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [DatePipe]
 })
 export class HomeComponent implements OnInit {
 
@@ -82,7 +84,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private plantationService: PlantationService,
     private inventaireService: InventaireService,
-    private travauxService: GestionTravauxService
+    private travauxService: GestionTravauxService,
+    private datePipe: DatePipe
   ) {
 
     this.year = (new Date).getFullYear();
@@ -576,7 +579,7 @@ export class HomeComponent implements OnInit {
         this.getValEstimative();
         // this.getDict();
         this.getEBArea();
-        this.getSaisieValid();
+       
       }, () => {
       });
   }
@@ -585,6 +588,7 @@ export class HomeComponent implements OnInit {
     this.inventaireService.getInventaireNotFinished()
       .subscribe((data: Inventaire[]) => {
         this.inventaireNoNFinal = data;
+        this.getSaisieValid();
       })
   }
 
@@ -822,13 +826,13 @@ export class HomeComponent implements OnInit {
 
   getSelectedMoment(momentSelected: String) {
     if (momentSelected === 'CURRENT') {
-      return moment(moment().format());
+      return moment(moment(new Date()).format());
     } else if (momentSelected == 'LAST_MONTH') {
-      return moment(moment().subtract(1, 'month').format());
+      return moment(moment(new Date()).subtract(1, 'month').format());
     } else if (momentSelected == 'LAST_SIX_MONTH') {
-      return moment(moment().subtract(6, 'month').format());
+      return moment(moment(new Date()).subtract(6, 'month').format());
     } else if (momentSelected == 'LAST_YEAR') {
-      return moment(moment().subtract(1, 'year').format());
+      return moment(moment(new Date()).subtract(1, 'year').format());
     } else if (momentSelected == 'PERSONNAL') {
 
     }
@@ -843,18 +847,18 @@ export class HomeComponent implements OnInit {
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countSaisieValidStatic(startMonthDate, endMonthDate);
     } else if (momentSelected === 'LAST_MONTH') {
-      endMonthDate = monthEnCourt.clone().endOf('month');
+      endMonthDate = moment(new Date()).endOf('month');
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countSaisieValidStatic(startMonthDate, endMonthDate);
-    } else if (momentSelected === 'LAST_SIX_MONTH') {
-      endMonthDate = moment();
+    } else if (momentSelected === 'LAST_SIX_MONTH') {  
+      endMonthDate = moment(new Date());
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countSaisieValidStatic(startMonthDate, endMonthDate);
     } else if (momentSelected === 'LAST_YEAR') {
-      endMonthDate = monthEnCourt.clone().endOf('year');
-      startMonthDate = monthEnCourt.clone().startOf('year');
+      endMonthDate = moment(new Date()).clone().endOf('year');
+      startMonthDate = monthEnCourt.clone().startOf('year')
       this.countSaisieValidStatic(startMonthDate, endMonthDate);
-    } else if (momentSelected == 'DEFAULT') {
+    } else  {
       // PERSONNAL YEAR
       this.countSaisieValidStatic();
     }
@@ -862,40 +866,42 @@ export class HomeComponent implements OnInit {
   }
 
   private countSaisieValidStatic(startMonthDate = null, endMonthDate = null) {
+
     let SAISIEVALID = 0;
     if (startMonthDate == null && endMonthDate == null) {
       SAISIEVALID = this.inventaireNoNFinal.length;
     } else {
       this.inventaireNoNFinal.forEach((inv: Inventaire) => {
         const createdAt = moment(inv.createdAt);
-        (startMonthDate.toDate() <= createdAt.toDate() && endMonthDate.toDate() >= createdAt.toDate()) && SAISIEVALID++
+        (startMonthDate.toDate() <= createdAt.toDate() && endMonthDate.toDate() >= createdAt.toDate())
+         && SAISIEVALID++
       });
     }
     this.totalSaisieValid = SAISIEVALID;
   }
 
   getPlantation(momentSelected = 'DEFAULT') {
+  
     // COUNT PLANTATION
     let startMonthDate, endMonthDate;
     const monthEnCourt = this.getSelectedMoment(momentSelected);
-
     if (momentSelected === 'CURRENT') {
       endMonthDate = monthEnCourt.clone().endOf('month');
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countStaticPlant(startMonthDate, endMonthDate);
     } else if (momentSelected === 'LAST_MONTH') {
-      endMonthDate = monthEnCourt.clone().endOf('month');
+      endMonthDate = moment(new Date()).endOf('month');
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countStaticPlant(startMonthDate, endMonthDate);
     } else if (momentSelected === 'LAST_SIX_MONTH') {
-      endMonthDate = moment();
+      endMonthDate = moment(new Date());
       startMonthDate = monthEnCourt.clone().startOf('month');
       this.countStaticPlant(startMonthDate, endMonthDate);
     } else if (momentSelected === 'LAST_YEAR') {
-      endMonthDate = monthEnCourt.clone().endOf('year');
+      endMonthDate = moment(new Date()).clone().endOf('year');
       startMonthDate = monthEnCourt.clone().startOf('year');
       this.countStaticPlant(startMonthDate, endMonthDate);
-    } else if (momentSelected == 'DEFAULT') {
+    } else {
       this.countStaticPlant();
     }
 
