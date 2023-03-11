@@ -4,8 +4,7 @@ import { Inventaire } from "../../../admin/inventaires/shared/model/inventaire.i
 import { InventaireSerializer } from "../../../admin/inventaires/shared/serializer/inventaire.serializer";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../../../app.service';
-import { TravauxInfo } from '../../../admin/gestion-travaux/shared/model/TravauxInfo';
-import { valHooks } from 'jquery';
+import { TravauxInfo } from '../../shared/modele/travauxInfo';
 
 @Component({
   selector: 'app-table-data',

@@ -7,7 +7,6 @@ import { AuthService } from '../../../../shared/service/auth.service';
 import { Inventaire } from '../../../inventaires/shared/model/inventaire.interface';
 import { InventaireService } from '../../../inventaires/shared/service/inventaire.service';
 import { COLUMNS_WORK_CONST } from "../../shared/constant/column-work.cosnt";
-import { TravauxInfo } from '../../shared/model/TravauxInfo';
 import { GestionTravauxService } from "../../shared/service/gestion-travaux.service";
 
 @Component({
