@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ColumnInterface} from "../../shared/modele/column.interface";
-import {Inventaire} from "../../../admin/inventaires/shared/model/inventaire.interface";
-import {InventaireSerializer} from "../../../admin/inventaires/shared/serializer/inventaire.serializer";
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ColumnInterface } from "../../shared/modele/column.interface";
+import { Inventaire } from "../../../admin/inventaires/shared/model/inventaire.interface";
+import { InventaireSerializer } from "../../../admin/inventaires/shared/serializer/inventaire.serializer";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../../../app.service';
+import { TravauxInfo } from '../../../admin/gestion-travaux/shared/model/TravauxInfo';
+import { valHooks } from 'jquery';
 
 @Component({
   selector: 'app-table-data',
@@ -18,13 +20,14 @@ export class TableDataComponent implements OnInit {
   private _data: any[] = [];
 
   @Input() COLUMNS: ColumnInterface[] = []
-  @Input() set DATA(value: any[]){
+  showDetails: boolean;
+  @Input() set DATA(value: any[]) {
     if (this.orderByColumn) {
       this.sort(value);
     }
     this._data = value;
   }
-  get DATA(){
+  get DATA() {
     return this._data;
   }
   @Input() editable: boolean = false;
@@ -46,15 +49,63 @@ export class TableDataComponent implements OnInit {
 
   orderByColumns = new Map();
   orderByColumn = "";
-  sortBy= "asc";
-  itemsInCurrentPage: any[] ;
+  sortBy = "asc";
+  itemsInCurrentPage: any[];
+
+  travauxInfos: TravauxInfo[] = new Array<TravauxInfo>();
   constructor(public appService: AppService, private modalService: NgbModal) {
   }
 
   ngOnInit() {
- 
+
+  }
+  ngOnChanges() {
+    this.CreateTravuxList(this.DATA);
+  }
+  CreateTravuxList(datas: any) {
+    for (let s = 0; s < this.COLUMNS.length; s++) {
+      if (this.COLUMNS[s].name == "Travaux à réaliser") {
+        this.showDetails = true;
+        break;
+      }
+    }
+    if (this.showDetails) {
+      this.travauxInfos = new Array<TravauxInfo>();
+      for (var i = 0; i < datas.length; i++) {
+        let t = new TravauxInfo();
+        t.abattage = datas[i].abattage;
+        t.dateProVisite = datas[i].dateProVisite;
+        t.etatSanGeneral = datas[i].etatSanGeneral;
+        t.userEditedDateTravaux = datas[i].userEditedDateTravaux;
+        t.type= datas[i].type;
+        t.statusTravaux= datas[i].statusTravaux;
+        t.travauxColletMultiple=datas[i].travauxColletMultiple;
+        t.travauxColletOther=datas.travauxColletOther;
+        t.travauxTroncMultiple=datas[i].travauxTroncMultiple;
+        t.travauxTroncOther=datas[i].travauxTroncOther;
+        t.travauxTroncProtection=datas[i].travauxTroncProtection;
+        t.travauxHouppierMultiple=datas[i].travauxHouppierMultiple;
+        t.travauxHouppierOther=datas[i].travauxHouppierOther;
+        t.dateTravaux=datas[i].dateTravaux;
+        t.risqueGeneralOther=datas[i].risqueGeneralOther;
+        t.travaux=datas[i].travaux;
+        t.travauxSoin=datas[i].travauxSoin;
+        t.travauxProtection=datas[i].travauxProtection;
+        t.travauxOther=datas[i].travauxOther;
+        this.travauxInfos.push(t);
+      };
+    }
+
   }
 
+  visibleIndex = -1;
+  showSubItem(ind) {
+    if (this.visibleIndex === ind) {
+      this.visibleIndex = -1;
+    } else {
+      this.visibleIndex = ind;
+    }
+  }
   delete(id) {
     this.deleteClick.emit(id);
   }
@@ -62,22 +113,22 @@ export class TableDataComponent implements OnInit {
   edit(id: number) {
     this.editClick.emit(id)
   }
-    /**
-   * Event to handle detail record
-   * @return void
-   * @param id
-   */
-     show(id: number): void {
-      this.showClick.emit(id);
-    }
+  /**
+ * Event to handle detail record
+ * @return void
+ * @param id
+ */
+  show(id: number): void {
+    this.showClick.emit(id);
+  }
 
   selectInvAll(): void {
-    this.itemsInCurrentPage = this.DATA.slice(this.sliceStart, this.sliceEnd );
+    this.itemsInCurrentPage = this.DATA.slice(this.sliceStart, this.sliceEnd);
     for (let d of this.itemsInCurrentPage) {
       d.selected = !d.selected;
     }
     this.selectAll.emit(this.itemsInCurrentPage);
-   
+
   }
 
   checkOne(data: any): void {
@@ -96,7 +147,7 @@ export class TableDataComponent implements OnInit {
     modalRef.componentInstance.title = modal.modalTitle;
   }
 
-  reducer(accumulator: number, item: number){
+  reducer(accumulator: number, item: number) {
     return accumulator || item;
   };
   filter(cIdx: number, sortBy: string) {
@@ -109,8 +160,8 @@ export class TableDataComponent implements OnInit {
       this.sort(this.DATA)
     }
   }
-  sort(data: any[]){
-    data.sort((a: any, b:  any) => {
+  sort(data: any[]) {
+    data.sort((a: any, b: any) => {
       let orderResults = []
       this.orderByColumns.forEach((c: ColumnInterface, key: string) => {
         if (c.isModelProperty && c.isString && !c.isDate && !c.isObject && !c.isCurrency) {
@@ -140,7 +191,7 @@ export class TableDataComponent implements OnInit {
           return;
         }
         if (c.isCurrency) {
-          orderResults.push(this.orderNumber(a[key] ? a[key]: 0, b[key] ? b[key] : 0, c.sortBy))
+          orderResults.push(this.orderNumber(a[key] ? a[key] : 0, b[key] ? b[key] : 0, c.sortBy))
           return;
         }
       })
@@ -156,16 +207,16 @@ export class TableDataComponent implements OnInit {
       return b.toUpperCase().localeCompare(a.toUpperCase());
     }
   }
-  orderNumber(a: number, b: number, sortBy: string){
+  orderNumber(a: number, b: number, sortBy: string) {
     if (!a) a = 0;
     if (!b) b = 0;
     if (sortBy === 'asc') {
-      return a-b;
+      return a - b;
     } else {
-      return b-a;
+      return b - a;
     }
   }
-  orderDate(a: Date, b: Date, sortBy: string){
+  orderDate(a: Date, b: Date, sortBy: string) {
     if (!a) a = new Date();
     if (!b) b = new Date();
     if (sortBy === 'asc') {
@@ -179,5 +230,11 @@ export class TableDataComponent implements OnInit {
     if (Object.keys(data).find((elt: string) => elt == 'type')) {
       return (!InventaireSerializer.isEB(data.type)) ? 'arbre-style' : 'epaysage-style';
     }
+  }
+  isTree(type: string,index:any): boolean {
+    console.log(type,index)
+    console.log(this.DATA[index]);
+    console.log(this.travauxInfos[index]);
+    return (type.toUpperCase() === 'ARBRE') || (type.toUpperCase() === 'ALIGNEMENT');
   }
 }

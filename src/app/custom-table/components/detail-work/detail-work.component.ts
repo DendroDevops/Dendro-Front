@@ -16,6 +16,7 @@ export class DetailWorkComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("data")
   }
 
   isTree(type: string): boolean {

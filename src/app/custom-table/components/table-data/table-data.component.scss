@@ -54,3 +54,33 @@
   border-radius: 50%;
   display: inline-block;
 }
+p {
+  font-family: Lato;
+
+}
+
+.header{
+  background-color: rgb(204, 204, 213);
+  color:white;
+}
+
+.subheader {
+  background-color: #ffffff
+}
+
+.header p {
+  color:#3a3c48;
+  margin: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.header a {
+  margin: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.header div {
+  margin: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}

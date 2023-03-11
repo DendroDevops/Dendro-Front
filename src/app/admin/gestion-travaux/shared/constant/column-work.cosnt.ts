@@ -9,10 +9,9 @@ export const COLUMNS_WORK_CONST: ColumnInterface[] = [
   {name: 'cultivar', display: 'Cultivar', style: {"min-width": "8rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
   {
     name: 'Travaux à réaliser',
-    style: {"min-width": "8rem"},
     display: 'Détail des travaux',
     isModalLink: true,
-    modalComponent: DetailWorkComponent,
+    style: {"min-width": "16rem"},
     modalTitle: "TRAVAUX",
     isModelProperty: false,
     isVisible: true
@@ -25,10 +24,10 @@ export const COLUMNS_WORK_CONST: ColumnInterface[] = [
     isModelProperty: true,
     isVisible: true
   },
-  {name: 'countSubject', display: 'Nbre de Sujets', style: {"min-width": "8rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
-  {name: 'hauteur', display: 'Hauteur', style: {"min-width": "5rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
-  {name: 'diametre', display: 'Diamètre', style: {"min-width": "5rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
-  {name: 'address', display: 'Adresse', style: {"min-width": "16rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
+  {name: 'countSubject', display: 'Nbre de Sujets', style: {"min-width": "3rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
+  {name: 'hauteur', display: 'Hauteur', style: {"min-width": "4rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
+  {name: 'diametre', display: 'Diamètre', style: {"min-width": "4rem"}, isModelProperty: true, isVisible: true, isSort: true, isNumber: true},
+  {name: 'address', display: 'Adresse', style: {"min-width": "12rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
   {name: 'ville', display: 'Ville', style: {"min-width": "14rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
   {name: 'pays', display: 'Pays', style: {"min-width": "2rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
   {name: 'codeSite', display: 'Code Site', style: {"min-width": "2.5rem"}, isModelProperty: true, isVisible: true, isSort: true, isString: true},
