@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive" *ngIf="travauxInfos">
   <table class="table table-striped table-bordered card-table">
     <thead>
     <tr class="text-center">
@@ -35,7 +35,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of DATA | slice: sliceStart:sliceEnd " (dblclick)="isDblClick && details(data.id)" [class]="isVentoryStyle(data)">
+    <tr *ngFor="let data of DATA | slice: sliceStart:sliceEnd;let index = index " 
+    (dblclick)="isDblClick && details(data.id)" [class]="isVentoryStyle(data)">
       <td class="align-middle {{c.tdClass ? c.tdClass : ''}}" *ngFor="let c of COLUMNS">
         <label class="custom-control custom-checkbox" *ngIf="c.isCheck">
           <input type="checkbox" [checked]="data?.selected" (change)="checkOne(data)"
@@ -51,7 +52,64 @@
         <span *ngIf="c.isDate && c.isObject">{{data[c.objectName] && data[c.objectName][c.name] | date: 'dd/MM/yyyy'}}</span>
         <span *ngIf="c.isDate && !c.isObject">{{data[c.name] | date: (c.dateFormat || 'dd/MM/yyyy')}}</span>
         <span *ngIf="c.isCurrency">{{data[c.name] | currency : 'EUR': 'symbol': '2.2-2': 'fr'}}</span>
-        <span *ngIf="c.isModalLink"><a href="javascript:void(0)" (click)="openModal(data, c)">{{c.display}}</a></span>
+        <span *ngIf="c.isModalLink" >
+          <div  class="header" (click)="showSubItem(index)" >
+            <p style=" text-align: center;">  Tavaux du {{travauxInfos[index].userEditedDateTravaux |date}}</p>
+            <div *ngIf="visibleIndex === index" class="subheader">
+              <div *ngIf="isTree(travauxInfos[index].type,index)">
+                  <div  *ngIf="!travauxInfos[index].statusTravaux">
+                   
+                        <p style="font-weight: bold;">Préconisation de travaux :</p>
+                        <p *ngIf="travauxInfos[index].abattage">{{travauxInfos[index].abattage}}</p>
+                          <div *ngIf="travauxInfos[index].abattage == null"> 
+                            <p  style="font-weight: bold; ">Système racinaire, collet :</p> 
+                              <p *ngIf="travauxInfos[index].travauxColletMultiple.length !== 0">{{travauxInfos[index].travauxColletMultiple}}</p>
+                              <p *ngIf="travauxInfos[index].travauxColletOther">Soin particulier, précisez : {{travauxInfos[index].travauxColletOther}}</p>
+                              <p *ngIf="travauxInfos[index].travauxTroncMultiple !=null && travauxInfos[index].travauxTroncMultiple.length !== 0 " >Tronc :{{travauxInfos[index].travauxTroncMultiple}}</p>
+                              <p *ngIf="travauxInfos[index].travauxTroncOther.length !== 0" >Soin particulier, précisez :{{travauxInfos[index].travauxTroncOther}}</p>
+                              <p *ngIf="travauxInfos[index].travauxTroncProtection" >Soin particulier, précisez :{{travauxInfos[index].travauxTroncProtection}}</p>
+                              <p *ngIf="travauxInfos[index].travauxHouppierMultiple.length !== 0" >Soin particulier, précisez :{{travauxInfos[index].travauxHouppierMultiple}}</p>
+                              <p *ngIf="travauxInfos[index].travauxHouppierOther" >Soin particulier, précisez :{{travauxInfos[index].travauxHouppierOther}}</p>
+                          </div>
+                          <p *ngIf="travauxInfos[index].etatSanGeneral"  style="font-weight: bold;">Diagnostic global :</p><p>{{travauxInfos[index].etatSanGeneral}}</p>
+                          <div ><p  style="font-weight: bold; ">Date échéance :</p>
+                          <p *ngIf="travauxInfos[index].dateProVisite">{{travauxInfos[index].dateProVisite}}</p>
+                          <p *ngIf="travauxInfos[index].dateTravaux">{{travauxInfos[index].dateTravaux}}</p>
+                          </div>
+                          <a *ngIf="travauxInfos[index].dateTravaux" >
+                            <p *ngIf="travauxInfos[index].risqueGeneralOther" style="font-weight: bold; ">Commentaires</p>
+                            <p>{{travauxInfos[index].risqueGeneralOther}}</p>
+                          </a>
+                    
+                  </div>
+                  <div  *ngIf="travauxInfos[index].statusTravaux">
+                    <p class="text-center"  style="font-weight: bold; ">Aucune activité renseignée </p>
+                  </div>
+              </div>
+              <div *ngIf="!isTree(travauxInfos[index].type,index)">
+                 <div *ngIf="!travauxInfos[index].statusTravaux">
+                  <p  style="font-weight: bold; ">Préconisation de travaux :</p>
+                  <div>
+                  <p *ngIf="travauxInfos[index].travaux.length !== 0">{{travauxInfos[index].travaux}}</p>
+                  <p *ngIf="travauxInfos[index].travauxSoin">Soin particulier, précisez :{{travauxInfos[index].travauxSoin}}</p>
+                  <p *ngIf="travauxInfos[index].travauxProtection">Protection particulière, précisez :{{travauxInfos[index].travauxProtection}}</p>
+                 </div>
+                 <a>
+                  <p *ngIf="travauxInfos[index].etatSanGeneral"  style="font-weight: bold;">Diagnostic global :</p><p>{{travauxInfos[index].etatSanGeneral}}</p>
+                 </a>
+                  <a  style="font-weight: bold; ">Commentaires :
+                    <p *ngIf="travauxInfos[index].risqueGeneralOther">{{travauxInfos[index].risqueGeneralOther}}</p>
+                    <p *ngIf="travauxInfos[index].travauxOther">{{travauxInfos[index].travauxOther}}</p>
+                  </a>
+                </div>
+                <div *ngIf="travauxInfos[index].statusTravaux">
+                  <h5 class="text-center">Aucune activité renseignée</h5>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+           </span>
         <ng-container *ngIf="c.isIcon">
           <span *ngIf="data[c.name] ">
             <i [class]="c.icons.iconSuccesClass"></i>
